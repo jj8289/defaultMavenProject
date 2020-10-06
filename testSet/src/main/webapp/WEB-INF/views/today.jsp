@@ -141,16 +141,16 @@ label {
 		<label for="" class="">City</label>
 		<div class="select1">
 			<select name="selectCity">
-				<option value="1">Seoul</option>  
-				<option value="2">Busan</option>
-				<%-- <#list userList as user>
-					<option value="${user.userId}">${user.userId}</option> 
-				</#list> --%> 
-			</select>      
+				<c:set var="i" value="0"></c:set>
+				<c:forEach var="city" items="${cityList }">
+					<c:set var="i" value="${i + 1 }"></c:set> 
+					<option value="${i }">${city }</option>  
+				</c:forEach>      
+			</select>       
 		</div>  
 		<div style="width: 10px;"></div>     
 		<label for="" class="">Sex</label>
-		<div class="select2"> 
+		<div class="select2">  
 			<select name="selectSex">
 				<option value="1">Female</option>
 				<option value="2">Male</option> 

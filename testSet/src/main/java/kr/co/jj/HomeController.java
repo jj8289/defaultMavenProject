@@ -1,7 +1,9 @@
 package kr.co.jj;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import org.slf4j.Logger;
@@ -32,6 +34,18 @@ public class HomeController {
 		String formattedDate = dateFormat.format(date);
 		
 		model.addAttribute("serverTime", formattedDate );
+		
+		
+		List<String> cityList = new ArrayList<String>();
+		cityList.add("Seoul");
+		cityList.add("Busan");
+		cityList.add("Gimpo-si");  
+		
+		
+		
+		logger.info(cityList.toString()); 
+		
+		model.addAttribute("cityList", cityList);
 		
 		return "today";
 	}
