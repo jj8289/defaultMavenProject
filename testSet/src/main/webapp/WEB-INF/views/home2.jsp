@@ -113,25 +113,62 @@ td {
 
 .box > .shoe { 
 	height: 70px;  
-}       
+}      
+/* 
+.button_base {
+    margin: 0;
+    border: 0;
+    font-size: 16px;
+    position: relative;
+    top: 50%;
+    left: 200%;
+    margin-top: -25px; 
+    margin-left: -70px;  
+    width: 100px;
+    height: 50px; 
+    text-align: center;
+    box-sizing: border-box; 
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-user-select: none;
+    cursor: default;
+}
+
+.button_base:hover {
+    cursor: pointer;
+}
+
+button {
+    color: #000000;
+    border: #000000 solid 1px;
+    background-color: #ffffff;
+}     
+ 
+button:hover {
+    color: #ffffff; 
+    background-color: #000000;
+} */
+ 
 </style>        
-<body>   
+<body>    
 	<div class="menu_bar"> 
 		<div class="menu today" onclick="location.href='/jj/'">today</div>
 		<div class="menu tomorrow" onclick="location.href='/jj/tomorrow'">tomorrow</div> 
-	</div>      
-	<h1>    
-		What to wear today? ;) 
-	</h1>     
-	<div class="banner1"></div>     
-	<div class="context">   
-		<div class="left_context"> 
+		<!-- <div class="menu today"><button class="button_base"  onclick="location.href='/jj/'">today</button></div>
+		<div class="menu tomorrow"><button class="button_base" onclick="location.href='/jj/tomorrow'">tomorrow</button></div>  --> 
+	</div>       
+	<h1>       
+		What to wear tomorrow? ;)  
+	</h1>        
+	<div class="banner1"></div>      
+	<div class="context">     
+		<div class="left_context">  
 			<div class="con">   
 				<table>  
 					<tr>
 						<td class="label">time </td>
 						<td>2020-10-06  12:00</td> 
-					</tr> 
+					</tr>  
 					<tr> 
 						<td class="label">temp</td>
 						<td>22°</td>  
@@ -140,21 +177,21 @@ td {
 						<td class="label">feels</td>
 						<td>21°</td>   
 					</tr>   
-					<tr>   
+					<tr>  
 						<td class="label">weather</td>
 						<td>sunny</td>    
 					</tr>     
 					<tr>  
 						<td class="label">weather</td>
 						<td><img alt="" src="/jj/resources/favicon.ico"> </td>     
-					</tr>    
+					</tr>     
 				</table>   
 			</div>     
-		</div>   
-		<div class="right_context">  
+		</div>    
+		<div class="right_context">   
 			<div class="box box1">    
 				<div class="a">clothes1</div> 
-				<img alt="" src="/jj/resources/c1.png">  
+				<img alt="" src="/jj/resources/c1.png">   
 				<img alt="" src="/jj/resources/jean.jpg"> 
 				<img class="shoe" alt="" src="/jj/resources/vans.jpg"> 
 			</div>  
