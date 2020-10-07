@@ -151,10 +151,10 @@
 	
 		function goHome() {
 			// controller URL
-			location.href = "/";
-		}
+			location.href = CONTEXT_PATH + "/";
+		} 
 		
-		function joinChk() { 
+		function joinChk() {  
 	        var frm = document.joinForm;
 	        if (!frm.userId.value) { //아이디를 입력하지 않으면.
 	            alert("아이디를 입력하세요.");
