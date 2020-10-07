@@ -11,6 +11,7 @@
     </settings>
 
     <typeAliases>
+    	<typeAlias type="kr.co.jj.user.vo.UserVO" alias="UserVO"/>
     </typeAliases>
 
 </configuration>

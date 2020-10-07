@@ -132,7 +132,8 @@ label {
 	<div class="menu_bar"> 
 		<div class="menu today" onclick="location.href='/jj/'">today</div>
 		<div class="menu tomorrow" onclick="location.href='/jj/tomorrow'">tomorrow</div> 
-	</div>        
+		<div class="menu join" onclick="location.href='/jj/join'">join</div>   
+	</div>         
 	<h2>      
 		What to wear today? ;) 
 	</h2>               
