@@ -74,14 +74,12 @@
 		<h2 class="title">회원가입</h2>
 		<div class="temp"></div>
 		<div class="minicon">
-		<!-- Controller 에서 HttpServletRequest.getParameter로 받을 때 
-			<form action="/cust/join2" method="post"> <form action="#" method="post" name="custVO">  -->
-			<form id="joinForm" name="joinForm" action="/join/joinForm" method="post">
+			<form id="joinForm" name="joinForm"> 
 				<table cellspacing="3">
 				<colgroup> 
    					<col width="15%"/> 
     				<col width=""/> 
- 				</colgroup> 
+ 				</colgroup>  
 					<tr>
 						<td bgcolor="lightgrey" align="center">아이디</td>	
 						<!-- <td><input size="15" type="text" name="id" id="id"> 4~12자의 영문 대소문자와 숫자로만 입력</td> -->
@@ -110,9 +108,9 @@
 					<tr>
 						<td bgcolor="lightgrey" align="center">성별</td>
 						<td>
-							<input type="radio" name="sex" id="sex" value="F" > 여
-							<input type="radio" name="sex" id="sex" value="M" > 남
-						</td>
+							<input type="radio" name="sex" id="sex1" value="F" > 여
+							<input type="radio" name="sex" id="sex2" value="M" > 남
+						</td> 
 					</tr>
 					<tr>
 						<td bgcolor="lightgrey" align="center">경력</td>
@@ -138,10 +136,9 @@
 
 				<p class="but" align="center" >
 					<button id="join" value="가입하기" type="button" onclick="joinChk()" class="btn">가입하기</button> 
-					<!-- <input type="submit" value="가입하기"> -->
 					<input type="reset" value="리셋"> 
 					<input type="button" value="홈으로" onclick="goHome()">
-				</p>
+				</p> 
 			</form>
 		</div>  
 	</div>
@@ -208,14 +205,14 @@
 	              , userNm: $('#userNm').val()
 	              , age: $('#age').val()
 	              , job: $('#job').val()
-	              , sex: $('#sex').val()
+	              , sex: $('input[name=sex]:checked').val()
 	              , career: $('#career').val()
 	              , phone: $('#phone').val()
-	              , addr: $('#addr').val()
+	              , addr: $('#addr').val() 
 	              , email: $('#email').val()
 	              , intro: $('#intro').val()
 	    	};
-	    	
+	    	 
 	    	$.ajax({
 	    		url : CONTEXT_PATH + "/join/joinChk", 
 	    		type: "POST",  
