@@ -15,6 +15,8 @@ public class UserVO {
 	private String addr;
 	private String intro;
 	private String createDate;
+	private String licenseNo;
+	private String requireNo;
 	
 	public String getUserNo() {
 		return userNo;
@@ -94,11 +96,24 @@ public class UserVO {
 	public void setCreateDate(String createDate) {
 		this.createDate = createDate;
 	}
+	public String getLicenseNo() {
+		return licenseNo;
+	}
+	public void setLicenseNo(String licenseNo) {
+		this.licenseNo = licenseNo;
+	}
+	public String getRequireNo() {
+		return requireNo;
+	}
+	public void setRequireNo(String requireNo) {
+		this.requireNo = requireNo;
+	}
 	
 	@Override
 	public String toString() {
 		return "UserVO [userNo=" + userNo + ", userId=" + userId + ", userPw=" + userPw + ", userNm=" + userNm
 				+ ", age=" + age + ", job=" + job + ", sex=" + sex + ", career=" + career + ", phone=" + phone
-				+ ", email=" + email + ", addr=" + addr + ", intro=" + intro + ", createDate=" + createDate + "]";
+				+ ", email=" + email + ", addr=" + addr + ", intro=" + intro + ", createDate=" + createDate
+				+ ", licenseNo=" + licenseNo + ", requireNo=" + requireNo + "]";
 	}
 }

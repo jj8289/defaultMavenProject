@@ -15,6 +15,12 @@
  		   and USER_PW = #{userPw}
  	</select>
  	
+ 	<select id="selectUserByUserId" parameterType="UserVO" resultType="UserVO">
+ 		SELECT *
+ 		  FROM TB_USER
+ 		 WHERE USER_ID = #{userId}
+ 	</select>
+ 	
  	<insert id="insertUser" parameterType="UserVO">
  		INSERT INTO TB_USER
  		(
@@ -29,6 +35,7 @@
 			, ADDR
 			, EMAIL
 			, INTRO
+			, CREATE_DATE
  		) 
  		VALUES
  		(
@@ -43,6 +50,60 @@
 			, #{email}
 			, #{addr}
 			, #{intro}
+			, NOW()
  		)
+ 	</insert>
+ 	
+ 	<insert id="updateRegister" parameterType="RegisterVO">
+ 		INSERT INTO TB_REQUIRE
+		(    
+			REQUIRE_NO
+			, USER_NO
+			, SALARY_HOUR
+			, SALARY_DAY
+			, SEARCH_TYPE
+			, SEARCH_DATE
+			, SEARCH_DOW
+			, SEARCH_TIME
+			, LOCATION1
+			, LOCATION2
+			, LOCATION3
+			, LOCATION4
+			, LOCATION5
+			, CREATE_DATE
+		)
+		VALUES
+		(
+	   		#{requireNo}
+			, #{userNo}
+			, #{salaryHour}
+			, #{salaryDay}
+			, #{searchType}
+			, #{searchDate}
+			, #{searchDow}
+			, #{searchTime}
+			, #{location1}
+			, #{location2}
+			, #{location3}
+			, #{location4}
+			, #{location5}
+			, #{createDate}
+			, NOW()
+		) 
+		ON DUPLICATE KEY UPDATE
+			REQUIRE_NO = VALUES(REQUIRE_NO)
+			, USER_NO = VALUES(USER_NO)
+			, SALARY_HOUR = VALUES(SALARY_HOUR)
+			, SALARY_DAY = VALUES(SALARY_DAY)
+			, SEARCH_TYPE = VALUES(SEARCH_TYPE)
+			, SEARCH_DATE = VALUES(SEARCH_DATE)
+			, SEARCH_DOW = VALUES(SEARCH_DOW)
+			, SEARCH_TIME = VALUES(SEARCH_TIME)
+			, LOCATION1 = VALUES(LOCATION1)
+			, LOCATION2 = VALUES(LOCATION2)
+			, LOCATION3 = VALUES(LOCATION3)
+			, LOCATION4 = VALUES(LOCATION4)
+			, LOCATION5 = VALUES(LOCATION5)
+			, CREATE_DATE = VALUES(CREATE_DATE)
  	</insert>
 </mapper>

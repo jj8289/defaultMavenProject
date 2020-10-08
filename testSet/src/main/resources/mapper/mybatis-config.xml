@@ -12,6 +12,7 @@
 
     <typeAliases>
     	<typeAlias type="kr.co.jj.user.vo.UserVO" alias="UserVO"/>
+    	<typeAlias type="kr.co.jj.user.vo.RegisterVO" alias="RegisterVO"/>
     </typeAliases>
 
 </configuration>

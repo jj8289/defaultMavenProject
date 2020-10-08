@@ -133,9 +133,11 @@ label {
 		<div class="menu today" onclick="location.href='/jj/'">today</div>
 		<div class="menu tomorrow" onclick="location.href='/jj/tomorrow'">tomorrow</div> 
 		<div class="menu join" onclick="location.href='/jj/join'">join</div>   
-		<div class="menu login" onclick="location.href='/jj/login'">login</div>    
-	</div>         
-	<h2>      
+		<div class="menu login" onclick="location.href='/jj/login'">login</div>
+		<div class="menu Register" onclick="location.href='/jj/register'">register</div>  
+		<div class="menu match" onclick="location.href='/jj/match'">match</div>     
+	</div>           
+	<h2>       
 		What to wear today? ;) 
 	</h2>               
 	<div class="banner1"></div>
@@ -144,7 +146,7 @@ label {
 		<div class="select1">
 			<select name="selectCity">
 				<c:set var="i" value="0"></c:set>
-				<c:forEach var="city" items="${cityList }">
+				<c:forEach var="city" items="${cityList }"> 
 					<c:set var="i" value="${i + 1 }"></c:set> 
 					<option value="${i }">${city }</option>  
 				</c:forEach>      
