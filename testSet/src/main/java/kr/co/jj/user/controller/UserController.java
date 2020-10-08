@@ -1,6 +1,8 @@
 package kr.co.jj.user.controller;
 
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,13 @@ public class UserController {
 		return "user/join"; 
 	}
 	
+	@GetMapping("/login")
+	public String login(Model model) {
+		
+		return "user/login"; 
+	}
+	
+	
 	@ResponseBody
 	@PostMapping(value = "/join/joinChk")
 	public String joinChk(UserVO user, Model model) throws Exception{
@@ -42,6 +51,21 @@ public class UserController {
 		return "fail";
 	}
 	
+	@ResponseBody
+	@PostMapping(value = "/login/loginChk")
+	public String loginChk(UserVO user, Model model, HttpSession session) throws Exception{
+		logger.debug(user.toString());
+		
+		// 아이디 중복 체크
+		boolean chk = userChk(user);
+		if(chk) { 
+			session.setAttribute("loginId", user.getUserId());
+			return "success"; 
+		}
+		
+		return "fail";
+	}
+	
 	// 아이디 중복 체크
 	public boolean idDupleChk(UserVO user) throws Exception {
 		
@@ -51,5 +75,16 @@ public class UserController {
 			return false;
 		}
 		return true;
+	}
+	
+	// 유저 중복 체크
+	public boolean userChk(UserVO user) throws Exception {
+		
+		int chk = userService.selectUser(user);
+		
+		if(chk == 1) {
+			return true;
+		}
+		return false;
 	}
 }
