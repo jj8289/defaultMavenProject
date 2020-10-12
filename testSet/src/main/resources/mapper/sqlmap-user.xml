@@ -57,53 +57,48 @@
  	<insert id="updateRegister" parameterType="RegisterVO">
  		INSERT INTO TB_REQUIRE
 		(    
-			REQUIRE_NO
-			, USER_NO
+			  USER_NO
 			, SALARY_HOUR
 			, SALARY_DAY
 			, SEARCH_TYPE
 			, SEARCH_DATE
 			, SEARCH_DOW
 			, SEARCH_TIME
-			, LOCATION1
-			, LOCATION2
-			, LOCATION3
-			, LOCATION4
-			, LOCATION5
+			, LOCATION
 			, CREATE_DATE
 		)
 		VALUES
 		(
-	   		#{requireNo}
-			, #{userNo}
+			  #{userNo}
 			, #{salaryHour}
 			, #{salaryDay}
 			, #{searchType}
 			, #{searchDate}
 			, #{searchDow}
 			, #{searchTime}
-			, #{location1}
-			, #{location2}
-			, #{location3}
-			, #{location4}
-			, #{location5}
-			, #{createDate}
+			, #{location}
 			, NOW()
 		) 
 		ON DUPLICATE KEY UPDATE
-			REQUIRE_NO = VALUES(REQUIRE_NO)
-			, USER_NO = VALUES(USER_NO)
-			, SALARY_HOUR = VALUES(SALARY_HOUR)
+			  SALARY_HOUR = VALUES(SALARY_HOUR)
 			, SALARY_DAY = VALUES(SALARY_DAY)
 			, SEARCH_TYPE = VALUES(SEARCH_TYPE)
 			, SEARCH_DATE = VALUES(SEARCH_DATE)
 			, SEARCH_DOW = VALUES(SEARCH_DOW)
 			, SEARCH_TIME = VALUES(SEARCH_TIME)
-			, LOCATION1 = VALUES(LOCATION1)
-			, LOCATION2 = VALUES(LOCATION2)
-			, LOCATION3 = VALUES(LOCATION3)
-			, LOCATION4 = VALUES(LOCATION4)
-			, LOCATION5 = VALUES(LOCATION5)
-			, CREATE_DATE = VALUES(CREATE_DATE)
- 	</insert>
+			, LOCATION = VALUES(LOCATION)
+			, CREATE_DATE = NOW()
+ 	</insert> 
+ 	
+ 	<select id="selectRegisterCnt">
+ 	
+ 	</select>
+ 	
+ 	<delete id="deleteRegister">
+ 		DELETE 
+ 		  FROM TB_REQUIRE 
+ 		 WHERE CREATE_DATE = (
+ 		 						SELECT MIN(CREATE_DATE) FROM TB_REQUIRE 
+ 		 					 ) 
+ 	</delete>
 </mapper>

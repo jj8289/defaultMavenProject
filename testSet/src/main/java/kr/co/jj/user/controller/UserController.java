@@ -2,6 +2,7 @@ package kr.co.jj.user.controller;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.jj.user.service.UserService;
@@ -76,43 +79,65 @@ public class UserController {
 		return "fail";
 	}
 	
-	@ResponseBody
-	@PostMapping(value = "/register/registerChk")
-	public Map<String, Object> registerChk(RegisterVO registerVO, Model model, HttpSession session){
-		logger.debug(registerVO.toString());
 	
-		Map<String, Object> res = new HashMap<String, Object>();
+	@PostMapping(value = "register/registerChk")
+	@ResponseBody 
+	public Map<String, Object> registerChk(@RequestBody RegisterVO json, Model model, HttpSession session){
 		
-		if(registerVO.getSearchType().equals("one")) {
-			RegisterOneVO oneVO = new RegisterOneVO();
-			res.put("vo", oneVO);
-		} else if(registerVO.getSearchType().equals("short")) {
-			
-		} else if(registerVO.getSearchType().equals("long")) {
-			
-		} else {
-			
-		}
+		System.out.println(json.toString());
+		 
+		Map<String, Object> res = new HashMap<String, Object>(); 
 		
 		try {
+			List<String> locList = json.getLocList();
+			
 			String userId = (String) session.getAttribute("loginId");
 			UserVO vo = new UserVO();
 			vo.setUserId(userId);
 			
 			UserVO user = userService.selectUserByUserId(vo);
 			
-			registerVO.setUserNo(user.getUserNo());
+			json.setUserNo(user.getUserNo());
 			
-			userService.updateRegister(registerVO);
+			String loc = "";
+			String dow = "";
 			
-			res.put("list", null);
-			res.put("type", 0);
-			res.put("size", 0);
+			for(int i = 0; i<locList.size(); i++) {
+				loc += locList.get(i);
+				if(i != locList.size() - 1) {
+					loc += "/";
+				}
+			}
 			
+			json.setLocation(loc);
+			
+			if(json.getSearchDow() != null) {
+				List<String> dowList = json.getDowList();
+				
+				
+				for(int i = 0; i<dowList.size(); i++) {
+					dow += dowList.get(i);
+					if(i != dowList.size() - 1) {
+						dow += "/";
+					}
+				}
+				
+				json.setSearchDow(dow);
+			}else {
+				json.setSearchDow("");
+			}
+			
+			logger.debug(json.toString());
+			
+			userService.updateRegister(json);
+			
+			res.put("list", json);  
+			  
 
 		} catch (Exception e) {
 			logger.error("err {}", e.getMessage());
 			res.put("errmsg", e.getMessage());
+			res.put("param", json.toString());
 		}
 		
 		return res;

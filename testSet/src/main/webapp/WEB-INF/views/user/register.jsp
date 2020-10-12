@@ -15,23 +15,72 @@
 	height: 30px; 
 	display: flex; 
 }
-</style> 
+
+.temp {
+	height: 50px; 
+}
+
+body {
+	margin: 0; 
+	padding: 0;
+}
+
+.title {
+	width: 100%;
+	margin: 0;
+	height: 45px;
+	font-size: 30px;
+	text-align: center;
+} 
+
+.minicon {
+ 	margin: 0 auto;   
+} 
+
+table { 
+	margin: 0 auto;   
+}  
+
+form {
+	margin: 20px;
+}
+
+form p {
+	margin: 70px;
+}
+
+.but {
+	text-align: center;
+}
+
+.but input , button{
+	border: none;
+	background-color: #424242;
+	color: white;
+	width: 100px;
+	height: 30px;
+}
+
+#location {
+	display: flex; 
+} 
+</style>   
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
-</head>  
-<body>
-	<div id="container">
+</head>    
+<body>   
+	<div id="container">    
 		<div class="temp"></div>
-		<h2 class="title">조건 등록</h2>
-		<div class="temp"></div>
+		<h2 class="title">조건 등록</h2>   
+		<div class="temp"></div> 
 		<div class="minicon">
-			<form id="regForm" name="regForm">
+			<form id="regForm" name="regForm">   
 				<table cellspacing="3" style="height: 60px;">
-					<!-- <colgroup> 
+					<!-- <colgroup>  
 	   					<col width="30%"/>
 	    				<col width="30%"/> 
-	 				</colgroup> --> 
+	 				</colgroup> -->  
 	 				<tr> 
 						<td bgcolor="lightgrey" align="center">근무기간</td> 
 						<td>
@@ -42,6 +91,31 @@
 								<option value="dow">요일 설정</option>  
 							</select> 
 						</td>    
+					</tr>
+					<tr id="for_one">  
+						<td bgcolor="lightgrey" align="center">날짜</td>
+						<td>
+							<input type="text" id="datepicker" name="datepicker">
+						</td>
+					</tr>
+					<tr id="for_date">
+						<td bgcolor="lightgrey" align="center">기간</td> 
+						<td onchange="setDatepicker()">
+							<input type="text" id="datepicker_start" name="datepicker_start">~<input type="text" id="datepicker_end" name="datepicker_end"> 
+						</td> 
+					</tr> 
+					<tr id="for_dow" onchange="selectDow()">
+						<td bgcolor="lightgrey" align="center">요일</td>
+						<td id="dayofweekend"> 
+							<label><input type="checkbox" name="dow" value="0"> 상관없음</label> 
+							<label><input type="checkbox" name="dow" value="1"> 월요일</label>
+							<label><input type="checkbox" name="dow" value="2"> 화요일</label>
+							<label><input type="checkbox" name="dow" value="3"> 수요일</label>
+							<label><input type="checkbox" name="dow" value="4"> 목요일</label>
+							<label><input type="checkbox" name="dow" value="5"> 금요일</label>
+							<label><input type="checkbox" name="dow" value="6"> 토요일</label>
+							<label><input type="checkbox" name="dow" value="7"> 일요일</label>
+						</td> 
 					</tr> 
 					<tr>
 						<td bgcolor="lightgrey" align="center">시급/일급</td> 
@@ -54,33 +128,7 @@
 							<input type="text" name="salary_hour" id="salary_hour" size="10">
 							<input type="text" name="salary_day" id="salary_day" size="10"> 원 이상  
 						</td> 
-					</tr>  
-					<tr id="for_one">  
-						<td bgcolor="lightgrey" align="center">날짜</td>
-						<td>
-							<input type="text" id="datepicker">
-						</td>
-					</tr>
-					<tr id="for_date">
-						<td bgcolor="lightgrey" align="center">기간</td> 
-						<td onchange="setDatepicker()">
-							<input type="text" id="datepicker_start">~<input type="text" id="datepicker_end"> 
-						</td>
-						<td> 또는 </td> 
-						<td><input type="text" id="month" size="2">개월  </td> 
-					</tr> 
-					<tr id="for_dow">
-						<td bgcolor="lightgrey" align="center">요일</td>
-						<td>
-							<label><input type="checkbox" name="dow" value="mon"> 월요일</label>
-							<label><input type="checkbox" name="dow" value="mon"> 화요일</label>
-							<label><input type="checkbox" name="dow" value="mon"> 수요일</label>
-							<label><input type="checkbox" name="dow" value="mon"> 목요일</label>
-							<label><input type="checkbox" name="dow" value="mon"> 금요일</label>
-							<label><input type="checkbox" name="dow" value="mon"> 토요일</label>
-							<label><input type="checkbox" name="dow" value="mon"> 일요일</label>
-						</td> 
-					</tr> 
+					</tr>   
 					<tr> 
 						<td bgcolor="lightgrey" align="center">시간</td> 
 						<td>
@@ -91,10 +139,34 @@
 								<option value="4">하루</option>
 							</select>
 						</td>   
-					</tr>  
+					</tr> 
+					<tr onchange="selectLoc()"> 
+						<td bgcolor="lightgrey" align="center" rowspan="2">동/읍/면</td>  
+						<td id="location" rowspan="2">     
+							<label><input type="checkbox" name="loc" value="0"> 전체</label>
+							<label><input type="checkbox" name="loc" value="1"> 통진읍</label>
+							<label><input type="checkbox" name="loc" value="2"> 고촌읍</label>
+							<label><input type="checkbox" name="loc" value="3"> 양촌읍</label>
+							<label><input type="checkbox" name="loc" value="4"> 대곶면</label>
+							<label><input type="checkbox" name="loc" value="5"> 월곶면</label>
+							<label><input type="checkbox" name="loc" value="6"> 하성면</label>
+							<label><input type="checkbox" name="loc" value="7"> 김포본동</label>
+						</td>    
+					</tr> 
+					<tr onchange="selectLoc()"> 
+						<td id="location">   
+							<label><input type="checkbox" name="loc" value="8"> 장기본동</label>
+							<label><input type="checkbox" name="loc" value="9"> 사우동</label>
+							<label><input type="checkbox" name="loc" value="10"> 풍무동</label>
+							<label><input type="checkbox" name="loc" value="11"> 장기동</label>
+							<label><input type="checkbox" name="loc" value="12"> 구래동</label>
+							<label><input type="checkbox" name="loc" value="13"> 마산동</label>
+							<label><input type="checkbox" name="loc" value="14"> 운양동</label>
+						</td> 
+					</tr>   
 				</table> 
 				<p class="but" align="center" > 
-					<button id="login" value="로그인" type="button" onclick="registerChk()" class="btn">등록</button>  
+					<button id="reg" value="등록" type="button" onclick="registerChk()" class="btn">등록</button>  
 					<input type="reset" value="리셋">  
 					<input type="button" value="홈으로" onclick="goHome()">
 				</p> 
@@ -103,7 +175,12 @@
 	</div>  
 <script type="text/javascript">
 	var CONTEXT_PATH = "/jj";
-	 
+	var salaryHour = "";
+	var salaryDay = "";
+	var dowList = [];
+	var locList = [];
+	
+	
 	$(document).ready(function () {
 		$("#for_one").hide();
 		$("#for_date").hide();
@@ -137,31 +214,160 @@
 		$('#datepicker_end').datepicker();  
 		       
 		//초기값을 오늘 날짜로 설정 
-        //$('#datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후) 
+        //$('#datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
 	});  
 	 
-
-	function registerChk() {
-		var type = $("select[name=search_type]").val(); // 선택된 값
-		var params = {
-				
-				
-		}; 
+	function calDate(mon){
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMont() + 1;
+		var yyyy = today.getFullYear();
 		
+		
+	}
+	
+	function validationChk(frm){
+		if(!frm.term.value){
+			alert("근무기간을 선택해주세요.");
+            frm.term.focus();
+            return; 
+		} else {
+			if(frm.term.value == "one"){
+				if(!frm.datepicker.value){
+					alert("날짜를 선택해주세요.");
+		            frm.datepicker.focus();
+		            return;
+				} 
+			} else if(frm.term.value == "date")	{
+				if(!frm.datepicker_start.value){
+					alert("시작 날짜를 선택해주세요.");
+		            frm.datepicker_start.focus();
+		            return;
+				}
+				if(!frm.datepicker_end.value){
+					alert("종료 날짜를 선택해주세요.");
+		            frm.datepicker_end.focus();
+		            return;
+				}
+			} else if(frm.term.value == "dow"){
+				if(dowList.length == 0){ 
+					alert("요일을 선택해주세요.");
+		            return;	
+				}   
+			} 
+		} 
+		if(!frm.salType.value){
+			alert("시급/일급을 선택해주세요.");
+            frm.salType.focus();
+            return; 
+		} else {
+			if(frm.salType.value == "hour"){
+				if(!frm.salary_hour.value){ 
+					alert("원하시는 시급을 입력해주세요.");
+		            frm.salary_hour.focus();
+		            return;
+				}
+			}
+			if(frm.salType.value == "day"){
+				if(!frm.salary_day.value){ 
+					alert("원하시는 일급을 입력해주세요.");
+		            frm.salary_day.focus();
+		            return;
+				} 
+			}
+		} 
+		
+		if(locList.length == 0){
+			alert("동/읍/면을 선택해주세요.");
+            return;
+		}  
+	}  
+	 
+	function registerChk() {
+		var frm = document.regForm;
+		var params = {};		
+		
+		validationChk(frm);
+		 
+		if($("select[name=salType]").val() == "hour"){
+			salaryDay = "";
+			salaryHour = $("#salary_hour").val();
+		} else if($("select[name=salType]").val() == "day"){
+			salaryHour = "";
+			salaryDay = $("#salary_day").val();
+		}
+		
+		params = {
+				salaryHour : salaryHour
+			  , salaryDay : salaryDay
+			  , searchType : $("select[name=term]").val()
+			  , salaryHour : salaryHour
+			  , salaryDay : salaryDay 
+			  , searchDate : $("#datepicker").val()
+			  , searchStart : $("#datepicker_start").val()
+			  , searchEnd : $("#datepicker_end").val()
+			  , searchTime : $("select[name=time]").val()
+			  , locList : locList
+		};
+		
+		if(frm.term.value == "dow"){
+			params = $.extend(params, { 
+				dowList : dowList
+			});
+		}
+		
+		console.log(params);
+		
+		/*
+		if(frm.term.value == "dow"){
+			params = {
+				  	salaryHour : salaryHour
+				  , salaryDay : salaryDay
+				  , searchType : $("select[name=term]").val()
+				  , salaryHour : salaryHour
+				  , salaryDay : salaryDay 
+				  , searchDate : $("#datepicker").val()
+				  , searchStart : $("#datepicker_start").val()
+				  , searchEnd : $("#datepicker_end").val()
+				  , searchTime : $("select[name=time]").val()
+				  , dowList : dowList
+				  , locList : locList
+			}; 
+		} else {
+			params = {
+				  	salaryHour : salaryHour
+				  , salaryDay : salaryDay
+				  , searchType : $("select[name=term]").val()
+				  , salaryHour : salaryHour
+				  , salaryDay : salaryDay 
+				  , searchDate : $("#datepicker").val()
+				  , searchStart : $("#datepicker_start").val()
+				  , searchEnd : $("#datepicker_end").val()
+				  , searchTime : $("select[name=time]").val()
+				  , locList : locList
+			}; 
+		} 
+		*/
+		 
+		console.log(JSON.stringify(params));  
+		     
 		$.ajax({
     		url : CONTEXT_PATH + "/register/registerChk", 
-    		type: "POST",  
-    		data: params,
+    		type: "POST",
+    		data: JSON.stringify(params),     
+    		dataType: 'json',   
+    		contentType:"application/json;charset=UTF-8",
     		success: function(data){
     			console.log("registerChk");  
-    			console.log(data.list);
-    			console.log(data.type);
-    			console.log(data.size);
-    		},
+    			console.log(data.list); 
+    		}, 
     		error: function(data){ 
    		   		console.log("error");
+   		   		console.log(data.errmsg);  
+   		   		console.log(data.param); 
     		}
     	}); 
+		 
 	}
 	
 	function setTerm() {
@@ -187,7 +393,7 @@
 		}   
 		 
 	}
-	 
+	  
 	function setSalaryType() {
 		var salType = $("select[name=salType]").val(); // 선택된 값
 		//console.log($("select[name=salType]").val());   
@@ -206,6 +412,52 @@
 		
 		console.log($("#datepicker_start").val()); 
 		console.log($("#datepicker_end").val());  
+	}
+	
+	function selectDow(){
+		var obj = document.getElementsByName("dow");
+		var len = obj.length;
+		 
+		dowList = [];
+		
+		for(var i = 0; i<len; i++){
+			if(obj[i].checked == true){
+				console.log(obj[i].value); 
+				
+				if(obj[i].value == "0"){
+					for(var k = 1; k<len-1; k++){
+						obj[k].checked = false;
+					}
+				}
+				  
+				dowList.push(obj[i].value);
+			}   
+		}  
+		 
+		console.log(dowList);   
+	}
+	
+	function selectLoc(){
+		var obj = document.getElementsByName("loc");
+		var len = obj.length;	
+		locList = [];
+		
+		console.log(len);
+		
+		for(var i = 0; i<len; i++){
+			if(obj[i].checked == true){
+				console.log(obj[i].value); 
+				 
+				if(obj[i].value == "0"){
+					for(var k = 1; k<len-1; k++){
+						obj[k].checked = false;
+					}
+				}
+				
+				locList.push(obj[i].value);
+			}   
+		}
+		console.log(locList);
 	}
 	
 	function goHome(){ 
