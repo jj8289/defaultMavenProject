@@ -10,11 +10,16 @@
 .ui-datepicker-trigger{cursor: pointer;}
 /*datepicer input 롤오버 시 손가락 모양 표시*/
 .hasDatepicker{cursor: pointer;}
+
+#selectSalary{
+	height: 30px; 
+	display: flex; 
+}
 </style> 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-</head> 
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
+</head>  
 <body>
 	<div id="container">
 		<div class="temp"></div>
@@ -40,17 +45,17 @@
 					</tr> 
 					<tr>
 						<td bgcolor="lightgrey" align="center">시급/일급</td> 
-						<td> 
+						<td id="selectSalary"> 
 							<select id="salType" name="salType" onchange="setSalaryType()">
 								<option value="">선택</option> 
 								<option value="hour">시급</option> 
 								<option value="day">일급</option>   
-							</select>  
-							<input type="text" name="salary_hour" id="salary_hour" size="10"><p id="addtext1"></p>
-							<input type="text" name="salary_day" id="salary_day" size="10"><p id="addtext2"></p>
+							</select>
+							<input type="text" name="salary_hour" id="salary_hour" size="10">
+							<input type="text" name="salary_day" id="salary_day" size="10"> 원 이상  
 						</td> 
-					</tr> 
-					<tr id="for_one"> 
+					</tr>  
+					<tr id="for_one">  
 						<td bgcolor="lightgrey" align="center">날짜</td>
 						<td>
 							<input type="text" id="datepicker">
@@ -86,7 +91,7 @@
 								<option value="4">하루</option>
 							</select>
 						</td>   
-					</tr> 
+					</tr>  
 				</table> 
 				<p class="but" align="center" > 
 					<button id="login" value="로그인" type="button" onclick="registerChk()" class="btn">등록</button>  
@@ -97,6 +102,8 @@
 		</div>  
 	</div>  
 <script type="text/javascript">
+	var CONTEXT_PATH = "/jj";
+	 
 	$(document).ready(function () {
 		$("#for_one").hide();
 		$("#for_date").hide();
@@ -132,14 +139,14 @@
 		//초기값을 오늘 날짜로 설정 
         //$('#datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후) 
 	});  
-	
+	 
 
 	function registerChk() {
 		var type = $("select[name=search_type]").val(); // 선택된 값
 		var params = {
 				
 				
-		};
+		}; 
 		
 		$.ajax({
     		url : CONTEXT_PATH + "/register/registerChk", 
@@ -180,30 +187,31 @@
 		}   
 		 
 	}
-	
+	 
 	function setSalaryType() {
 		var salType = $("select[name=salType]").val(); // 선택된 값
-		console.log($("select[name=salType]").val());   
-		
+		//console.log($("select[name=salType]").val());   
+		console.log(salType);   
 		if(salType == "hour"){
 			$("#salary_hour").show();
 			$("#salary_day").hide();
-			$("#addtext2").hide();
-			$("#addtext1").text("원 이상"); 
-			
+ 			
 		} else if(salType == "day"){
 			$("#salary_hour").hide();  
 			$("#salary_day").show();
-			$("#addtext1").hide(); 
-			$("#addtext2").text("원 이상");      
-		}    
-	}  
+		}       
+	}   
 	
 	function setDatepicker() {
 		
 		console.log($("#datepicker_start").val()); 
 		console.log($("#datepicker_end").val());  
 	}
+	
+	function goHome(){ 
+		location.href = CONTEXT_PATH + "/";
+	}
+	
 </script>	
 </body>
 </html>
