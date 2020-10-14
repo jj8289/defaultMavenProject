@@ -120,6 +120,20 @@ public class UserController {
 		return "user/mypage";
 	}
 	
+	@GetMapping("/myinfo")
+	public String myinfo(Model model, HttpSession session) throws Exception {
+		
+		String id = (String)session.getAttribute("loginId");
+		
+		UserVO user = getUser(id);
+		
+		logger.debug(user.toString());
+		
+		model.addAttribute("user", user);
+		
+		return "user/myinfo";
+	}
+	
 	@ResponseBody
 	@PostMapping(value = "/join/joinChk")
 	public String joinChk(UserVO user, Model model) throws Exception{

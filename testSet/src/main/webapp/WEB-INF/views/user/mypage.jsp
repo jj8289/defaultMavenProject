@@ -41,6 +41,11 @@ body {
 	height: 30px; 
 	text-align: center; 
 }   
+
+.infocon {
+	display: flex;
+	justify-content: center; 
+}
  
 .regCon {
  	margin: 0 auto;   
@@ -83,8 +88,10 @@ form p {
 		<div class="temp"></div>
 		<h2 class="title">마이페이지</h2>   
 		<div class="temp"></div> 
-		<h3 class="subtitle">상태</h3>  
-		<div>
+		<div class="infocon"><input type="button" value="내 정보 수정" onclick="location.href='/jj/myinfo'"></div>
+		<div class="temp"></div>   
+		<h3 class="subtitle">상태</h3>   
+		<div> 
 			<table>
 				<tr style="height: 50px;"> 
 					<td>구직 상태</td>
@@ -94,9 +101,9 @@ form p {
 					<td>매칭 상태</td> 
 					<td style="width: 70px; text-align: center;">on / off</td>  
 				</tr>  
-			</table> 
+			</table>   
 		</div>
-		<div class="temp"></div>  
+		<div style="height: 15px"></div>   
 		<h3 class="subtitle">매칭 조건</h3>  
 	<c:if test="${not empty vo }">
 		<div class="regCon">
@@ -236,7 +243,7 @@ form p {
 					<button id="reg" value="변경" type="button" onclick="validationChk()" class="btn">변경</button>  
 					<input type="reset" value="리셋">  
 					<input type="button" value="홈으로" onclick="goHome()">
-				</p> 
+				</p>  
 			</form>    
 		</div>   
 	</c:if> 	
