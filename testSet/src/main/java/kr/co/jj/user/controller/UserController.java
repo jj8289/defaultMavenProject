@@ -83,7 +83,6 @@ public class UserController {
 	@PostMapping(value = "register/registerChk")
 	@ResponseBody 
 	public Map<String, Object> registerChk(@RequestBody RegisterVO json, Model model, HttpSession session){
-		
 		System.out.println(json.toString());
 		 
 		Map<String, Object> res = new HashMap<String, Object>(); 
@@ -127,8 +126,14 @@ public class UserController {
 				json.setSearchDow("");
 			}
 			
+			if(json.getSearchStart().equals("") && json.getSearchEnd().equals("")) {
+				json.setSearchStart(null);
+				json.setSearchEnd(null);
+			}
+			
 			logger.debug(json.toString());
 			
+			//조건 등록이 이미 있다면 변경되게끔.
 			userService.updateRegister(json);
 			
 			res.put("list", json);  

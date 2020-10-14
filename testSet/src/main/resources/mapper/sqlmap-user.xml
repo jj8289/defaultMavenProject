@@ -57,11 +57,14 @@
  	<insert id="updateRegister" parameterType="RegisterVO">
  		INSERT INTO TB_REQUIRE
 		(    
-			  USER_NO
+			  REQ_NO
+			, USER_NO
 			, SALARY_HOUR
 			, SALARY_DAY
 			, SEARCH_TYPE
 			, SEARCH_DATE
+			, SEARCH_START
+			, SEARCH_END
 			, SEARCH_DOW
 			, SEARCH_TIME
 			, LOCATION
@@ -70,10 +73,13 @@
 		VALUES
 		(
 			  #{userNo}
+			, #{userNo}
 			, #{salaryHour}
 			, #{salaryDay}
 			, #{searchType}
 			, #{searchDate}
+			, #{searchStart}
+			, #{searchEnd}
 			, #{searchDow}
 			, #{searchTime}
 			, #{location}
@@ -84,15 +90,13 @@
 			, SALARY_DAY = VALUES(SALARY_DAY)
 			, SEARCH_TYPE = VALUES(SEARCH_TYPE)
 			, SEARCH_DATE = VALUES(SEARCH_DATE)
+			, SEARCH_START = VALUES(SEARCH_START)
+			, SEARCH_END = VALUES(SEARCH_END)
 			, SEARCH_DOW = VALUES(SEARCH_DOW)
 			, SEARCH_TIME = VALUES(SEARCH_TIME)
 			, LOCATION = VALUES(LOCATION)
 			, CREATE_DATE = NOW()
  	</insert> 
- 	
- 	<select id="selectRegisterCnt">
- 	
- 	</select>
  	
  	<delete id="deleteRegister">
  		DELETE 

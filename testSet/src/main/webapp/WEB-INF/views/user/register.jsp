@@ -87,10 +87,10 @@ form p {
 							<select id="term" name="term" onchange="setTerm()">
 								<option value="">선택</option>  
 								<option value="one">일일 알바</option>
-								<option value="date">기간으로 설정</option> 
-								<option value="dow">요일 설정</option>  
-							</select> 
-						</td>    
+								<option value="part">장/단기 알바</option> 
+								<option value="sat">고정 토요 알바</option>  
+							</select>  
+						</td>     
 					</tr>
 					<tr id="for_one">  
 						<td bgcolor="lightgrey" align="center">날짜</td>
@@ -166,7 +166,7 @@ form p {
 					</tr>   
 				</table> 
 				<p class="but" align="center" > 
-					<button id="reg" value="등록" type="button" onclick="registerChk()" class="btn">등록</button>  
+					<button id="reg" value="등록" type="button" onclick="validationChk()" class="btn">등록</button>  
 					<input type="reset" value="리셋">  
 					<input type="button" value="홈으로" onclick="goHome()">
 				</p> 
@@ -179,7 +179,7 @@ form p {
 	var salaryDay = "";
 	var dowList = [];
 	var locList = [];
-	
+	var frm = "";
 	
 	$(document).ready(function () {
 		$("#for_one").hide();
@@ -226,7 +226,9 @@ form p {
 		
 	}
 	
-	function validationChk(frm){
+	function validationChk(){
+		frm = document.regForm;
+		
 		if(!frm.term.value){
 			alert("근무기간을 선택해주세요.");
             frm.term.focus();
@@ -281,13 +283,12 @@ form p {
 			alert("동/읍/면을 선택해주세요.");
             return;
 		}  
+		
+		registerChk(frm);
 	}  
 	 
-	function registerChk() {
-		var frm = document.regForm;
+	function registerChk(frm) {
 		var params = {};		
-		
-		validationChk(frm);
 		 
 		if($("select[name=salType]").val() == "hour"){
 			salaryDay = "";
@@ -360,8 +361,9 @@ form p {
     		success: function(data){
     			console.log("registerChk");  
     			console.log(data.list); 
+    			location.href = CONTEXT_PATH + "/";  
     		}, 
-    		error: function(data){ 
+    		error: function(data){  
    		   		console.log("error");
    		   		console.log(data.errmsg);  
    		   		console.log(data.param); 

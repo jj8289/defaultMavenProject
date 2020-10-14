@@ -4,7 +4,7 @@ import java.util.List;
 
 public class RegisterVO {
 	
-	private String requireNo;
+	private String reqNo;
 	private String userNo;
 	private String salaryHour;
 	private String salaryDay;
@@ -19,11 +19,12 @@ public class RegisterVO {
 	private List<String> locList;
 	private String createDate;
 	
-	public String getRequireNo() {
-		return requireNo;
+	
+	public String getReqNo() {
+		return reqNo;
 	}
-	public void setRequireNo(String requireNo) {
-		this.requireNo = requireNo;
+	public void setReqNo(String reqNo) {
+		this.reqNo = reqNo;
 	}
 	public String getUserNo() {
 		return userNo;
@@ -105,7 +106,7 @@ public class RegisterVO {
 	}
 	@Override
 	public String toString() {
-		return "RegisterVO [requireNo=" + requireNo + ", userNo=" + userNo + ", salaryHour=" + salaryHour
+		return "RegisterVO [reqNo=" + reqNo + ", userNo=" + userNo + ", salaryHour=" + salaryHour
 				+ ", salaryDay=" + salaryDay + ", searchType=" + searchType + ", searchDate=" + searchDate
 				+ ", searchStart=" + searchStart + ", searchEnd=" + searchEnd + ", searchDow=" + searchDow
 				+ ", searchTime=" + searchTime + ", location=" + location + ", dowList=" + dowList + ", locList="
