@@ -439,12 +439,7 @@ form p {
 			  , locList : locList
 		};  
 		     
-		 
-		console.log(params);
-		 
-		
-		 
-		console.log(JSON.stringify(params));  
+		//console.log(params);
 		   
 		$.ajax({
     		url : CONTEXT_PATH + "/register/registerChk", 
@@ -453,24 +448,21 @@ form p {
     		dataType: 'json',   
     		contentType:"application/json;charset=UTF-8",
     		success: function(data){
-    			console.log("registerChk");  
-    			console.log(data.list); 
     			location.href = CONTEXT_PATH + "/";  
     		}, 
     		error: function(data){  
-   		   		console.log("error");
-   		   		console.log(data.errmsg);  
-   		   		console.log(data.param); 
-    		}
+   		   		//console.log("error");
+   		   		//console.log(data.errmsg);  
+   		   		//console.log(data.param); 
+    		} 
     	}); 
-		 
+		  
 	} 
 	
 	function setSalaryType() {
 		var salType = $("select[name=salType]").val(); // 선택된 값
 		//console.log($("select[name=salType]").val());   
-		console.log(salType);   
-		if(salType == "hour"){
+		if(salType == "hour"){ 
 			$("#salary_hour").show();
 			$("#salary_day").hide();
  			
@@ -482,8 +474,8 @@ form p {
 	
 	function setDatepicker() { 
 		
-		console.log($("#datepicker_start").val()); 
-	}
+		//console.log($("#datepicker_start").val()); 
+	} 
 	
 	 
 	function selectDow(){ 
@@ -494,7 +486,6 @@ form p {
 		
 		for(var i = 0; i<len; i++){
 			if(obj[i].checked == true){
-				console.log(obj[i].value); 
 				
 				if(obj[i].value == "0"){
 					for(var k = 1; k<len-1; k++){
@@ -506,31 +497,28 @@ form p {
 			}   
 		}  
 		 
-		console.log(dowList); 
+		//console.log(dowList); 
 		
-	}
+	} 
 	
 	function selectLoc(){
 		var obj = document.getElementsByName("loc");
 		var len = obj.length;	
 		locList = [];
 		
-		console.log(len);
-		
 		for(var i = 0; i<len; i++){
 			if(obj[i].checked == true){
-				console.log(obj[i].value); 
 				 
 				if(obj[i].value == "0"){
 					for(var k = 1; k<len-1; k++){
 						obj[k].checked = false;
 					}
-				}
+				} 
 				
 				locList.push(obj[i].value);
 			}   
 		}
-		console.log(locList);
+		//sconsole.log(locList);
 	}
 	
 	function goHome(){ 
