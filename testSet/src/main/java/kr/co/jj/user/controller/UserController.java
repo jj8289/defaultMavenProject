@@ -1,6 +1,7 @@
 package kr.co.jj.user.controller;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,10 +44,80 @@ public class UserController {
 		return "user/login"; 
 	}
 	
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		logger.debug("logout()");
+		
+		session.invalidate();
+		
+		return "redirect:/"; 
+	}
+	
 	@GetMapping("/register")
-	public String register( Model model) {
+	public String register(Model model) {
 		
 		return "user/register";
+	}
+	
+	@GetMapping("/mypage")
+	public String mypage(Model model, HttpSession session) throws Exception {
+		
+		String id = (String)session.getAttribute("loginId");
+		
+		UserVO user = getUser(id);
+		
+		RegisterVO registerVO = userService.selectRegister(user);
+		
+		model.addAttribute("vo", registerVO);
+		
+		if(registerVO == null) {
+			
+		} else {
+			
+			System.out.println("registerVO : " + registerVO.toString());
+		
+			List<String> locList = new ArrayList<String>();
+			String[] strLocList = {}; 
+			String loc = registerVO.getLocation();
+			System.out.println("loc : " + loc); 
+			
+			if(!loc.equals("0")) {
+				strLocList = registerVO.getLocation().split("/");
+				
+				for(int i = 0; i < strLocList.length; i++) {
+					locList.add(strLocList[i]);
+				} 
+			} else {
+				locList.add("0"); 
+			}
+			
+			System.out.println("locList : " + locList);
+			registerVO.setLocList(locList);
+			 
+			model.addAttribute("locList", locList);
+			
+			
+			
+			///////////////////
+			List<String> dowList = new ArrayList<String>();
+			String[] strDowList = {};
+			if(registerVO.getSearchDow() == null || registerVO.getSearchDow().equals("")) {
+				dowList.add("");
+			} else { 
+				strDowList = registerVO.getSearchDow().split("/");
+				
+				for(int i = 0; i < strDowList.length; i++) {
+					dowList.add(strDowList[i]);
+				} 
+			} 
+			System.out.println("dowList : " + dowList);
+			registerVO.setDowList(dowList);
+			 
+			model.addAttribute("dowList", dowList);
+		}  
+		
+		
+		return "user/mypage";
 	}
 	
 	@ResponseBody
@@ -89,6 +160,7 @@ public class UserController {
 		
 		try {
 			List<String> locList = json.getLocList();
+			List<String> dowList = json.getDowList();
 			
 			String userId = (String) session.getAttribute("loginId");
 			UserVO vo = new UserVO();
@@ -110,25 +182,17 @@ public class UserController {
 			
 			json.setLocation(loc);
 			
-			if(json.getSearchDow() != null) {
-				List<String> dowList = json.getDowList();
-				
-				
-				for(int i = 0; i<dowList.size(); i++) {
-					dow += dowList.get(i);
-					if(i != dowList.size() - 1) {
-						dow += "/";
-					}
+			for(int i = 0; i<dowList.size(); i++) {
+				dow += dowList.get(i);
+				if(i != dowList.size() - 1) {
+					dow += "/";
 				}
-				
-				json.setSearchDow(dow);
-			}else {
-				json.setSearchDow("");
 			}
-			
-			if(json.getSearchStart().equals("") && json.getSearchEnd().equals("")) {
+				
+			json.setSearchDow(dow);	
+				
+			if(json.getSearchStart().equals("")) {
 				json.setSearchStart(null);
-				json.setSearchEnd(null);
 			}
 			
 			logger.debug(json.toString());
@@ -168,5 +232,13 @@ public class UserController {
 			return true;
 		}
 		return false;
+	}
+	
+	public UserVO getUser(String id) throws Exception {
+		
+		UserVO user = new UserVO();
+		user.setUserId(id);
+		
+		return userService.selectUserByUserId(user);
 	}
 }

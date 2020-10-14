@@ -20,7 +20,7 @@
  		  FROM TB_USER
  		 WHERE USER_ID = #{userId}
  	</select>
- 	
+
  	<insert id="insertUser" parameterType="UserVO">
  		INSERT INTO TB_USER
  		(
@@ -53,6 +53,13 @@
 			, NOW()
  		)
  	</insert>
+ 	
+ 	 	
+ 	<select id="selectRegister" parameterType="UserVO" resultType="RegisterVO">
+ 		SELECT *
+ 		  FROM TB_REQUIRE
+ 		 WHERE REQ_NO = #{userNo}
+ 	</select>
  	
  	<insert id="updateRegister" parameterType="RegisterVO">
  		INSERT INTO TB_REQUIRE

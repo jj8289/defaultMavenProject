@@ -35,6 +35,12 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	public RegisterVO selectRegister(UserVO user) throws Exception {
+		
+		return userDAO.selectRegister(user);
+	}
+	
+	@Override
 	public void updateRegister(RegisterVO vo) throws Exception {
 		userDAO.updateRegister(vo);
 	}

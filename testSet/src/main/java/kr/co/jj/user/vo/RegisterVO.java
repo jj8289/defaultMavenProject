@@ -8,7 +8,7 @@ public class RegisterVO {
 	private String userNo;
 	private String salaryHour;
 	private String salaryDay;
-	private String searchType;		// one: 일일 / date: 기간 / dow: 요일
+	private String searchType;		// one: 일일 / part: 기간 / sat: 고정 토요
 	private String searchDate;
 	private String searchStart;
 	private String searchEnd;

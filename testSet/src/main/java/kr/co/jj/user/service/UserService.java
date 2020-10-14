@@ -20,5 +20,7 @@ public interface UserService {
 
 	public void insertUser(UserVO user) throws Exception;
 	
+	public RegisterVO selectRegister(UserVO user) throws Exception;
+	
 	public void updateRegister(RegisterVO vo) throws Exception;
 }
