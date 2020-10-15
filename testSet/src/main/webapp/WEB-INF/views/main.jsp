@@ -3,9 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
-<head>
-<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
-<meta charset="UTF-8">
+<head> 
+<jsp:include page="\/common/common.jsp" />                 
+<meta charset="UTF-8">  
 <title>Insert title here</title>
 <style type="text/css">
 .menu_bar {

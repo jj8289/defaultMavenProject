@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%> 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +11,7 @@
 		margin: 0; 
 		padding: 0;
 	}
-	 
+	
 	#container {
 		
 	}
@@ -28,6 +27,7 @@
 	
 	.title {
 		width: 100%;
+		/* background-color: powderblue; */
 		margin: 0;
 		height: 45px;
 		font-size: 30px;
@@ -73,22 +73,22 @@
 		<div class="temp"></div>
 		<h2 class="title">회원가입</h2>
 		<div class="temp"></div>
-		<div class="minicon"> 
+		<div class="minicon">
 			<form id="joinForm" name="joinForm"> 
 				<table cellspacing="3">
 				<colgroup> 
    					<col width="15%"/> 
     				<col width=""/> 
- 				</colgroup> 
-					<tr>  
+ 				</colgroup>  
+					<tr>
 						<td bgcolor="lightgrey" align="center">아이디</td>	
 						<td><input size="15" type="text" name="userId" id="userId"> 4~12자의 영문 대소문자와 숫자로만 입력</td>
 					</tr>
-					<tr> 
+					<tr>
 						<td bgcolor="lightgrey" align="center">비밀번호</td>
 						<td><input size="15" type="password" name="userPw"  id="userPw"> 4~12자의 영문 대소문자와 숫자로만 입력</td>
 					</tr>
-					<tr> 
+					<tr>
 						<td bgcolor="lightgrey" align="center">이름</td>
 						<td><input type="text" name="userNm" id="userNm"></td>
 					</tr>
@@ -119,17 +119,13 @@
 						<td bgcolor="lightgrey" align="center">주소</td>
 						<td><input size="70" type="text" name="addr" id="addr"></td>
 					</tr>
-					<tr> 
+					<tr>
 						<td bgcolor="lightgrey" align="center">이메일</td>
 						<td><input size="70" type="text" name="email" id="email"></td>
 					</tr>
 					<tr>
 						<td bgcolor="lightgrey" align="center">간단 소개</td>
 						<td><input size="70" type="text" name="intro" id="intro"></td>
-					</tr>
-					<tr>
-						<td bgcolor="lightgrey" align="center">스킬</td>
-						<td><input size="70" type="text" name="skill" id="skill"></td>
 					</tr>
 				</table>
 
@@ -140,14 +136,16 @@
 				</p> 
 			</form>
 		</div>  
-	</div> 
-<script type="text/javascript">
+	</div>
+	
+	<script type="text/javascript">
 		var CONTEXT_PATH = "/jj";	
 	
 		function goHome() {
+			// controller URL
 			location.href = CONTEXT_PATH + "/";
 		} 
-		 
+		
 		function joinChk() {  
 	        var frm = document.joinForm;
 	        if (!frm.userId.value) { //아이디를 입력하지 않으면.
@@ -208,7 +206,6 @@
 	              , addr: $('#addr').val() 
 	              , email: $('#email').val()
 	              , intro: $('#intro').val()
-	              , skill: $('#skill').val()
 	    	};
 	    	 
 	    	$.ajax({
@@ -231,6 +228,6 @@
 	    		}
 	    	});   
 	    }
-</script>
+	</script>
 </body>
 </html>

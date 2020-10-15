@@ -80,7 +80,7 @@ form p {
 				<table cellspacing="3" style="height: 60px;">
 	 				<tr>  	
 						<td bgcolor="lightgrey" align="center">ID</td>    
-						<td><input type="text" id="userId" name="userId" value="${user.userNo }" disabled="disabled"></td>     
+						<td><input type="text" id="userId" name="userId" value="${user.userId }" disabled="disabled"></td>      
 					</tr>
 					<tr>   
 						<td bgcolor="lightgrey" align="center">PW</td>    
@@ -128,9 +128,13 @@ form p {
 					</tr> 
 					<tr>  	 
 						<td bgcolor="lightgrey" align="center">면허증/자격증</td>    
-						<td><input type="text" id="licenseNo" name="licenseNo" value="${user.licenseNo }" disabled="disabled"><input type="button" value="+" onclick="#"> </td>
+						<td><input type="text" id="licenseNo" name="licenseNo" value="${user.licenseNo }" disabled="disabled"><input type="button" value="+"> </td>
 					</tr> 
-					<tr>    
+					<tr>  	  
+						<td bgcolor="lightgrey" align="center">기술</td>    
+						<td><input type="text" id="skill" name="skill" value="${user.skill }"></td>     
+					</tr>  
+					<tr >    
 						<td bgcolor="lightgrey" align="center"></td>   
 						<td id="selectSalary">   
 							<c:if test="${not empty vo.salaryHour}">

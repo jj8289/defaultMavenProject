@@ -40,17 +40,19 @@ body {
 	font-size: 20px;
 	height: 30px; 
 	text-align: center; 
-}   
-
+	margin-top: 10px;    
+}    
+ 
 .infocon {
 	display: flex;
 	justify-content: center; 
 }
  
 .regCon {
- 	margin: 0 auto;   
+ 	margin: 0 auto;
+ 	margin-top: 30px;    
 } 
-
+ 
 table { 
 	margin: 0 auto;   
 }  
@@ -58,59 +60,72 @@ table {
 form {
 	margin: 20px;
 }
-
-form p {
-	margin: 70px;
-}
-
+ 
 .but {
-	text-align: center;
+	display: flex;
+	align-items: center; 
+	justify-content: center; 
+	text-align: center; 
+	margin-top: 35px; 
 }
 
-.but input , button{
+.btn {
 	border: none;
 	background-color: #424242;
 	color: white;
 	width: 100px;
 	height: 30px;
-}
+	margin: 0 5px; 
+}   
 
+#on_off_match {
+	margin-left: 10px;
+}  
+  
 #location {
 	display: flex; 
 } 
-</style>   
+  
+.noReg {
+	text-align: center; 
+	margin-top: 15px; 
+}
+</style>      
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link type="text/css" rel="stylesheet" href="resources/css/mypage.css" media="screen"/> 
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
 </head>    
 <body>   
-	<div id="container">    
+	<div id="container">      
 		<div class="temp"></div>
 		<h2 class="title">마이페이지</h2>   
-		<div class="temp"></div> 
+		<div class="temp"></div>   
 		<div class="infocon"><input type="button" value="내 정보 수정" onclick="location.href='/jj/myinfo'"></div>
 		<div class="temp"></div>   
-		<h3 class="subtitle">상태</h3>   
-		<div> 
-			<table>
-				<tr style="height: 50px;"> 
-					<td>구직 상태</td>
-					<td style="width: 70px; text-align: center;">on / off</td> 
-				</tr> 
-				<tr style="height: 50px"> 
+		<h3 class="subtitle">상태</h3>    
+		<div>  
+			<table> 
+				<tr style="height: 50px">      
 					<td>매칭 상태</td> 
-					<td style="width: 70px; text-align: center;">on / off</td>  
-				</tr>  
-			</table>   
+					<td id="switch_td" style="text-align: center; width: 150px;">    
+						<label class="switch">
+						    <input type="checkbox" id="switchBtn" onclick="toggle(this)"> 
+						    <span class="slider round"></span>
+						</label>   
+						<p id="on_off_match"></p> 
+					</td>       
+					<!-- <td><button id="save" value="저장" type="button" onclick="saveChk()" class="btn" style="width: 50px;">저장</button></td> -->
+				</tr>      
+			</table>     
 		</div>
-		<div style="height: 15px"></div>   
+		<div style="height: 30px"></div>    
 		<h3 class="subtitle">매칭 조건</h3>  
 	<c:if test="${not empty vo }">
 		<div class="regCon">
 			<form id="regForm" name="regForm">   
 				<table cellspacing="3" style="height: 60px;">
 	 				<tr>  	
-	 					    
 						<td bgcolor="lightgrey" align="center">근무기간</td>  
 						<td>
 							<select id="term" name="term" onchange="setTerm()">
@@ -238,33 +253,34 @@ form p {
 
 						</td> 
 					</tr>    
-				</table> 
+				</table>  
 				<p class="but" align="center" > 
 					<button id="reg" value="변경" type="button" onclick="validationChk()" class="btn">변경</button>  
-					<input type="reset" value="리셋">  
-					<input type="button" value="홈으로" onclick="goHome()">
-				</p>  
+					<input class="btn" type="reset" value="리셋">      
+					<input class="btn" type="button" value="홈으로" onclick="goHome()">
+				</p>
 			</form>    
-		</div>   
-	</c:if> 	
+		</div>    
+	</c:if> 	 
 	<c:if test="${empty vo }">
-		<p style="text-align: center">조건이 등록되어 있지 않습니다. 등록해주세요.</p> 
+		<div class="noReg">조건이 등록되어 있지 않습니다. 등록해주세요.</div>   
 		<div class="temp"></div>   
 		<p class="but" align="center" >   
 			<input type="button" value="홈으로" onclick="goHome()">
 		</p>   
-	</c:if>         
-	</div>     
+	</c:if>            
+	</div>      
 <script type="text/javascript">
 	var CONTEXT_PATH = "/jj";
 	var salaryHour = "";
 	var salaryDay = "";
 	var dowList = ${dowList};
 	var locList = ${locList}; 
-	var locLen = locList.length; 
+	var locLen = locList.length;  
 	var frm = document.regForm;     
-	var reg = "${vo}";   
-	  
+	var reg = "${vo}";    
+	var matchStat = "${user.matchStatus}"; 
+	   
 	$(document).ready(function () {    
 		$("#for_one").hide();
 		$("#for_date").hide();
@@ -282,6 +298,15 @@ form p {
 			}   
 		}   
 		
+		if(matchStat == 'N'){
+			document.getElementById("switchBtn").checked = false; 
+			$("#on_off_match").append("OFF");
+			
+		} else {
+			document.getElementById("switchBtn").checked = true;
+			$("#on_off_match").append("ON");  
+		} 
+		
 		init(); 
 	});    
 	
@@ -293,7 +318,7 @@ form p {
 			$("#for_date").hide();  
 			$("#for_dow").hide();
 			document.getElementById("datepicker").value = "${vo.searchDate}";   
-		}else {
+		}else if(term == "part" || term == "sat") {
 			$("#for_one").hide();
 			$("#for_date").show(); 
 			$("#for_dow").show();
@@ -302,9 +327,9 @@ form p {
 			if(term == "sat"){
 				$("input[name=dow]").prop("disabled", true);   
 			} 
-		}  
-	}   
-	 
+		}   
+	}    
+	  
 	function setTerm(){
 		var term = $("#term").val(); 
 		
@@ -455,6 +480,7 @@ form p {
     		dataType: 'json',   
     		contentType:"application/json;charset=UTF-8",
     		success: function(data){
+    			alert("변경 완료!"); 
     			location.href = CONTEXT_PATH + "/";  
     		}, 
     		error: function(data){  
@@ -526,6 +552,51 @@ form p {
 			}   
 		}
 		//sconsole.log(locList);
+	}
+	
+	// matchStatus on/off 스위치 버튼 click 이벤트
+	function toggle(item) {
+		if(item.checked == true){
+			matchStat = 'Y';
+			$("#on_off_match").empty();
+			$("#on_off_match").append("ON");
+		} else {
+			matchStat = 'N';
+			$("#on_off_match").empty();
+			$("#on_off_match").append("OFF");
+		} 
+	} 
+	
+	function saveChk(){
+		var result = confirm("저장하시겠습니까?");		
+		
+		if(result){
+			save();
+		} else{
+			alert("취소되었습니다.");
+		}
+	}
+	
+	function save(){
+		$.ajax({
+    		url : CONTEXT_PATH + "/register/registerChk", 
+    		type: "POST",
+    		data: JSON.stringify(params),     
+    		dataType: 'json',   
+    		contentType:"application/json;charset=UTF-8",
+    		success: function(data){
+    			console.log("registerChk");  
+    			alert("저장 완료");
+    			console.log(data.list); 
+    			//location.href = CONTEXT_PATH + "/";  
+    		}, 
+    		error: function(data){  
+   		   		console.log("error");
+   		   		alert("오류"); 
+   		   		console.log(data.errmsg);  
+   		   		console.log(data.param); 
+    		}
+    	}); 
 	}
 	
 	function goHome(){ 

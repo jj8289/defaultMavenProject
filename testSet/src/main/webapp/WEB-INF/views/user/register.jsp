@@ -369,8 +369,8 @@ form p {
     		success: function(data){
     			console.log("registerChk");  
     			console.log(data.list); 
-    			//location.href = CONTEXT_PATH + "/";  
-    		}, 
+    			location.href = CONTEXT_PATH + "/";  
+    		},   
     		error: function(data){  
    		   		console.log("error");
    		   		console.log(data.errmsg);  
