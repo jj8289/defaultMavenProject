@@ -17,6 +17,9 @@ public class UserVO {
 	private String createDate;
 	private String licenseNo;
 	private String requireNo;
+	private String matchStatus;
+	private String skill;
+	private String photoNo;
 	
 	public String getUserNo() {
 		return userNo;
@@ -108,12 +111,31 @@ public class UserVO {
 	public void setRequireNo(String requireNo) {
 		this.requireNo = requireNo;
 	}
+	public String getMatchStatus() {
+		return matchStatus;
+	}
+	public void setMatchStatus(String matchStatus) {
+		this.matchStatus = matchStatus;
+	}
+	public String getSkill() {
+		return skill;
+	}
+	public void setSkill(String skill) {
+		this.skill = skill;
+	}
+	public String getPhotoNo() {
+		return photoNo;
+	}
+	public void setPhotoNo(String photoNo) {
+		this.photoNo = photoNo;
+	}
 	
 	@Override
 	public String toString() {
 		return "UserVO [userNo=" + userNo + ", userId=" + userId + ", userPw=" + userPw + ", userNm=" + userNm
 				+ ", age=" + age + ", job=" + job + ", sex=" + sex + ", career=" + career + ", phone=" + phone
 				+ ", email=" + email + ", addr=" + addr + ", intro=" + intro + ", createDate=" + createDate
-				+ ", licenseNo=" + licenseNo + ", requireNo=" + requireNo + "]";
+				+ ", licenseNo=" + licenseNo + ", requireNo=" + requireNo + ", matchStatus=" + matchStatus + ", skill="
+				+ skill + ", photoNo=" + photoNo + "]";
 	}
 }

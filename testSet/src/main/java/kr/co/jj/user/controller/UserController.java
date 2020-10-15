@@ -68,15 +68,20 @@ public class UserController {
 		
 		RegisterVO registerVO = userService.selectRegister(user);
 		
-		model.addAttribute("vo", registerVO);
+		//model.addAttribute("vo", registerVO);
+		model.addAttribute("user", user);
+		
+		List<String> locList = new ArrayList<String>(); 
+		List<String> dowList = new ArrayList<String>();
 		
 		if(registerVO == null) {
-			
+			model.addAttribute("dowList", dowList);
+			model.addAttribute("locList", locList);
 		} else {
 			
 			System.out.println("registerVO : " + registerVO.toString());
 		
-			List<String> locList = new ArrayList<String>();
+			
 			String[] strLocList = {}; 
 			String loc = registerVO.getLocation();
 			System.out.println("loc : " + loc); 
@@ -97,9 +102,7 @@ public class UserController {
 			model.addAttribute("locList", locList);
 			
 			
-			
 			///////////////////
-			List<String> dowList = new ArrayList<String>();
 			String[] strDowList = {};
 			if(registerVO.getSearchDow() == null || registerVO.getSearchDow().equals("")) {
 				dowList.add("");
@@ -114,6 +117,8 @@ public class UserController {
 			registerVO.setDowList(dowList);
 			 
 			model.addAttribute("dowList", dowList);
+			
+			model.addAttribute("vo", registerVO);
 		}  
 		
 		

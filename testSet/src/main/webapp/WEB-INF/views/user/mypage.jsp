@@ -265,8 +265,8 @@ form {
 	<c:if test="${empty vo }">
 		<div class="noReg">조건이 등록되어 있지 않습니다. 등록해주세요.</div>   
 		<div class="temp"></div>   
-		<p class="but" align="center" >   
-			<input type="button" value="홈으로" onclick="goHome()">
+		<p class="but" align="center" >    
+			<input class="btn" type="button" value="홈으로" onclick="goHome()">
 		</p>   
 	</c:if>            
 	</div>      
