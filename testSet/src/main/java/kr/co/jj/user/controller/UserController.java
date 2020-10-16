@@ -32,7 +32,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@GetMapping("/join")
+	@GetMapping("/user/join")
 	public String join(Model model) {
 		
 		return "user/join"; 

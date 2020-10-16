@@ -391,6 +391,8 @@ form {
 	}
 	
 	function validationChk(){
+		console.log("!!");
+		console.log(frm.time.value); 
 		
 		if(!frm.term.value){
 			alert("근무기간을 선택해주세요.");
@@ -411,13 +413,15 @@ form {
 				}
 				
 				if(frm.term.value == "part"){
-					if(dowList.length == 0){ 
+					//if(dowList.length == 0){
+					if(!frm.time.value){
 						alert("요일을 선택해주세요.");
 			            return;	 
-					}   
+					}     
 				}
 			}	
-		}   
+		}
+			
 		if(!frm.salType.value){
 			alert("시급/일급을 선택해주세요.");
             frm.salType.focus();
@@ -437,7 +441,7 @@ form {
 		            return;
 				} 
 			}
-		} 
+		}
 		
 		if(locList.length == 0){
 			alert("동/읍/면을 선택해주세요.");
@@ -445,8 +449,8 @@ form {
 		}  
 		
 		registerChk(frm);
-	}  
-	 
+	}
+		  
 	function registerChk(frm) {
 		var params = {};		
 		 
