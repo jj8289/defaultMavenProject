@@ -129,6 +129,17 @@
 						<td><input type="text" name="phone" id="phone"> ex) 01012345678</td>
 					</tr> 
 					<tr> 
+						<td bgcolor="lightgrey" align="center">병원 선택</td>
+						<td>
+							<!-- <div class="item"><button id="searchHospial" value="찾기" type="button" onclick="getBigHospitalList()" class="btnSearch">찾기</button></div> -->
+							<div id="bigList">
+								<select id="bigListSelect">
+									<option>선택</option>
+								</select> 
+							</div>
+						</td> 
+					</tr>  
+					<tr> 
 						<td bgcolor="lightgrey" align="center">주소</td>   
 						<td class="sigungu">
 							<!-- <input size="70" type="text" name="sigungu" id="sigungu"> -->
@@ -148,7 +159,7 @@
 								<option>감정동</option>
 								<option>감정동</option>
 							</select> 
-							<div class="item"><button id="search" value="찾기" type="button" onclick="" class="btnSearch">찾기</button></div>
+							<div class="item"><button id="search" value="찾기" type="button" onclick="getBigHospitalList()" class="btnSearch">찾기</button></div>
 						</td>    
 					</tr> 
 					<tr>
@@ -176,6 +187,8 @@
 <script type="text/javascript">
 		var CONTEXT_PATH = "/jj";	
 	
+		getBigHospitalList();
+		
 		function goHome() {
 			location.href = CONTEXT_PATH + "/";
 		} 
@@ -262,6 +275,63 @@
 	    		   		console.log("error");
 	    		}
 	    	});   
+	    }
+	    
+	    
+	    //api 호출 및 콜백 
+	    // jsonp ==> 크로스도메인 문제를 깔끔하게 해결 (json으로 콜백 받을 수 있음)
+	    function getBigHospitalList(){
+	    	var hospitalName = "";		// 병원명					BIZPLC_NM
+			var deleteDate = ""; 		// 폐업일 					CLSBIZ_DE==null?폐업 : 영업
+	     	var sickBedCnt = "";		// 병상수					SICKBD_CNT
+	     	var medStaffCnt = "";		// 의료인수 				MEDSTAF_CNT
+	     	var addr = "";	 			// 주소(시도/시군구/동읍면 ..) REFINE_LOTNO_ADDR(지번주소)			REFINE_ROADNM_ADDR(도로명주소)
+	     	var tel = "";				// 전화번호 				LOCPLC_FACLT_TELNO
+	     	var sigunCd = "";			// 시군코드				SIGUN_CD
+	     	var sigunNm = "";			// 시군명					SIGUN_NM
+	     	var start_date = "";		// 인허가 일자				LICENSG_DE	
+	     	var treatSubjects = []; 	// 진료과목 				TREAT_SBJECT_CD_INFO(한글)			TREAT_SBJECT_CONT(코드)
+	     	var lat = "";				// WGS84위도 				REFINE_WGS84_LAT
+	     	var logt = "";				// WGS84경도 				REFINE_WGS84_LOGT
+	     	
+	    	$.ajax({
+	    		url : "https://openapi.gg.go.kr/GgHosptlM?KEY=1efad1ae8d5643228c419435ee3aec8e&Type=json&pIndex=1&pSize=100&SIGUN_CD=41570", 
+	    		type: "GET",
+	    		dataType: 'jsonp',
+	    		success: function(data){  
+	    			var totCnt = data.GgHosptlM[0].head[0].list_total_count;
+	    			var list = data.GgHosptlM[1].row;
+	    			
+	    			console.log(totCnt);   
+	    			
+	    			for(var i=0; i < totCnt; i++){
+	    				console.log("no["+ i +"]");   
+	    				
+	    				hospitalName = list[i].BIZPLC_NM;			//병원명
+	    				existYn = list[i].CLSBIZ_DE;				//null : 폐업 , !null : 영업
+	    				sickBedCnt = list[i].SICKBD_CNT;			//병상수
+	    				medStaffCnt = list[i].MEDSTAF_CNT;			//의료인수
+	    				addr = list[i].REFINE_LOTNO_ADDR.substring(0,11);			//주소(시도/시군구/동읍면 ..) 
+	    				var sido = addr.substring(0,3);
+	    				var sigun = addr.substring(4,7);
+	    				var dong = addr.substring(8,11);  
+	    				tel = list[i].LOCPLC_FACLT_TELNO;			//전화번호
+	    				  
+	    				//console.log(list[i]);     //병원 전체 정보    
+	    				console.log(hospitalName + " / " + existYn + " / " + sickBedCnt + " / " + medStaffCnt + " / " + addr + "("+ sido + "/" + sigun + "/" + dong +")" + " / " + tel);
+	    				
+	    				$("#bigListSelect").append("<option>"+ hospitalName +"</option>");  
+	    			}   
+	    			
+	    			console.log("success!!");  
+	    			  
+	    		},
+	    		error: function(data){ 
+	    			console.log(data); 
+    				console.log("error");
+    		   		//location.href = CONTEXT_PATH + "/join";
+	    		}
+	    	});
 	    }
 </script>
 </body>
