@@ -1,14 +1,20 @@
 package kr.co.jj.company.controller;
 
+import java.util.List;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.XML;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import kr.co.jj.common.vo.AddrVO;
+import kr.co.jj.company.service.CompanyService;
+import kr.co.jj.company.vo.AddrDTO;
 import kr.co.jj.user.controller.UserController;
 
 @Controller
@@ -16,12 +22,33 @@ public class CompanyController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
+	
+	@Autowired
+	private CompanyService companyService;
 	//@Autowired
 	//private UserService userService;
 	
 	@GetMapping("/company/join")
 	public String join(Model model) {
-		parsingXML();
+		//parsingXML();
+		
+		AddrDTO dto = new AddrDTO();
+		dto.setSdNm("경기도");
+		dto.setSgNm("김포시");
+		
+		try {
+			List<AddrVO> sdList = companyService.selectSdList(dto);
+			
+			System.out.println(sdList.toString());
+			
+			model.addAttribute("sdList", sdList);	
+			model.addAttribute("sdListSize", sdList.size());	
+		} catch (Exception e) {
+			model.addAttribute("sdList", "");	
+			model.addAttribute("sdListSize", "");	
+			e.printStackTrace();
+		} 
+		
 		return "company/join";
 	}
 	
@@ -187,5 +214,11 @@ public class CompanyController {
         } catch (JSONException je) {
             System.out.println(je.toString());
         }
+	}
+	
+	public List<AddrVO> getAddr(AddrDTO dto) throws Exception {
+		List<AddrVO> list = companyService.selectSdList(dto);
+		
+		return list;
 	}
 }

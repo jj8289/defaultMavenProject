@@ -22,11 +22,11 @@
 	}
 	
 	.minicon {
-		width: 650px;
+		width: 900px;
 		margin: 0 auto;
-	} 
+	}  
 	
-	.title {
+	.title { 
 		width: 100%;
 		margin: 0;
 		height: 45px;
@@ -81,13 +81,18 @@
 		margin: 5px; 
 	}   
 	
-	.btnSearch {
+	.btnSearch { 
 		border: none;
 		background-color: gray; 
 		color: white; 
 		width: 50px; 
 		height: 30px;  
 	}  
+	
+	#selectList{
+		display: flex;
+	}   
+	
 </style> 
 </head> 
 <body> 
@@ -111,54 +116,75 @@
 				<colgroup> 
    					<col width="20%"/>  
     				<col width=""/>  
- 				</colgroup>  
+ 				</colgroup>   
 					<tr>  
 						<td bgcolor="lightgrey" align="center">관리자 아이디</td>	
-						<td><input size="15" type="text" name="userId" id="userId"> 4~12자의 영문 대소문자와 숫자로만 입력</td>
+						<td><input size="15" type="text" name="managerId" id="managerId"> 4~12자의 영문 대소문자와 숫자로만 입력</td>
 					</tr> 
 					<tr>  
 						<td bgcolor="lightgrey" align="center">관리자 비밀번호</td>  
-						<td><input size="15" type="password" name="userPw"  id="userPw"> 4~12자의 영문 대소문자와 숫자로만 입력</td>
+						<td><input size="15" type="password" name="managerPw"  id="managerPw"> 4~12자의 영문 대소문자와 숫자로만 입력</td>
 					</tr>  
 					<tr> 
 						<td bgcolor="lightgrey" align="center">관리자 이름</td> 
-						<td><input type="text" name="userNm" id="userNm"></td> 
+						<td><input type="text" name="managerNm" id="managerNm"></td> 
 					</tr>
 					<tr>
 						<td bgcolor="lightgrey" align="center">관리자 핸드폰</td>
 						<td><input type="text" name="phone" id="phone"> ex) 01012345678</td>
 					</tr> 
 					<tr> 
+						<td bgcolor="lightgrey" align="center">병원/의원 선택</td>
+						<td onchange="whatkind()"> 
+							<input type="radio" name="kind" id="kind1" value="1" > 병원
+							<input type="radio" name="kind" id="kind2" value="2" > 의원 
+						</td>  
+					</tr>  
+					<tr> 
 						<td bgcolor="lightgrey" align="center">병원 선택</td>
-						<td>
+						<td id="selectList">
 							<!-- <div class="item"><button id="searchHospial" value="찾기" type="button" onclick="getBigHospitalList()" class="btnSearch">찾기</button></div> -->
-							<div id="bigList">
-								<select id="bigListSelect">
-									<option>선택</option>
+							<div id="bigList" class="item" >
+								<select id="bigListSelect" onchange="selectBigList()">
+									<option value="">선택</option>
+									<option value="no">목록에 없음</option>
+								</select>   
+							</div>
+							<div id="smallList" class="item">
+								<select id="smallListSelect" onchange="selectSmallList()">
+									<option value="">선택</option>
+									<option value="no">목록에 없음</option>
 								</select> 
 							</div>
+							<div class="item"><input type="text" name="inputHospital" id="inputHospital"></div>
 						</td> 
 					</tr>  
 					<tr> 
 						<td bgcolor="lightgrey" align="center">주소</td>   
 						<td class="sigungu">
 							<!-- <input size="70" type="text" name="sigungu" id="sigungu"> -->
-							<label class="item">시군구</label>  
-							<select class="item" style="width: 150px;">  
-								<option>선택</option>
-								<option>김포시</option>
-							</select>   
-							<label class="item">동읍면</label> 
-							<select class="item" style="width: 150px;">
-								<option>선택</option>
-								<option>감정동</option>
-								<option>감정동</option>
-								<option>감정동</option>
-								<option>감정동</option>
-								<option>감정동</option> 
-								<option>감정동</option>
-								<option>감정동</option>
+							<label class="item">시도</label>  
+							<select id="sido" class="item"  style="width: 90px;">  
+								<option value="">선택</option>
+								<c:set var="i" value="0" />
+									<c:forEach items="${sdList }" var="sd"> 
+										<option value="${i }">${sdList[i].sdNm }</option>   
+										<c:set var="i" value="${i + 1 }" /> 
+									</c:forEach> 
+								<!-- <option value="1">경기도</option> 
+								<option value="2">서울특별시</option> -->  
 							</select> 
+							<label class="item">시군구</label>  
+							<select id="sigun" class="item"  style="width: 70px;">  
+								<option value="">선택</option>
+								<option value="1">김포시</option>
+							</select>    
+							<label class="item">동읍면</label> 
+							<select id="dong" class="item" style="width: 70px;">  
+								<option value="">선택</option>
+								<option value="1">감정동</option>  
+								<option value="2">감정동</option>
+							</select>  
 							<div class="item"><button id="search" value="찾기" type="button" onclick="getBigHospitalList()" class="btnSearch">찾기</button></div>
 						</td>    
 					</tr> 
@@ -186,8 +212,37 @@
 	</div> 
 <script type="text/javascript">
 		var CONTEXT_PATH = "/jj";	
+		
+		var list = [];
+		
+		var totCnt = 0;
+		
+		var addrList = [];
+		var sido = "";
+		var sigun = "";
+		var dong = ""; 
+		
+		var hospitalName = "";		// 병원명					BIZPLC_NM
+		var deleteDate = ""; 		// 폐업일 					BSN_STATE_NM 폐업 / 휴업 / 영업중   		CLSBIZ_DE==null?폐업 : 영업
+     	var sickBedCnt = "";		// 병상수					SICKBD_CNT
+     	var medStaffCnt = "";		// 의료인수 				MEDSTAF_CNT
+     	var fullAddr = "";
+     	var addr = "";	 			// 주소(시도/시군구/동읍면 ..) REFINE_LOTNO_ADDR(지번주소)			REFINE_ROADNM_ADDR(도로명주소)
+     	var tel = "";				// 전화번호 				LOCPLC_FACLT_TELNO
+     	var sigunCd = "";			// 시군코드				SIGUN_CD
+     	var sigunNm = "";			// 시군명					SIGUN_NM
+     	var start_date = "";		// 인허가 일자				LICENSG_DE	
+     	var treatSubjects = []; 	// 진료과목 				TREAT_SBJECT_CD_INFO(한글)			TREAT_SBJECT_CONT(코드)
+     	var lat = "";				// WGS84위도 				REFINE_WGS84_LAT
+     	var logt = "";				// WGS84경도 				REFINE_WGS84_LOGT
+     	var existYn = "";
+     	
+     	var existCnt = 0;
+     	
 	
-		getBigHospitalList();
+		$("#bigList").hide();
+		$("#smallList").hide(); 
+		$("#inputHospital").hide();   
 		
 		function goHome() {
 			location.href = CONTEXT_PATH + "/";
@@ -195,33 +250,17 @@
 		 
 		function joinChk() {  
 	        var frm = document.joinForm;
-	        if (!frm.userId.value) { //아이디를 입력하지 않으면.
+	        if (!frm.managerId.value) { //아이디를 입력하지 않으면.
 	            alert("아이디를 입력하세요.");
-	            frm.userId.focus();
+	            frm.managerId.focus();
 	            return;
-	        } else if (!frm.userPw.value) { //패스워드를 입력하지 않으면.
+	        } else if (!frm.managerPw.value) { //패스워드를 입력하지 않으면.
 	            alert("패스워드를 입력하세요.");
-	            frm.userPw.focus(); 
+	            frm.managerPw.focus(); 
 	            return;
-	        } else if (!frm.userNm.value) { //패스워드를 입력하지 않으면.
+	        } else if (!frm.managerNm.value) { //패스워드를 입력하지 않으면.
 	            alert("이름을 입력하세요.");
-	            frm.userNm.focus(); 
-	            return;
-	        } else if (!frm.age.value) { //패스워드를 입력하지 않으면.
-	            alert("나이를 입력하세요.");
-	            frm.age.focus(); 
-	            return;
-	        } else if (!frm.job.value) { //패스워드를 입력하지 않으면.
-	            alert("직업을 입력하세요.");
-	            frm.job.focus(); 
-	            return;
-	        } else if (!frm.sex.value) { //패스워드를 입력하지 않으면.
-	            alert("성별을 선택하세요.");
-	            frm.sex.focus(); 
-	            return;
-	        } else if (!frm.career.value) { //패스워드를 입력하지 않으면.
-	            alert("경력을 입력하세요.");
-	            frm.career.focus(); 
+	            frm.managerNm.focus(); 
 	            return;
 	        } else if (!frm.phone.value) { //패스워드를 입력하지 않으면.
 	            alert("핸드폰을 입력하세요.");
@@ -234,28 +273,117 @@
 	        } else if (!frm.email.value) { //패스워드를 입력하지 않으면.
 	            alert("이메일을 입력하세요.");
 	            frm.email.focus(); 
-	            return;
+	            return; 
 	        }
 	        
-	        join();  
+	        if(frm.kind.value == ""){
+	        	console.log(frm.kind.value);
+	        	alert("병원/의원을 선택해주세요.");
+	        	return;  
+	        }else {
+	        	if(frm.kind.value == "1"){
+	        		if(frm.bigListSelect.value == ""){
+        				alert("병원을 선택하세요");
+        				return; 
+	        		} 
+	        		if(frm.bigListSelect.value == "no"){
+	        			if($("#inputHospital").val() == ""){
+	        				alert("병원을 입력하세요");
+	        				return; 
+	        			} 
+	        			else { 
+	        				hospitalName = $("#inputHospital").val();
+	        			}
+	        			
+	        			console.log($("#sido").val());
+	        			if($("#sido").val() == ""){
+	        				alert("시도를 선택헤주세요");
+	        				return; 
+	        			} 
+	        			if($("#sigun").val() == ""){
+	        				alert("시군구를 선택헤주세요");
+	        				return; 
+	        			} 
+	        			if($("#dong").val() == ""){
+	        				alert("동읍면을 선택헤주세요");
+	        				return; 
+	        			} 
+	        			
+	        			sido = $("#sido").val();
+	        			sigun = $("#sigun").val();
+	        			dong = $("#dong").val();
+	        		} 
+	        	}
+	        	if(frm.kind.value == "2"){
+	        		if(frm.smallListSelect.value == ""){
+        				alert("의원을 선택하세요");
+        				return; 
+	        		} 
+	        		if(frm.smallListSelect.value == "no"){
+	        			if($("#inputHospital").val() == ""){
+	        				alert("의원을 입력하세요");
+	        				return; 
+	        			} 
+	        			else { 
+	        				hospitalName = $("#inputHospital").val();
+	        			}
+	        		} 
+	        	}  
+	        } 
+	        
+	        
+	       /*  if(!frm.smallListSelect.value || !frm.bigListSelect.value){
+	        	if(!frm.smallListSelect.value)
+	        	 
+	        	console.log("!!!!!!!!!!!!!!");
+	        	console.log(frm.kind.value);
+	        	console.log(frm.smallListSelect.value);
+	        	console.log(frm.bigListSelect.value); 
+	        	alert("병원을 선택하세요"); 
+	        	return; 
+	        } */ 
+	        /*if(hospitalName == ""){
+	        	if(!frm.inputHospital.value){
+	        		alert("병원을 입력하세요.");
+		            frm.inputHospital.focus(); 
+	        	} else {
+	        		alert("병원을 선택하세요.");
+	        	}
+	        	 
+	            return;
+	        }*/ 
+	         
+	        join();    
 	    }       
 	     
 	    function join(){
-	    	var formData = {
-	                userId: $('#userId').val()
-	              , userPw: $('#userPw').val()
-	              , userNm: $('#userNm').val()
-	              , age: $('#age').val()
-	              , job: $('#job').val()
-	              , sex: $('input[name=sex]:checked').val()
-	              , career: $('#career').val()
-	              , phone: $('#phone').val()
-	              , addr: $('#addr').val() 
-	              , email: $('#email').val()
-	              , intro: $('#intro').val()
-	              , skill: $('#skill').val()
-	    	};
+	    	
+	    	if(hospitalName == ""){ 
+	    		hospitalName = $("#inputHospital").val();
+	    		fullAddr = ""; 
+	    		sido = "";
+	    		sigungu = "";
+	    		dong = "";
+	    	}    
 	    	 
+	    	var formData = {
+	    		  managerId : $("#managerId").val()
+	    		, managerPw : $("#managerPw").val()
+	    		, managerNm : $("#managerNm").val()
+	    		, managerPhone : $("#phone").val()
+	    		, kind : $('input[name=kind]:checked').val()
+	    		, hospitalNm : hospitalName
+	    		, sido : sido
+	    		, sigungu : sigun
+	    		, dong : dong 
+	    		, addr : fullAddr
+	    		, managerEmail : $("#email").val() 
+	    		, intro : $("#intro").val()
+	    	};
+	    	
+	    	console.log(formData); 
+	    	
+	    	/*
 	    	$.ajax({
 	    		url : CONTEXT_PATH + "/join/joinChk", 
 	    		type: "POST",  
@@ -274,14 +402,14 @@
 	    		   		location.href = CONTEXT_PATH + "/join";
 	    		   		console.log("error");
 	    		}
-	    	});   
+	    	});   */
 	    }
 	    
 	    
 	    //api 호출 및 콜백 
 	    // jsonp ==> 크로스도메인 문제를 깔끔하게 해결 (json으로 콜백 받을 수 있음)
 	    function getBigHospitalList(){
-	    	var hospitalName = "";		// 병원명					BIZPLC_NM
+	    	/* var hospitalName = "";		// 병원명					BIZPLC_NM
 			var deleteDate = ""; 		// 폐업일 					CLSBIZ_DE==null?폐업 : 영업
 	     	var sickBedCnt = "";		// 병상수					SICKBD_CNT
 	     	var medStaffCnt = "";		// 의료인수 				MEDSTAF_CNT
@@ -292,37 +420,54 @@
 	     	var start_date = "";		// 인허가 일자				LICENSG_DE	
 	     	var treatSubjects = []; 	// 진료과목 				TREAT_SBJECT_CD_INFO(한글)			TREAT_SBJECT_CONT(코드)
 	     	var lat = "";				// WGS84위도 				REFINE_WGS84_LAT
-	     	var logt = "";				// WGS84경도 				REFINE_WGS84_LOGT
+	     	var logt = "";				// WGS84경도 				REFINE_WGS84_LOGT */
 	     	
 	    	$.ajax({
 	    		url : "https://openapi.gg.go.kr/GgHosptlM?KEY=1efad1ae8d5643228c419435ee3aec8e&Type=json&pIndex=1&pSize=100&SIGUN_CD=41570", 
 	    		type: "GET",
 	    		dataType: 'jsonp',
 	    		success: function(data){  
-	    			var totCnt = data.GgHosptlM[0].head[0].list_total_count;
-	    			var list = data.GgHosptlM[1].row;
-	    			
+	    			totCnt = data.GgHosptlM[0].head[0].list_total_count;
+	    			list = data.GgHosptlM[1].row;
+	    			existCnt = 0;
 	    			console.log(totCnt);   
-	    			
+	    			 
 	    			for(var i=0; i < totCnt; i++){
 	    				console.log("no["+ i +"]");   
 	    				
-	    				hospitalName = list[i].BIZPLC_NM;			//병원명
-	    				existYn = list[i].CLSBIZ_DE;				//null : 폐업 , !null : 영업
-	    				sickBedCnt = list[i].SICKBD_CNT;			//병상수
-	    				medStaffCnt = list[i].MEDSTAF_CNT;			//의료인수
-	    				addr = list[i].REFINE_LOTNO_ADDR.substring(0,11);			//주소(시도/시군구/동읍면 ..) 
-	    				var sido = addr.substring(0,3);
-	    				var sigun = addr.substring(4,7);
-	    				var dong = addr.substring(8,11);  
-	    				tel = list[i].LOCPLC_FACLT_TELNO;			//전화번호
-	    				  
-	    				//console.log(list[i]);     //병원 전체 정보    
-	    				console.log(hospitalName + " / " + existYn + " / " + sickBedCnt + " / " + medStaffCnt + " / " + addr + "("+ sido + "/" + sigun + "/" + dong +")" + " / " + tel);
+	    				if(list[i]){ 
 	    				
-	    				$("#bigListSelect").append("<option>"+ hospitalName +"</option>");  
+		    				hospitalName = list[i].BIZPLC_NM;			//병원명
+		    				existYn = list[i].BSN_STATE_NM;				//null : 폐업 , !null : 영업
+		    				sickBedCnt = list[i].SICKBD_CNT;			//병상수
+		    				medStaffCnt = list[i].MEDSTAF_CNT;			//의료인수
+		    			 	fullAddr = list[i].REFINE_LOTNO_ADDR;
+		    				addrList = fullAddr.split(" "); 
+		    				sido = addrList[0];
+		    				sigun = addrList[1]; 
+		    				dong = addrList[2];  
+		    				//addr = fullAddr.substring(0, 11);			//주소(시도/시군구/동읍면 ..)   
+		    				//sido = addr.substring(0,3);  
+		    				//sigun = addr.substring(4,7);
+		    				//dong = addr.substring(8,11);  
+		    				tel = list[i].LOCPLC_FACLT_TELNO;			//전화번호
+		    				
+		    				 
+		    				console.log(addrList);  
+		    				console.log(sido + sigun + dong);  
+		    				console.log(typeof addr);  
+		    				//console.log(list[i]);     //병원 전체 정보    
+		    				
+		    				if(existYn == "영업중"){
+		    					$("#bigListSelect").append("<option>"+ hospitalName +"</option>"); 
+		    					console.log(hospitalName + " / " + existYn + " / " + addr + "("+ sido + "/" + sigun + "/" + dong +")"); 
+		    					 
+		    					existCnt++;  
+		    				}
+	    				} 
 	    			}   
 	    			
+	    			console.log(existCnt); 
 	    			console.log("success!!");  
 	    			  
 	    		},
@@ -332,6 +477,174 @@
     		   		//location.href = CONTEXT_PATH + "/join";
 	    		}
 	    	});
+	    }
+	    
+	    function getSmallHospitalList(){
+	    	/* var hospitalName = "";		// 병원명					BIZPLC_NM
+			var deleteDate = ""; 		// 폐업일 					BSN_STATE_NM 폐업 / 휴업 / 영업중
+	     	var sickBedCnt = "";		// 병상수					SICKBD_CNT
+	     	var medStaffCnt = "";		// 의료인수 				MEDSTAF_CNT
+	     	var addr = "";	 			// 주소(시도/시군구/동읍면 ..) REFINE_LOTNO_ADDR(지번주소)			REFINE_ROADNM_ADDR(도로명주소)
+	     	var tel = "";				// 전화번호 				LOCPLC_FACLT_TELNO
+	     	var sigunCd = "";			// 시군코드				SIGUN_CD
+	     	var sigunNm = "";			// 시군명					SIGUN_NM
+	     	var start_date = "";		// 인허가 일자				LICENSG_DE	
+	     	var treatSubjects = []; 	// 진료과목 				TREAT_SBJECT_CD_INFO(한글)			TREAT_SBJECT_CONT(코드)
+	     	var lat = "";				// WGS84위도 				REFINE_WGS84_LAT
+	     	var logt = "";				// WGS84경도 				REFINE_WGS84_LOGT */
+	     	
+	    	$.ajax({
+	    		url : "https://openapi.gg.go.kr/PrivateHospital?KEY=1efad1ae8d5643228c419435ee3aec8e&Type=json&pIndex=1&pSize=100&SIGUN_CD=41570", 
+	    		type: "GET",
+	    		dataType: 'jsonp',
+	    		success: function(data){  
+	    			totCnt = data.PrivateHospital[0].head[0].list_total_count;
+	    			list = data.PrivateHospital[1].row;
+	    			
+	    			console.log("totCnt : " + totCnt);   
+ 	 				console.log(list); 
+ 	 				
+ 	 				existCnt = 0;
+ 	 				 
+	    			for(var i=0; i < totCnt; i++){
+	    				
+	    				if(list[i]){
+	    					console.log("no["+ i +"]");    
+	    					 
+		    				hospitalName = list[i].BIZPLC_NM;			//병원명 
+		    				existYn = list[i].BSN_STATE_NM;				//폐업 / 휴업 / 영업중
+		    				sickBedCnt = list[i].SICKBD_CNT;			//병상수
+		    				medStaffCnt = list[i].MEDSTAF_CNT;			//의료인수
+// 		    				fullAddr = list[i].REFINE_LOTNO_ADDR;
+// 		    				addr = list[i].REFINE_LOTNO_ADDR.substring(0,11);			//주소(시도/시군구/동읍면 ..) 
+// 		    				sido = addr.substring(0,3);
+// 		    				sigun = addr.substring(4,7);
+// 		    				dong = addr.substring(8,11);  
+		    				   
+		    				//console.log(list[i]);     //병원 전체 정보    
+		    				
+		    				if(existYn == "영업중"){
+		    					$("#smallListSelect").append("<option>"+ hospitalName +"</option>");
+		    					console.log(hospitalName + " / " + existYn + " / " + sickBedCnt + " / " + medStaffCnt + " / " + addr + "("+ sido + "/" + sigun + "/" + dong +")");
+		    					
+		    					existCnt++; 
+		    				}
+	    				} 	
+	    			}     
+	    			
+	    			console.log("existCnt : " + existCnt);
+	    			console.log("success!!");  
+	    			  
+	    		},
+	    		error: function(data){ 
+	    			console.log(data); 
+    				console.log("error");
+    		   		//location.href = CONTEXT_PATH + "/join";
+	    		}
+	    	});
+	    }
+	    
+	    function whatkind(){ 
+	    	var val = $('input[name=kind]:checked').val();
+	    	
+	    	console.log(val);
+	    	
+	    	$("#inputHospital").hide(); 
+	    	 
+	    	if(val == "1"){
+	    		$("#bigList").show();
+	    		$("#smallList").hide();
+	    		getBigHospitalList();
+	    	} else {
+	    		$("#bigList").hide(); 
+	    		$("#smallList").show(); 
+	    		getSmallHospitalList();
+	    	}
+	    } 
+	    
+	    function selectBigList(){
+			var val = $("select[id=bigListSelect]").val();
+			var obj = {};  
+			 
+			if(val == "no"){ 
+	    		$("#inputHospital").show(); 
+	    		hostitalName = "";
+	    		fullAddr = ""; 
+	    		sido = "";
+	    		sigun = "";
+	    		dong = "";
+	    		
+	    	} else {
+	    		$("#inputHospital").hide(); 
+	    		hospitalName = val; 
+	    		
+				for(var i=0; i < existCnt; i++){
+    				
+    				if(list[i].BIZPLC_NM == hospitalName){
+    					//console.log("no["+ i +"]");    
+    					
+    					obj = list[i];
+    					
+    					hospitalName = obj.BIZPLC_NM;			//병원명 
+    					existYn = obj.BSN_STATE_NM;				//폐업 / 휴업 / 영업중
+    					sickBedCnt = obj.SICKBD_CNT;			//병상수
+    					medStaffCnt = obj.MEDSTAF_CNT;			//의료인수
+    					fullAddr = obj.REFINE_LOTNO_ADDR;
+    					addrList = fullAddr.split(" "); 
+    					sido = addrList[0];
+    					sigun = addrList[1]; 
+    					dong = addrList[2];  
+						
+    					break;
+	    				 
+    				} 	
+    			}  
+				//console.log(hospitalName + " / " + existYn + " / " + sickBedCnt + " / " + medStaffCnt + " / " + addr + "("+ sido + "/" + sigun + "/" + dong +")");
+	    	} 
+	    	//console.log("hospitalName : " + hospitalName);
+	    }
+	     
+	    function selectSmallList(){
+	    	var val = $("select[id=smallListSelect]").val();
+	    	var obj = {};
+	    	
+	    	
+	    	if(val == "no"){ 
+	    		$("#inputHospital").show(); 
+	    		hostitalName = "";
+	    		fullAddr = ""; 
+	    		sido = "";
+	    		sigun = "";
+	    		dong = "";
+	    		 
+	    	} else {
+	    		$("#inputHospital").hide(); 
+	    		hospitalName = val;
+	    		
+				for(var i=0; i < existCnt; i++){
+    				
+    				if(list[i].BIZPLC_NM == hospitalName){
+    					//console.log("no["+ i +"]");    
+    					
+    					obj = list[i];
+    					
+    					hospitalName = obj.BIZPLC_NM;			//병원명 
+    					existYn = obj.BSN_STATE_NM;				//폐업 / 휴업 / 영업중
+    					sickBedCnt = obj.SICKBD_CNT;			//병상수
+    					medStaffCnt = obj.MEDSTAF_CNT;			//의료인수
+    					fullAddr = obj.REFINE_LOTNO_ADDR;
+    					addrList = fullAddr.split(" "); 
+    					sido = addrList[0];
+    					sigun = addrList[1]; 
+    					dong = addrList[2];  
+						
+    					break;
+	    				 
+    				} 	
+    			}  
+				//console.log(hospitalName + " / " + existYn + " / " + sickBedCnt + " / " + medStaffCnt + " / " + addr + "("+ sido + "/" + sigun + "/" + dong +")");
+	    	} 
+	    	//console.log("hospitalName : " + hospitalName); 
 	    }
 </script>
 </body>

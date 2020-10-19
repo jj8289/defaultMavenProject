@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.jj.company.dao.CompanyDAO">
+	
+	<select id="selectSdList" parameterType="AddrDTO" resultType="AddrVO">
+		select	ROW_NUMBER() OVER (order by sd_nm ) AS ROWNUM
+				, SD_NM
+		  FROM	TB_ADDR
+	      GROUP BY SD_NM
+	</select>
+	<!-- <select id="selectSgList" parameterType="AddrDTO" resultType="">
+		SELECT  A.ROWNUM
+				, A.SG_NM
+		FROM (SELECT  ROW_NUMBER() OVER (ORDER BY SD_NM, SG_NM ) AS ROWNUM
+				      , SD_NM
+				      , SG_NM 
+				FROM  TB_ADDR
+			   GROUP BY SD_NM, SG_NM
+			 ) A
+		<if test="sdNm == '1'">
+			WHERE SD_NM LIKE '%${sdNm}%'
+		</if>
+	</select>
+	<select id="selectDnList" parameterType="AddrDTO" resultType="">
+		SELECT  A.ROWNUM
+				, A.DN_NM
+		FROM (SELECT  ROW_NUMBER() OVER (ORDER BY SD_NM, SG_NM ) AS ROWNUM
+				      , SD_NM
+				      , SG_NM
+				      , DN_NM 
+				FROM  TB_ADDR
+			   GROUP BY SD_NM, SG_NM, DN_NM
+			 ) A
+		<if test="sdNm == '1' and sgNm == '1'">
+			WHERE  SD_NM LIKE '%${sdNm}%'
+			  AND  SG_NM LIKE '%${sgNm}%'
+		</if>
+	</select>   -->
+</mapper> 
