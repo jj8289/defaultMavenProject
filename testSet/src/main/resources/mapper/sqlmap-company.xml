@@ -2,12 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.jj.company.dao.CompanyDAO">
 	
-	<select id="selectSdList" parameterType="AddrDTO" resultType="AddrVO">
-		select	ROW_NUMBER() OVER (order by sd_nm ) AS ROWNUM
+	<select id="selectSdList" resultType="AddrVO">
+		SELECT	ROW_NUMBER() OVER (ORDER BY SD_NM ) AS ROWNUM
 				, SD_NM
 		  FROM	TB_ADDR
 	      GROUP BY SD_NM
 	</select>
+	
+	<select id="selectSgList" parameterType="AddrDTO" resultType="AddrVO">
+		SELECT  ADDR_NO
+				, SG_NM
+		  FROM  TB_ADDR
+		 WHERE  SD_NM LIKE '%${sdNm}%' 
+		 GROUP BY SG_NM, SD_NM 
+	</select>
+	
+	<select id="selectDnList" parameterType="AddrDTO" resultType="AddrVO">
+		SELECT  ADDR_NO
+				, DN_NM
+		  FROM  TB_ADDR
+		 WHERE  SG_NM LIKE '%${sgNm}%'
+	</select>
+	 
 	<!-- <select id="selectSgList" parameterType="AddrDTO" resultType="">
 		SELECT  A.ROWNUM
 				, A.SG_NM

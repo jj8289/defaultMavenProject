@@ -1,6 +1,9 @@
 package kr.co.jj.company.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.jj.common.vo.AddrVO;
 import kr.co.jj.company.service.CompanyService;
@@ -37,7 +42,7 @@ public class CompanyController {
 		dto.setSgNm("김포시");
 		
 		try {
-			List<AddrVO> sdList = companyService.selectSdList(dto);
+			List<AddrVO> sdList = companyService.selectSdList();
 			
 			System.out.println(sdList.toString());
 			
@@ -48,6 +53,8 @@ public class CompanyController {
 			model.addAttribute("sdListSize", "");	
 			e.printStackTrace();
 		} 
+		
+		model.addAttribute("dto", dto);
 		
 		return "company/join";
 	}
@@ -216,9 +223,10 @@ public class CompanyController {
         }
 	}
 	
-	public List<AddrVO> getAddr(AddrDTO dto) throws Exception {
-		List<AddrVO> list = companyService.selectSdList(dto);
+	public List<AddrVO> getAddr() throws Exception {
+		List<AddrVO> list = companyService.selectSdList();
 		
 		return list;
 	}
+	
 }

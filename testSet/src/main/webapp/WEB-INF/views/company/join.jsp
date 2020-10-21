@@ -78,8 +78,8 @@
 	}   
 	
 	.item {
-		margin: 5px; 
-	}   
+		margin: 3px; 
+	}    
 	
 	.btnSearch { 
 		border: none;
@@ -134,6 +134,33 @@
 						<td><input type="text" name="phone" id="phone"> ex) 01012345678</td>
 					</tr> 
 					<tr> 
+						<td bgcolor="lightgrey" align="center">주소</td>   
+						<td class="sigungu">
+							<!-- <input size="70" type="text" name="sigungu" id="sigungu"> -->
+							<label class="item">시도</label>  
+							<select id="sido" class="item"  style="width: 100px;" onchange="getSigunguList()">  
+								<option value="">선택</option>  
+								<%-- <c:set var="i" value="0" />
+									<c:forEach items="${sdList }" var="sd"> 
+										<option value="${i }">${sdList[i].sdNm }</option>   
+										<c:set var="i" value="${i + 1 }" /> 
+									</c:forEach>  --%>
+								<option value="${dto.sdNm }">${dto.sdNm }</option>  
+							</select>  
+							<label class="item">시군구</label>  
+							<!-- <select id="sigun" class="item"  style="width: 125px;" onchange="getDongList()"> -->    
+							<select id="sigun" class="item"  style="width: 125px;">    
+								<option value="">선택</option> 
+								<%-- <option value="${dto.sgNm }">${dto.sgNm }</option>   --%>
+							</select>    
+							<div id="dongCon" style="display: flex; justify-content: middle;"> 
+								<label class="item">동읍면</label>   
+								<select id="dong" name="dong" class="item" style="width: 95px;"></select>  
+							</div>   
+							<div class="item"><button id="search" value="찾기" type="button" onclick="getBigHospitalList()" class="btnSearch">찾기</button></div>
+						</td>    
+					</tr> 
+					<tr> 
 						<td bgcolor="lightgrey" align="center">병원/의원 선택</td>
 						<td onchange="whatkind()"> 
 							<input type="radio" name="kind" id="kind1" value="1" > 병원
@@ -145,7 +172,7 @@
 						<td id="selectList">
 							<!-- <div class="item"><button id="searchHospial" value="찾기" type="button" onclick="getBigHospitalList()" class="btnSearch">찾기</button></div> -->
 							<div id="bigList" class="item" >
-								<select id="bigListSelect" onchange="selectBigList()">
+								<select id="bigListSelect" onchange="changeBigList()" onmousedown="getBigHospitalList()">
 									<option value="">선택</option>
 									<option value="no">목록에 없음</option>
 								</select>   
@@ -159,43 +186,14 @@
 							<div class="item"><input type="text" name="inputHospital" id="inputHospital"></div>
 						</td> 
 					</tr>  
-					<tr> 
-						<td bgcolor="lightgrey" align="center">주소</td>   
-						<td class="sigungu">
-							<!-- <input size="70" type="text" name="sigungu" id="sigungu"> -->
-							<label class="item">시도</label>  
-							<select id="sido" class="item"  style="width: 90px;">  
-								<option value="">선택</option>
-								<c:set var="i" value="0" />
-									<c:forEach items="${sdList }" var="sd"> 
-										<option value="${i }">${sdList[i].sdNm }</option>   
-										<c:set var="i" value="${i + 1 }" /> 
-									</c:forEach> 
-								<!-- <option value="1">경기도</option> 
-								<option value="2">서울특별시</option> -->  
-							</select> 
-							<label class="item">시군구</label>  
-							<select id="sigun" class="item"  style="width: 70px;">  
-								<option value="">선택</option>
-								<option value="1">김포시</option>
-							</select>    
-							<label class="item">동읍면</label> 
-							<select id="dong" class="item" style="width: 70px;">  
-								<option value="">선택</option>
-								<option value="1">감정동</option>  
-								<option value="2">감정동</option>
-							</select>  
-							<div class="item"><button id="search" value="찾기" type="button" onclick="getBigHospitalList()" class="btnSearch">찾기</button></div>
-						</td>    
-					</tr> 
 					<tr>
-						<td bgcolor="lightgrey" align="center">병원 주소</td>
+						<td bgcolor="lightgrey" align="center">병원 주소</td> 
 						<td><input size="70" type="text" name="addr" id="addr"></td>
 					</tr>
 					<tr> 
 						<td bgcolor="lightgrey" align="center">관리자 이메일</td>
 						<td><input size="70" type="text" name="email" id="email"></td>
-					</tr>
+					</tr> 
 					<tr>
 						<td bgcolor="lightgrey" align="center">병원 간단 소개</td>
 						<td><input size="70" type="text" name="intro" id="intro"></td>
@@ -220,6 +218,7 @@
 		var addrList = [];
 		var sido = "";
 		var sigun = "";
+		var gu = "";
 		var dong = ""; 
 		
 		var hospitalName = "";		// 병원명					BIZPLC_NM
@@ -239,16 +238,23 @@
      	
      	var existCnt = 0;
      	
+     	var sgList = [];
+     	var dnList = [];
+     	
+     	var selectObj = {};
 	
 		$("#bigList").hide();
 		$("#smallList").hide(); 
 		$("#inputHospital").hide();   
+		$("#dongCon").hide();   
 		
 		function goHome() {
 			location.href = CONTEXT_PATH + "/";
 		} 
 		 
 		function joinChk() {  
+			alert(sido + " | " + sigun + " | " + dong);  
+			
 	        var frm = document.joinForm;
 	        if (!frm.managerId.value) { //아이디를 입력하지 않으면.
 	            alert("아이디를 입력하세요.");
@@ -274,8 +280,17 @@
 	            alert("이메일을 입력하세요.");
 	            frm.email.focus(); 
 	            return; 
-	        }
-	        
+	        } else if (!frm.sido.value) { //패스워드를 입력하지 않으면.
+	            alert("시도를 선택하세요.");
+	            return; 
+	        } else if (!frm.sigun.value) { //패스워드를 입력하지 않으면.
+	            alert("시군구를 선택하세요.");
+	            return; 
+	        }  else if (!frm.dong.value) { //패스워드를 입력하지 않으면.
+	            alert("동읍면을 선택하세요.");
+	            return; 
+	        }  
+	         
 	        if(frm.kind.value == ""){
 	        	console.log(frm.kind.value);
 	        	alert("병원/의원을 선택해주세요.");
@@ -409,34 +424,46 @@
 	    //api 호출 및 콜백 
 	    // jsonp ==> 크로스도메인 문제를 깔끔하게 해결 (json으로 콜백 받을 수 있음)
 	    function getBigHospitalList(){
-	    	/* var hospitalName = "";		// 병원명					BIZPLC_NM
-			var deleteDate = ""; 		// 폐업일 					CLSBIZ_DE==null?폐업 : 영업
-	     	var sickBedCnt = "";		// 병상수					SICKBD_CNT
-	     	var medStaffCnt = "";		// 의료인수 				MEDSTAF_CNT
-	     	var addr = "";	 			// 주소(시도/시군구/동읍면 ..) REFINE_LOTNO_ADDR(지번주소)			REFINE_ROADNM_ADDR(도로명주소)
-	     	var tel = "";				// 전화번호 				LOCPLC_FACLT_TELNO
-	     	var sigunCd = "";			// 시군코드				SIGUN_CD
-	     	var sigunNm = "";			// 시군명					SIGUN_NM
-	     	var start_date = "";		// 인허가 일자				LICENSG_DE	
-	     	var treatSubjects = []; 	// 진료과목 				TREAT_SBJECT_CD_INFO(한글)			TREAT_SBJECT_CONT(코드)
-	     	var lat = "";				// WGS84위도 				REFINE_WGS84_LAT
-	     	var logt = "";				// WGS84경도 				REFINE_WGS84_LOGT */
-	     	
+			var v1 = $("#sido").val();
+			var v2 = $("#sigun").val();
+			
+			var v4 = "";					// 고양시 덕양구 같이 시 구로 되어 있는 시군구
+			var v5 = "";					// XX시 
+			
+			
+			if(v2 == "" || v1 == ""){
+				return;
+			} 
+			
+			console.log("getBigHospitalList()"); 
+			console.log(v1 + "/" + v2); 
+			console.log("v2.length : " + v2.length);
+			
+			if(v2.length > 4){		// 시군구 : 시군 구 
+				v4 = v2.split(" ")[0]; 
+			} 
+			 
+			if(v4 == ""){
+    			v5 = v2;
+    		} else { 
+    			v5 = v4;   
+    		}
+			
 	    	$.ajax({
-	    		url : "https://openapi.gg.go.kr/GgHosptlM?KEY=1efad1ae8d5643228c419435ee3aec8e&Type=json&pIndex=1&pSize=100&SIGUN_CD=41570", 
-	    		type: "GET",
+	    		url : "https://openapi.gg.go.kr/GgHosptlM?KEY=1efad1ae8d5643228c419435ee3aec8e&Type=json&pIndex=1&pSize=100&SIGUN_NM="+v5,
+	    		type: "GET", 
 	    		dataType: 'jsonp',
-	    		success: function(data){  
+	    		success: function(data){   
 	    			totCnt = data.GgHosptlM[0].head[0].list_total_count;
 	    			list = data.GgHosptlM[1].row;
-	    			existCnt = 0;
-	    			console.log(totCnt);   
-	    			 
+	    			existCnt = 0; 							// 영업중인 병원만 +1
+	    			
+	    			$("#bigListSelect").empty(); 
+	    			$("#bigListSelect").append("<option value=''>선택</option>"); 
+	    			$("#bigListSelect").append("<option value='no'>목록에 없음</option>");  
 	    			for(var i=0; i < totCnt; i++){
-	    				console.log("no["+ i +"]");   
-	    				
+	    				 
 	    				if(list[i]){ 
-	    				
 		    				hospitalName = list[i].BIZPLC_NM;			//병원명
 		    				existYn = list[i].BSN_STATE_NM;				//null : 폐업 , !null : 영업
 		    				sickBedCnt = list[i].SICKBD_CNT;			//병상수
@@ -444,31 +471,53 @@
 		    			 	fullAddr = list[i].REFINE_LOTNO_ADDR;
 		    				addrList = fullAddr.split(" "); 
 		    				sido = addrList[0];
-		    				sigun = addrList[1]; 
-		    				dong = addrList[2];  
+		    				tel = list[i].LOCPLC_FACLT_TELNO;			//전화번호
+		    				
+		    				if(v4 != ""){
+		    					sigun = addrList[1];
+		    					gu = addrList[2];
+		    					dong = addrList[3];
+		    					
+		    					if(existYn == "영업중" && sigun + " " + gu == v2){ 
+			    					$("#bigListSelect").append("<option>"+ hospitalName +"</option>"); 
+			    					//console.log(hospitalName + " / " + existYn + " / " + addr + "("+ sido + "/" + sigun + " " + gu + "/" + dong +")"); 
+			    					  
+			    					existCnt++;   
+			    				} 
+			     
+		    					
+		    				} else {
+		    					sigun = addrList[1];
+		    					gu = "";
+			    				dong = addrList[2];
+			    				 
+			    				if(existYn == "영업중" && sigun == v2){
+			    					$("#bigListSelect").append("<option>"+ hospitalName +"</option>"); 
+			    					//console.log(hospitalName + " / " + existYn + " / " + "("+ sido + "/" + sigun + "/" + dong +")"); 
+			    					 
+			    					existCnt++;  
+			    				}
+		    				}
+		    				
 		    				//addr = fullAddr.substring(0, 11);			//주소(시도/시군구/동읍면 ..)   
 		    				//sido = addr.substring(0,3);  
 		    				//sigun = addr.substring(4,7);
 		    				//dong = addr.substring(8,11);  
-		    				tel = list[i].LOCPLC_FACLT_TELNO;			//전화번호
 		    				
-		    				 
-		    				console.log(addrList);  
+		    				
+		    				
+		    				//console.log(addrList);  
+		    				/* console.log(addrList);  
 		    				console.log(sido + sigun + dong);  
-		    				console.log(typeof addr);  
-		    				//console.log(list[i]);     //병원 전체 정보    
+		    				console.log(typeof addr);  */ 
+		    				//console.log(list[i]);     //병원 전체 정보     
 		    				
-		    				if(existYn == "영업중"){
-		    					$("#bigListSelect").append("<option>"+ hospitalName +"</option>"); 
-		    					console.log(hospitalName + " / " + existYn + " / " + addr + "("+ sido + "/" + sigun + "/" + dong +")"); 
-		    					 
-		    					existCnt++;  
-		    				}
 	    				} 
 	    			}   
 	    			
-	    			console.log(existCnt); 
-	    			console.log("success!!");  
+	    			console.log("totCnt : " + totCnt);  
+	    			console.log("existCnt : " + existCnt); 
+	    			console.log("success!!");   
 	    			  
 	    		},
 	    		error: function(data){ 
@@ -547,7 +596,7 @@
 	    function whatkind(){ 
 	    	var val = $('input[name=kind]:checked').val();
 	    	
-	    	console.log(val);
+	    	console.log("병원? 의원? : " + val); 
 	    	
 	    	$("#inputHospital").hide(); 
 	    	 
@@ -558,32 +607,40 @@
 	    	} else {
 	    		$("#bigList").hide(); 
 	    		$("#smallList").show(); 
-	    		getSmallHospitalList();
+	    		getSmallHospitalList(); 
 	    	}
 	    } 
 	    
-	    function selectBigList(){
+	    function changeBigList(){
+	    	console.log("changeBigList()");
 			var val = $("select[id=bigListSelect]").val();
 			var obj = {};  
-			 
+			
+			console.log("병원명 : " + val); 
+			
 			if(val == "no"){ 
 	    		$("#inputHospital").show(); 
 	    		hostitalName = "";
 	    		fullAddr = ""; 
 	    		sido = "";
-	    		sigun = "";
-	    		dong = "";
+	    		sigun = ""; 
+	    		gu = "";
+	    		dong = ""; 
 	    		
 	    	} else {
 	    		$("#inputHospital").hide(); 
+	    		$("#dong").empty();
+ 
 	    		hospitalName = val; 
 	    		
 				for(var i=0; i < existCnt; i++){
-    				
+    				console.log(list[i].BIZPLC_NM + "/ " + hospitalName);  
     				if(list[i].BIZPLC_NM == hospitalName){
     					//console.log("no["+ i +"]");    
     					
     					obj = list[i];
+    					
+    					selectObj = obj;
     					
     					hospitalName = obj.BIZPLC_NM;			//병원명 
     					existYn = obj.BSN_STATE_NM;				//폐업 / 휴업 / 영업중
@@ -592,10 +649,28 @@
     					fullAddr = obj.REFINE_LOTNO_ADDR;
     					addrList = fullAddr.split(" "); 
     					sido = addrList[0];
-    					sigun = addrList[1]; 
-    					dong = addrList[2];  
-						
-    					break;
+    					sigun = addrList[1];
+    					
+    					if(sigun.charAt(2) == "구"){
+    						gu = addrList[2];
+    						dong = addrList[3];
+    					} else {
+    						gu = "";
+    						dong = addrList[2];  
+    					}
+    					   
+    					alert(dong);   
+    					//$("select[id=dong]").val(dong).prop("disabled", true);
+    					getDongList(dong); 
+    					console.log($("select[id=dong]").val());  
+    					//$("#dong").val(dong).prop("disabled", true);
+    					$("#dongCon").show();       
+    					console.log(hospitalName + "/" + existYn + "/" + sickBedCnt + "/" + medStaffCnt + "/" + fullAddr + "/" + sido + "/" + sigun + "/" + dong);   
+    					//$("#dong").val(dong).prop("selected", true);  
+    					//$("#dong").val(dong).prop("disabled", true); 
+    					 
+    					console.log(val); 
+    					break; 
 	    				 
     				} 	
     			}  
@@ -628,6 +703,8 @@
     					
     					obj = list[i];
     					
+    					selectObj = obj; 
+    					
     					hospitalName = obj.BIZPLC_NM;			//병원명 
     					existYn = obj.BSN_STATE_NM;				//폐업 / 휴업 / 영업중
     					sickBedCnt = obj.SICKBD_CNT;			//병상수
@@ -646,6 +723,114 @@
 	    	} 
 	    	//console.log("hospitalName : " + hospitalName); 
 	    }
+	    
+	    function getSigunguList(){
+	    	$("#sigun").empty(); 
+	    	$("#sigun").append("<option value=''>선택</option>");
+	    	  
+	    	var param = {
+	    		sdNm : $("#sido").val()
+	    	}
+	    	
+	    	
+			var splitSg = "";
+
+	    	console.log("getSigunguList()");  
+	    	console.log("선택한 시도 : " + param.sdNm);  
+	    	  
+	    	if(param.sdNm != ""){ 
+				$.ajax({
+		    		url : CONTEXT_PATH + "/sigungu", 
+		    		type: "POST",
+		    		data: param,  
+		    		success: function(data){
+		    			console.log(param.sdNm + "의 시군구 개수 : " + data.length); 
+		    			 
+		    			for(var i = 0; i < data.length; i++){
+		    				sgList[i] = data[i].sgNm;
+ 		    				 
+		    				$("#sigun").append("<option value='"+ sgList[i] +"'>" + sgList[i] +"</option>"); 
+		    			}       
+		    		},
+		    		error: function(data){
+		    			console.log("error");  
+		    		}
+		    	});
+	    	}
+	    }
+	    
+	function getDongList(dong){
+
+			console.log("getDongList()"); 
+			
+	    	dnList = [];
+	    	
+	    	$("#dong").empty(); 
+	    	$("#dong").append("<option value=''>선택</option>");
+	    	 
+	    	//alert($("#sigun").val());
+	    	
+	    	var param = {
+	    		sgNm : $("#sigun").val()
+	    	}; 
+	    	    
+	    	console.log(param); 
+	    	
+	    	if(param.dnNm != ""){ 
+				$.ajax({
+		    		url : CONTEXT_PATH + "/dong", 
+		    		type: "POST",
+		    		data: param,  
+		    		success: function(data){
+		    			console.log(data.length); 
+		    			
+		    			for(var i = 0; i < data.length; i++){
+		    				dnList[i] = data[i].dnNm;  
+		    				
+		    				if(dong == dnList[i]){
+		    					$("#dong").append("<option value='"+ dnList[i] +"' selected='selected'>" + dnList[i] +"</option>");  
+		    				} else {   
+		    					$("#dong").append("<option value='"+ dnList[i] +"'>" + dnList[i] +"</option>"); 
+		    					
+		    				}
+		    				    
+		    				//$("#dong").val(dong).prop("selected", true);   
+	    					//$("#dong").val(dong).prop("disabled", true); 
+		    			}       
+		    		},
+		    		error: function(data){
+		    			console.log("error");  
+		    		}
+		    	});
+	    	}
+	    }
+	
+		function setHospitalList(){
+			var val1 = $("#sido").val();
+			var val2 = $("#sigun").val();
+			var val3 = $("input[name=kind]").val();
+			  
+			console.log("setHospitalList()");
+			//console.log(v1 + " / " + v2 + " / " + v3); 
+			console.log($("input[name=kind]").val());     
+			
+			if(val3 == 1){ 
+				getBigHospitalList();
+			} 
+			if(val3 == 2){
+				getSmallHospitalList();
+			} 
+			 
+			if(val1 == ""){  
+				return;
+			}
+			if(val2 == ""){
+				return;
+			}
+			if(val3 == ""){ 
+				return;
+			}
+		} 
 </script>
 </body>
 </html>

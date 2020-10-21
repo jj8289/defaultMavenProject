@@ -32,10 +32,13 @@ public class LoginAspect {
 		ModelAndView mv = new ModelAndView();
 		
 		if(req != null) {
-			// 로그인 페이지는 세션 체크 제외
-			if(!req.contains("/join")) {
-					if(!req.contains("/login")) {
-					//로그인 세션 체크  
+			System.out.println(req);  
+			if(req.contains("/sigungu") || req.contains("/dong")) { 
+				return jointPoint.proceed(); 
+			} 
+			else if(!req.contains("/join")) { // 회원가입 페이지는 세션 체크 제외 
+				if(!req.contains("/login")) { // 로그인 페이지는 세션 체크 제외 
+					//로그인 세션 체크     
 					HttpSession session = request.getSession();
 					String loginId = (String)session.getAttribute("loginId");
 					if(loginId == null) {
