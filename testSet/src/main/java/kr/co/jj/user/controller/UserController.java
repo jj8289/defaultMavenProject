@@ -139,20 +139,6 @@ public class UserController {
 		return "user/myinfo";
 	}
 	
-	@ResponseBody
-	@PostMapping(value = "/join/joinChk")
-	public String joinChk(UserVO user, Model model) throws Exception{
-		
-		// 아이디 중복 체크
-		boolean chk = idDupleChk(user);
-		if(!chk) { 
-			userService.insertUser(user);
-			
-			return "success";
-		}
-		
-		return "fail";
-	}
 	
 	@ResponseBody
 	@PostMapping(value = "/login/loginChk")

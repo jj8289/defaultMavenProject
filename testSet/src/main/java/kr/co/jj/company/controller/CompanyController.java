@@ -1,9 +1,6 @@
 package kr.co.jj.company.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,7 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import kr.co.jj.common.vo.AddrVO;
 import kr.co.jj.company.service.CompanyService;
 import kr.co.jj.company.vo.AddrDTO;
+import kr.co.jj.company.vo.CompanyVO;
 import kr.co.jj.user.controller.UserController;
+import kr.co.jj.user.vo.UserVO;
 
 @Controller
 public class CompanyController {
@@ -30,8 +29,7 @@ public class CompanyController {
 	
 	@Autowired
 	private CompanyService companyService;
-	//@Autowired
-	//private UserService userService;
+
 	
 	@GetMapping("/company/join")
 	public String join(Model model) {
@@ -58,6 +56,53 @@ public class CompanyController {
 		
 		return "company/join";
 	}
+	
+	@ResponseBody
+	@PostMapping(value = "/join/joinChk")
+	public String joinChk(CompanyVO company, Model model) throws Exception{
+		
+		// 아이디 중복 체크
+		boolean chk = idDupleChk(company);
+		if(!chk) { 
+			
+			//userService.insertUser(user);
+			 
+			return "success";
+		}
+		
+		return "fail";
+	}
+	
+	// 아이디 중복 체크
+	public boolean idDupleChk(CompanyVO company) throws Exception {
+		
+		int chk = companyService.selectCompanyCountByManagerId(company);
+		
+		if(chk == 0) {
+			return false;
+		}
+		return true;
+	}
+	
+	// 병원 중복 체크
+	public boolean companyChk(CompanyVO company) throws Exception {
+		
+		int chk = companyService.selectCompany(company);
+		
+		if(chk == 1) {
+			return true;
+		}
+		return false;
+	}
+	
+	public CompanyVO getCompany(String mgId) throws Exception {
+		
+		CompanyVO company = new CompanyVO();
+		company.setManagerId(mgId);
+		
+		return companyService.selectCompanyByManagerId(company);
+	}
+	
 	
 	public void parsingXML() {
 		int PRETTY_PRINT_INDENT_FACTOR = 4;

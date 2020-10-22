@@ -24,6 +24,25 @@
 		 WHERE  SG_NM LIKE '%${sgNm}%'
 	</select>
 	 
+ 	<select id="selectCompanyCountByManagerId" parameterType="CompanyVO" resultType="int">
+		SELECT COUNT(*)
+		  FROM TB_COMPANY
+		 WHERE MANAGER_ID = #{managerId}
+	</select>
+
+	<select id="selectCompany" parameterType="CompanyVO" resultType="int">
+		SELECT COUNT(*)
+		  FROM TB_COMPANY
+		 WHERE MANAGER_ID = #{managerId}
+		   and MANAGER_PW = #{managerPw}
+	</select>
+	
+	<select id="selectCompanyByManagerId" parameterType="CompanyVO" resultType="CompanyVO">
+		SELECT *
+		  FROM TB_COMPANY
+		 WHERE MANAGER_ID = #{managerId}
+	</select>
+	 
 	<!-- <select id="selectSgList" parameterType="AddrDTO" resultType="">
 		SELECT  A.ROWNUM
 				, A.SG_NM

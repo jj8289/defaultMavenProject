@@ -9,6 +9,7 @@ import kr.co.jj.common.vo.AddrVO;
 import kr.co.jj.company.dao.CompanyDAO;
 import kr.co.jj.company.service.CompanyService;
 import kr.co.jj.company.vo.AddrDTO;
+import kr.co.jj.company.vo.CompanyVO;
 
 @Service
 public class CompanyServiceImpl implements CompanyService{
@@ -29,6 +30,21 @@ public class CompanyServiceImpl implements CompanyService{
 	@Override
 	public List<AddrVO> selectDnList(AddrDTO dto) throws Exception {
 		return dao.selectDnList(dto);
+	}
+
+	@Override
+	public int selectCompanyCountByManagerId(CompanyVO vo) throws Exception {
+		return dao.selectCompanyCountByManagerId(vo);
+	}
+
+	@Override
+	public int selectCompany(CompanyVO vo) throws Exception {
+		return dao.selectCompany(vo);
+	}
+
+	@Override
+	public CompanyVO selectCompanyByManagerId(CompanyVO vo) throws Exception {
+		return dao.selectCompanyByManagerId(vo);
 	}
 	
 }

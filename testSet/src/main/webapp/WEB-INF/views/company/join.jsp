@@ -139,8 +139,9 @@
 						<td class="sigungu">
 							<!-- <input size="70" type="text" name="sigungu" id="sigungu"> -->
 							<label class="item">시도</label>  
-							<select id="sido" class="item"  style="width: 100px;" onchange="getSigunguList()">  
-								<option value="">선택</option>  
+							<!-- <select id="sido" class="item"  style="width: 100px;" onchange="setting(); getSigunguList();">   -->
+							<select id="sido" class="item"  style="width: 100px;" onchange="setting();">  
+								<option value="">선택</option>   
 								<%-- <c:set var="i" value="0" />
 									<c:forEach items="${sdList }" var="sd"> 
 										<option value="${i }">${sdList[i].sdNm }</option>   
@@ -150,10 +151,11 @@
 							</select>  
 							<label class="item">시군구</label>  
 							<!-- <select id="sigun" class="item"  style="width: 125px;" onchange="getDongList()"> -->    
-							<select id="sigun" class="item"  style="width: 125px;" onchange="changeSigungu()">    
-								<option value="">선택</option> 
+							<!-- <select id="sigun" class="item"  style="width: 125px;" onchange="setting(); changeSigungu();"> -->
+							<select id="sigun" class="item"  style="width: 125px;" onchange="setting();">    
+								<!-- <option value="">선택</option>  -->  
 								<%-- <option value="${dto.sgNm }">${dto.sgNm }</option>   --%>
-							</select>    
+							</select>     
 							<div id="dongCon" style="display: flex; justify-content: middle;"> 
 								<label class="item">동읍면</label>   
 								<select id="dong" name="dong" class="item" style="width: 95px;"></select>  
@@ -173,21 +175,21 @@
 						<td id="selectList">
 							<!-- <div class="item"><button id="searchHospial" value="찾기" type="button" onclick="getBigHospitalList()" class="btnSearch">찾기</button></div> -->
 							<div id="bigList" class="item" >
-								<select id="bigListSelect" onchange="changeBigList()" onmousedown="getBigHospitalList()">
-									<option value="">선택</option>
-									<option value="no">목록에 없음</option>
-								</select>   
+								<select id="bigListSelect" name="bigListSelect" onchange="changeBigList()" onmousedown="getBigHospitalList()">
+									<!-- <option value="">선택</option> -->
+									<option id="no1" value="no">목록에 없음</option>
+								</select>    
 							</div>
 							<div id="smallList" class="item">
 								<select id="smallListSelect" onchange="changeSmallList()" onmousedown="getSmallHospitalList()">
-									<option value="">선택</option>
-									<option value="no">목록에 없음</option>
+							<!-- 		<option value="">선택</option> -->
+									<option id="no2" value="no">목록에 없음</option>
 								</select> 
-							</div>
+							</div> 
 							<div class="item"><input type="text" name="inputHospital" id="inputHospital"></div>
 						</td> 
 					</tr>  
-					<tr>
+					<tr> 
 						<td bgcolor="lightgrey" align="center">병원 주소</td> 
 						<td><input size="70" type="text" name="addr" id="addr"></td>
 					</tr>
@@ -256,14 +258,71 @@
 		$("#dongCon").hide();
 		$("#telTd").hide();
 		
+		setting(); 
+		
 		function goHome() {
 			location.href = CONTEXT_PATH + "/";
 		} 
 		 
-		function joinChk() {  
-			//alert(sido + " | " + sigun + " | " + dong);  
+		$('#bigListSelect').focusout(function() {
+		    // input 창밖으로 focus가 나갈때  event
+		    $('#smallListSelect').empty();
+		    showInputHospital(); 
+		    
+		    if($("#bigListSelect").val() == "no"){
+		    	$("#inputHospital").val("");   
+	    		$("#inputHospital").show();  
+	    		$("#addr").val("");  
+	    		$("#tel").val(""); 
+	    		$("#dong").empty();
+	    		$("#dongCon").hide(); 
+	    		
+	    		hostitalName = "";
+	    		fullAddr = ""; 
+	    		addr = ""; 
+	    		sido = ""; 
+	    		sigun = ""; 
+	    		gu = "";
+	    		dong = "";   
+	    		tel = ""; 
+	    		
+		    } else { 
+		    	$("#inputHospital").val("");   
+	    		$("#inputHospital").hide();  
+		    }
+		});  
+		
+		$('#smallListSelect').focusout(function() {
+		    // input 창밖으로 focus가 나갈때  event
+		    $('#bigListSelect').empty();
+			showInputHospital();
 			
+			if($("#smallListSelect").val() == "no"){
+		    	$("#inputHospital").val("");   
+	    		$("#inputHospital").show();  
+	    		$("#addr").val("");  
+	    		$("#tel").val(""); 
+	    		$("#dong").empty();
+	    		$("#dongCon").hide(); 
+
+	    		hostitalName = "";
+	    		fullAddr = ""; 
+	    		addr = ""; 
+	    		sido = ""; 
+	    		sigun = ""; 
+	    		gu = "";
+	    		dong = "";   
+	    		tel = ""; 
+	    		 
+		    } else { 
+		    	$("#inputHospital").val("");   
+	    		$("#inputHospital").hide();  
+		    }
+		});
+		
+		function joinChk() {  
 	        var frm = document.joinForm;
+	        
 	        if (!frm.managerId.value) { //아이디를 입력하지 않으면.
 	            alert("아이디를 입력하세요.");
 	            frm.managerId.focus();
@@ -280,10 +339,6 @@
 	            alert("핸드폰을 입력하세요.");
 	            frm.phone.focus(); 
 	            return;
-	        } else if (!frm.addr.value) { //패스워드를 입력하지 않으면.
-	            alert("주소를 입력하세요.");
-	            frm.addr.focus(); 
-	            return;
 	        } else if (!frm.email.value) { //패스워드를 입력하지 않으면.
 	            alert("이메일을 입력하세요.");
 	            frm.email.focus(); 
@@ -295,8 +350,12 @@
 	            alert("시군구를 선택하세요.");
 	            return; 
 	        }  else if (!frm.dong.value) { //패스워드를 입력하지 않으면.
-	            alert("동읍면을 선택하세요.");
+	            alert("병원을 선택하세요."); 
 	            return; 
+	        }  else if (!frm.addr.value) { //패스워드를 입력하지 않으면.
+	            alert("주소를 입력하세요.");
+	            frm.addr.focus(); 
+	            return;
 	        }  
 	         
 	        if(frm.kind.value == ""){
@@ -393,21 +452,23 @@
 	    		  managerId : $("#managerId").val()
 	    		, managerPw : $("#managerPw").val()
 	    		, managerNm : $("#managerNm").val()
-	    		, managerPhone : $("#phone").val()
+	    		, phone : $("#phone").val()
 	    		, kind : $('input[name=kind]:checked').val()
-	    		, hospitalNm : hospitalName
+	    		, companyNm : hospitalName
 	    		, sido : sido
 	    		, sigungu : sigun
 	    		, dong : dong 
 	    		, addr : fullAddr
 	    		, tel : tel
-	    		, managerEmail : $("#email").val() 
+	    		, email : $("#email").val() 
 	    		, intro : $("#intro").val()
+	    		, lat : lat
+	    		, logt : logt
 	    	};
-	    	
+	    	  
 	    	console.log(formData); 
 	    	
-	    	/*
+	    	
 	    	$.ajax({
 	    		url : CONTEXT_PATH + "/join/joinChk", 
 	    		type: "POST",  
@@ -416,7 +477,7 @@
 	    			console.log("join");  
 	    			
 	    			if(data == 'success'){
-	        			location.href = CONTEXT_PATH + "/";  
+	        			//location.href = CONTEXT_PATH + "/";  
 	    			} else {  
 	    				alert("ID 또는 PW를 확인해주세요.");
 	    				location.href = CONTEXT_PATH + "/join";
@@ -426,7 +487,7 @@
 	    		   		location.href = CONTEXT_PATH + "/join";
 	    		   		console.log("error");
 	    		}
-	    	});   */
+	    	});   
 	    }
 	    
 	    
@@ -440,8 +501,8 @@
 			var v5 = "";					// XX시 
 			
 			
-			if(v2 == "" || v1 == ""){
-				return;
+			if(v2 == "선택" || v1 == ""){
+				return; 
 			} 
 			
 			console.log("getBigHospitalList()"); 
@@ -452,7 +513,7 @@
 				v4 = v2.split(" ")[0]; 
 			} 
 			 
-			if(v4 == ""){
+			if(v4 == ""){ 
     			v5 = v2;
     		} else { 
     			v5 = v4;   
@@ -468,10 +529,11 @@
 	    			existCnt = 0; 							// 영업중인 병원만 +1
 	    			console.log(list); 
 	    			$("#bigListSelect").empty(); 
-	    			$("#bigListSelect").append("<option value=''>선택</option>"); 
-	    			$("#bigListSelect").append("<option value='no'>목록에 없음</option>");  
+	    			//$("#bigListSelect").append("<option value=''>선택</option>"); 
+	    			$("#bigListSelect").append("<option id='no1' value='no'>목록에 없음</option>");
+	    			 
 	    			for(var i=0; i < totCnt; i++){
-	    				 
+	    			 	 
 	    				if(list[i]){ 
 		    				hospitalName = list[i].BIZPLC_NM;			//병원명
 		    				existYn = list[i].BSN_STATE_NM;				//null : 폐업 , !null : 영업
@@ -526,6 +588,9 @@
 	    				} 
 	    			}   
 	    			
+	    			
+	    			$("#bigListSelect").focus(); 
+	    			
 	    			console.log("totCnt : " + totCnt);  
 	    			console.log("existCnt : " + existCnt); 
 	    			console.log("success!!");   
@@ -546,7 +611,7 @@
 			var v4 = "";					// 고양시 덕양구 같이 시 구로 되어 있는 시군구
 			var v5 = "";					// XX시
 			
-			if(v2 == "" || v1 == ""){
+			if(v2 == "선택" || v1 == ""){
 				return;
 			} 
 			
@@ -588,9 +653,9 @@
  	 				console.log(list); 
  	 				
  	 				$("#smallListSelect").empty(); 
- 					$("#smallListSelect").append("<option value=''>선택</option>"); 
- 					$("#smallListSelect").append("<option value='no'>목록에 없음</option>");
- 	 				
+ 					//$("#smallListSelect").append("<option value=''>선택</option>"); 
+ 					$("#smallListSelect").append("<option id='no2' value='no'>목록에 없음</option>");
+ 					 
 	    			for(var i=0; i < totCnt; i++){
 	    				
 	    				if(list[i]){
@@ -641,6 +706,8 @@
 	    				} 	
 	    			}     
 	    			
+	    			$("#smallListSelect").focus(); 
+	    			
 	    			console.log("existCnt : " + existCnt);
 	    			console.log("success!!");  
 	    			  
@@ -656,14 +723,23 @@
 	    function whatkind(){ 
 	    	var val = $('input[name=kind]:checked').val();
 	    	
-	    	console.log("병원? 의원? : " + val); 
+	    	$("#bigListSelect").empty();
+	    	$("#smallListSelect").empty(); 
+	    	$("#bigListSelect").append("<option>선택</option>");
+	    	$("#smallListSelect").append("<option>선택</option>");  
+	    	
+	    	$("#dong").empty();
+	    	$("#dongCon").hide();  
+	    	
+	    	dong = "";
 	    	
 	    	$("#addr").val("");  
 	    	$("#inputHospital").hide(); 
-	    	 
-	    	if(val == "1"){
+	    	
+	    	if(val == "1"){ 
 	    		$("#bigList").show();
 	    		$("#smallList").hide();
+	    		
 	    		getBigHospitalList();
 	    	} else {
 	    		$("#bigList").hide(); 
@@ -672,20 +748,22 @@
 	    		$("#tel").val("");
 	    		tel = "";
 		    	$("#telTd").hide();  
-		    	 
+		    	   
 	    		getSmallHospitalList(); 
 	    	}
 	    } 
 	    
 	    function changeBigList(){
+	    	//$("#bigListSelect").val("no").prop("selected", true); 
 	    	console.log("changeBigList()");
-			var val = $("select[id=bigListSelect]").val();
-			var obj = {};  
-			
-			console.log("병원명 : " + val); 
-			
-			if(val == "no"){ 
-	    		$("#inputHospital").show(); 
+			var val = $("select[name=bigListSelect]").val();
+			var obj = {};    
+			  
+			console.log( val ); 
+			  
+			if(val == "no"){   
+				$("#inputHospital").val("");   
+	    		$("#inputHospital").show();  
 	    		hostitalName = "";
 	    		fullAddr = ""; 
 	    		sido = "";
@@ -701,7 +779,7 @@
 	    		
 				for(var i=0; i < totCnt; i++){
     				//console.log(list[i].BIZPLC_NM + "/ " + hospitalName);
-    				//console.log(list[i].BIZPLC_NM);   
+    				//console.log(list[i].BIZPLC_NM);    
     				if(list[i].BIZPLC_NM == hospitalName){ 
     					//console.log("no["+ i +"]");    
     					
@@ -766,6 +844,8 @@
 	    	console.log("병원명 : " + val); 
 	    	
 	    	if(val == "no"){ 
+	    		$("#addr").val(""); 
+ 	    		$("#inputHospital").val(""); 
 	    		$("#inputHospital").show(); 
 	    		hostitalName = "";
 	    		fullAddr = ""; 
@@ -830,24 +910,45 @@
 	    }
 	    
 	    function getSigunguList(){
-	    	$("#sigun").empty(); 
+	    	/* $("#sigun").empty(); 
+	    	$("#sigun").append("<option val=''>선택</option>");
+	    	
 	    	$("#dong").empty(); 
 	    	$("#dongCon").hide(); 
 	    	
-	    	$("#sigun").append("<option value=''>선택</option>");
-
+	    	//$("#sigun").append("<option value=''>선택</option>");
+ 
 	    	$("#addr").val("");
 	    	$("#tel").val("");
 	    	$("#telTd").hide(); 
 	    	
 	    	$("#bigListSelect").empty();
 	    	$("#smallListSelect").empty();  
-	    	$("#bigListSelect").append("<option value=''>선택</option>"); 
-			$("#smallListSelect").append("<option value=''>선택</option>"); 
-	    	$("#bigListSelect").val("").prop("selected", true); 
-	    	$("#smallListSelect").val("").prop("selected", true); 
+	    	$("#bigList").hide();
+	    	$("#smallList").hide();  
+	    	
+	    	$("#inputHospital").val(""); 
+	    	$("#inputHospital").hide();
 	    	 
-	    	var param = { 
+	    	$('#sigun').focusout(function() {
+	    		if($('input[name=kind]:checked').val() == '1'){
+		    		$("#bigListSelect").append("<option val=''>선택</option>");
+		    		$("#bigListSelect").show(); 
+		    		$("#bigList").show(); 
+			    	
+		    	} else if($('input[name=kind]:checked').val() == '2'){
+		    		$("#smallListSelect").append("<option val=''>선택</option>");
+		    		$("#smallListSelect").show();
+		    		$("#smallList").show(); 
+		    	} 
+	    	}); */
+	    	
+	    	/* $("#bigListSelect").append("<option value=''>선택</option>"); 
+			$("#smallListSelect").append("<option value=''>선택</option>");  
+	    	$("#bigListSelect").val("").prop("selected", true); 
+	    	$("#smallListSelect").val("").prop("selected", true); */
+	    	  
+	    	var param = {  
 	    		sdNm : $("#sido").val()
 	    	}
 	    	
@@ -855,8 +956,8 @@
 	    	
 			var splitSg = "";
 
-	    	console.log("getSigunguList()");  
-	    	console.log("선택한 시도 : " + param.sdNm);  
+	    	//console.log("getSigunguList()");  
+	    	//console.log("선택한 시도 : " + param.sdNm);  
 	    	  
 	    	if(param.sdNm != ""){ 
 				$.ajax({
@@ -875,7 +976,7 @@
 		    		error: function(data){
 		    			console.log("error");  
 		    		}
-		    	});
+		    	}); 
 	    	}
 	    }
 	    
@@ -975,10 +1076,125 @@
 	    	$("#tel").val("");
 	    	$("#telTd").hide(); 
 	    	
-	    	$("#bigListSelect").val("").prop("selected", true);
-	    	$("#smallListSelect").val("").prop("selected", true); 
+	    	$("#bigListSelect").empty();
+	    	$("#smallListSelect").empty(); 
+	    	
+	    	$("#inputHospital").val("");
+	    	$("#inputHospital").hide();    
+	    	 
+	    	$('#sigun').focusout(function() {
+	    		if($('input[name=kind]:checked').val() == '1'){
+		    		$("#bigListSelect").append("<option val=''>선택</option>");
+		    		$("#bigListSelect").show(); 
+		    	} else if($('input[name=kind]:checked').val() == '2'){
+		    		$("#smallListSelect").append("<option val=''>선택</option>");
+		    		$("#smallListSelect").show();
+		    	} 
+	    	}); 
+	    	
+	    	//$("#bigListSelect").val("").prop("selected", true);
+	    	//$("#smallListSelect").val("").prop("selected", true); 
 		}
 		
+		function showInputHospital(){
+			if($("#bigListSelect").val() == "no"){
+		    	$("#inputHospital").val("");   
+	    		$("#inputHospital").show();  
+	    		$("#addr").val("");  
+	    		$("#tel").val(""); 
+	    		/* hostitalName = "";
+	    		fullAddr = ""; 
+	    		addr = "";
+	    		sido = ""; 
+	    		sigun = ""; 
+	    		gu = "";
+	    		dong = "";   
+	    		tel = "";  */
+		    } else { 
+		    	$("#inputHospital").val("");   
+	    		$("#inputHospital").hide();  
+		    }
+			
+			if($("#smallListSelect").val() == "no"){
+		    	$("#inputHospital").val("");   
+	    		$("#inputHospital").show();  
+	    		$("#addr").val("");  
+	    		$("#tel").val(""); 
+	    		/* hostitalName = "";
+	    		fullAddr = ""; 
+	    		addr = "";
+	    		sido = "";  
+	    		sigun = "";  
+	    		gu = "";
+	    		dong = "";   
+	    		tel = "";  */
+		    } else {  
+		    	$("#inputHospital").val("");   
+	    		$("#inputHospital").hide();  
+		    }
+		}
+		
+		// 조건 따라 setting
+		function setting(){
+			var sido = $("select[id=sido]").val();
+			var sigun = $("select[id=sigun]").val();         //""
+			var dong = $("select[id=dong]").val();			 //null	
+			var kind = $("input[name=kind]:checked").val();  //undefined 
+			
+			console.log("setting");
+			
+			if(sido == ""){
+				console.log("sido 없다"); 
+				$("select[id=sigun]").val("");
+				$("select[id=sigun]").empty();
+				$("select[id=sigun]").append("<option value=''>선택</option>");  
+			} else {
+				$("select[id=sigun]").append("<option value=''>선택</option>");  
+				//getSigunguList(); 
+				
+				var param = {  
+		    		sdNm : sido
+		    	};
+				
+				$.ajax({
+		    		url : CONTEXT_PATH + "/sigungu", 
+		    		type: "POST",
+		    		data: param,  
+		    		success: function(data){
+		    			console.log(param.sdNm + "의 시군구 개수 : " + data.length); 
+		    			 
+		    			for(var i = 0; i < data.length; i++){
+		    				sgList[i] = data[i].sgNm;
+ 		    				 
+		    				$("#sigun").append("<option value='"+ sgList[i] +"'>" + sgList[i] +"</option>"); 
+		    			}       
+		    		},
+		    		error: function(data){
+		    			console.log("error");  
+		    		}
+		    	}); 
+				
+				if(sigun != "" && sigun != null){ 
+					
+				} else {
+					$("select[id=sigun]").empty();
+					$("select[id=sigun]").val("");  
+					console.log("sigun 없다"); 
+				}
+			}   
+			
+			if(dong == null){ 
+				console.log("dong 없다"); 
+			} 
+			if(kind == undefined){
+				console.log("kind 없다"); 
+			}  
+			
+			console.log(sido + " | " + sigun + " | " + dong + " | " + kind);
+			
+			
+				
+		}  
 </script>
 </body>
 </html>
