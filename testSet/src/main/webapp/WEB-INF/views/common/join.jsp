@@ -4,7 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<jsp:include page="common.jsp" />     
+<title>회원가입</title> 
 <style type="text/css">
 body {
 	margin: 0; 

@@ -3,12 +3,13 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
-<head>
+<head> 
+	<jsp:include page="../common/common.jsp" />    
 	<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
 	<meta charset="UTF-8">
-	<title>회원가입</title>
+	<title>회원가입</title> 
 <style type="text/css">
-	body {
+	body { 
 		margin: 0; 
 		padding: 0;
 	}
@@ -22,12 +23,12 @@
 	}
 	
 	.minicon {
-		width: 900px;
-		margin: 0 auto;
-	}  
+		width: 725px;
+		margin: 0 auto; 
+	}   
 	
 	.title { 
-		width: 100%;
+		width: 100%; 
 		margin: 0;
 		height: 45px;
 		font-size: 30px;
@@ -102,7 +103,7 @@
 		<div class="temp"></div>
 		<div class="minicon"> 
 			<form id="joinForm" name="joinForm">
-				https://data.gg.go.kr/portal/data/service/selectServicePage.do?page=1&rows=10&sortColumn=&sortDirection=&infId=6T98794V0223GQQ9O1P42484027&infSeq=3
+			<!-- 	https://data.gg.go.kr/portal/data/service/selectServicePage.do?page=1&rows=10&sortColumn=&sortDirection=&infId=6T98794V0223GQQ9O1P42484027&infSeq=3
 				병원 api (시 이름으로 가능)
 				https://data.gg.go.kr/portal/data/service/selectServicePage.do?page=1&rows=10&sortColumn=&sortDirection=&infId=9091L96FYGLU9J9I8UC52153092&infSeq=3&order=&loc=&BIZPLC_NM=&BSN_STATE_NM=&REFINE_ROADNM_ADDR=
 				의원 api (시 이름으로 가능)
@@ -111,11 +112,11 @@
 				
 				api 이용 시에는 
 				req : SIGUN_CD(시군코드) 또는 SIGUN_NM(시군명)
-				response : SIGUN_CD(시군코드), SIGUN_NM(시군명), BIZPLC_NM(사업장명), BSN_STATE_NM(영업중인지), REFINE_LOTNO_ADDR(주소), WGS84위도, WGS84경도, TOT_PSN_CNT(총인원수), TREAT_SBJECT_CONT(진료과목내용) 등등 가져올 수 있음. 
+				response : SIGUN_CD(시군코드), SIGUN_NM(시군명), BIZPLC_NM(사업장명), BSN_STATE_NM(영업중인지), REFINE_LOTNO_ADDR(주소), WGS84위도, WGS84경도, TOT_PSN_CNT(총인원수), TREAT_SBJECT_CONT(진료과목내용) 등등 가져올 수 있음. --> 
 				<table cellspacing="3"> 
 				<colgroup> 
    					<col width="20%"/>  
-    				<col width=""/>  
+    				<col width=""/>    
  				</colgroup>   
 					<tr>  
 						<td bgcolor="lightgrey" align="center">관리자 아이디</td>	
@@ -149,7 +150,7 @@
 							</select>  
 							<label class="item">시군구</label>  
 							<!-- <select id="sigun" class="item"  style="width: 125px;" onchange="getDongList()"> -->    
-							<select id="sigun" class="item"  style="width: 125px;">    
+							<select id="sigun" class="item"  style="width: 125px;" onchange="changeSigungu()">    
 								<option value="">선택</option> 
 								<%-- <option value="${dto.sgNm }">${dto.sgNm }</option>   --%>
 							</select>    
@@ -178,7 +179,7 @@
 								</select>   
 							</div>
 							<div id="smallList" class="item">
-								<select id="smallListSelect" onchange="selectSmallList()">
+								<select id="smallListSelect" onchange="changeSmallList()" onmousedown="getSmallHospitalList()">
 									<option value="">선택</option>
 									<option value="no">목록에 없음</option>
 								</select> 
@@ -189,6 +190,10 @@
 					<tr>
 						<td bgcolor="lightgrey" align="center">병원 주소</td> 
 						<td><input size="70" type="text" name="addr" id="addr"></td>
+					</tr>
+					<tr id="telTd">
+						<td bgcolor="lightgrey" align="center">병원 전화번호</td> 
+						<td><input size="70" type="text" name="tel" id="tel"></td> 
 					</tr>
 					<tr> 
 						<td bgcolor="lightgrey" align="center">관리자 이메일</td>
@@ -204,6 +209,8 @@
 					<button id="join" value="가입하기" type="button" onclick="joinChk()" class="btn">가입하기</button> 
 					<input type="reset" value="리셋"> 
 					<input type="button" value="홈으로" onclick="goHome()">
+					<input type='hidden' id='lat'>
+					<input type='hidden' id='logt'>
 				</p> 
 			</form>
 		</div>  
@@ -246,14 +253,15 @@
 		$("#bigList").hide();
 		$("#smallList").hide(); 
 		$("#inputHospital").hide();   
-		$("#dongCon").hide();   
+		$("#dongCon").hide();
+		$("#telTd").hide();
 		
 		function goHome() {
 			location.href = CONTEXT_PATH + "/";
 		} 
 		 
 		function joinChk() {  
-			alert(sido + " | " + sigun + " | " + dong);  
+			//alert(sido + " | " + sigun + " | " + dong);  
 			
 	        var frm = document.joinForm;
 	        if (!frm.managerId.value) { //아이디를 입력하지 않으면.
@@ -392,6 +400,7 @@
 	    		, sigungu : sigun
 	    		, dong : dong 
 	    		, addr : fullAddr
+	    		, tel : tel
 	    		, managerEmail : $("#email").val() 
 	    		, intro : $("#intro").val()
 	    	};
@@ -457,7 +466,7 @@
 	    			totCnt = data.GgHosptlM[0].head[0].list_total_count;
 	    			list = data.GgHosptlM[1].row;
 	    			existCnt = 0; 							// 영업중인 병원만 +1
-	    			
+	    			console.log(list); 
 	    			$("#bigListSelect").empty(); 
 	    			$("#bigListSelect").append("<option value=''>선택</option>"); 
 	    			$("#bigListSelect").append("<option value='no'>목록에 없음</option>");  
@@ -472,7 +481,9 @@
 		    				addrList = fullAddr.split(" "); 
 		    				sido = addrList[0];
 		    				tel = list[i].LOCPLC_FACLT_TELNO;			//전화번호
-		    				
+		    				lat = list[i].REFINE_WGS84_LAT;
+		    				logt = list[i].REFINE_WGS84_LOGT;
+		
 		    				if(v4 != ""){
 		    					sigun = addrList[1];
 		    					gu = addrList[2];
@@ -529,6 +540,29 @@
 	    }
 	    
 	    function getSmallHospitalList(){
+	    	var v1 = $("#sido").val();
+			var v2 = $("#sigun").val();
+			
+			var v4 = "";					// 고양시 덕양구 같이 시 구로 되어 있는 시군구
+			var v5 = "";					// XX시
+			
+			if(v2 == "" || v1 == ""){
+				return;
+			} 
+			
+			console.log("getSmallHospitalList()"); 
+			console.log(v1 + "/" + v2); 
+			console.log("v2.length : " + v2.length);
+			
+			if(v2.length > 4){		// 시군구 : 시군 구 
+				v4 = v2.split(" ")[0]; 
+			} 
+			
+			if(v4 == ""){
+				v5 = v2;
+			} else { 
+				v5 = v4;   
+			}
 	    	/* var hospitalName = "";		// 병원명					BIZPLC_NM
 			var deleteDate = ""; 		// 폐업일 					BSN_STATE_NM 폐업 / 휴업 / 영업중
 	     	var sickBedCnt = "";		// 병상수					SICKBD_CNT
@@ -543,41 +577,67 @@
 	     	var logt = "";				// WGS84경도 				REFINE_WGS84_LOGT */
 	     	
 	    	$.ajax({
-	    		url : "https://openapi.gg.go.kr/PrivateHospital?KEY=1efad1ae8d5643228c419435ee3aec8e&Type=json&pIndex=1&pSize=100&SIGUN_CD=41570", 
+	    		url : "https://openapi.gg.go.kr/PrivateHospital?KEY=1efad1ae8d5643228c419435ee3aec8e&Type=json&pIndex=1&pSize=100&SIGUN_NM="+v5, 
 	    		type: "GET",
 	    		dataType: 'jsonp',
-	    		success: function(data){  
+	    		success: function(data){   
 	    			totCnt = data.PrivateHospital[0].head[0].list_total_count;
 	    			list = data.PrivateHospital[1].row;
+	    			existCnt = 0;
 	    			
-	    			console.log("totCnt : " + totCnt);   
  	 				console.log(list); 
  	 				
- 	 				existCnt = 0;
- 	 				 
+ 	 				$("#smallListSelect").empty(); 
+ 					$("#smallListSelect").append("<option value=''>선택</option>"); 
+ 					$("#smallListSelect").append("<option value='no'>목록에 없음</option>");
+ 	 				
 	    			for(var i=0; i < totCnt; i++){
 	    				
 	    				if(list[i]){
-	    					console.log("no["+ i +"]");    
 	    					 
 		    				hospitalName = list[i].BIZPLC_NM;			//병원명 
 		    				existYn = list[i].BSN_STATE_NM;				//폐업 / 휴업 / 영업중
 		    				sickBedCnt = list[i].SICKBD_CNT;			//병상수
 		    				medStaffCnt = list[i].MEDSTAF_CNT;			//의료인수
-// 		    				fullAddr = list[i].REFINE_LOTNO_ADDR;
-// 		    				addr = list[i].REFINE_LOTNO_ADDR.substring(0,11);			//주소(시도/시군구/동읍면 ..) 
-// 		    				sido = addr.substring(0,3);
-// 		    				sigun = addr.substring(4,7);
-// 		    				dong = addr.substring(8,11);  
+		    				fullAddr = list[i].REFINE_LOTNO_ADDR;
+							addrList = fullAddr.split(" "); 
+							sido = addrList[0];
+		    				/* addr = list[i].REFINE_LOTNO_ADDR.substring(0,11);			//주소(시도/시군구/동읍면 ..) 
+		    				sido = addr.substring(0,3);
+		    				sigun = addr.substring(4,7);
+		    				dong = addr.substring(8,11);  */ 
 		    				   
 		    				//console.log(list[i]);     //병원 전체 정보    
 		    				
-		    				if(existYn == "영업중"){
+							if(v4 != ""){
+								sigun = addrList[1];
+								gu = addrList[2];
+								dong = addrList[3];
+								
+								if(existYn == "영업중" && sigun + " " + gu == v2){ 
+									$("#smallListSelect").append("<option>"+ hospitalName +"</option>"); 
+									  
+									existCnt++;   
+								} 
+							} else {
+								sigun = addrList[1];
+								gu = "";
+								dong = addrList[2];
+								 
+								if(existYn == "영업중" && sigun == v2){
+									$("#smallListSelect").append("<option>"+ hospitalName +"</option>"); 
+									//console.log(hospitalName + " / " + existYn + " / " + "("+ sido + "/" + sigun + "/" + dong +")"); 
+									 
+									existCnt++;  
+								}
+							}
+		    				
+		    				/* if(existYn == "영업중"){
 		    					$("#smallListSelect").append("<option>"+ hospitalName +"</option>");
 		    					console.log(hospitalName + " / " + existYn + " / " + sickBedCnt + " / " + medStaffCnt + " / " + addr + "("+ sido + "/" + sigun + "/" + dong +")");
 		    					
 		    					existCnt++; 
-		    				}
+		    				} */
 	    				} 	
 	    			}     
 	    			
@@ -591,13 +651,14 @@
     		   		//location.href = CONTEXT_PATH + "/join";
 	    		}
 	    	});
-	    }
+	    } 
 	    
 	    function whatkind(){ 
 	    	var val = $('input[name=kind]:checked').val();
 	    	
 	    	console.log("병원? 의원? : " + val); 
 	    	
+	    	$("#addr").val("");  
 	    	$("#inputHospital").hide(); 
 	    	 
 	    	if(val == "1"){
@@ -606,7 +667,12 @@
 	    		getBigHospitalList();
 	    	} else {
 	    		$("#bigList").hide(); 
-	    		$("#smallList").show(); 
+	    		$("#smallList").show();  
+	    		 
+	    		$("#tel").val("");
+	    		tel = "";
+		    	$("#telTd").hide();  
+		    	 
 	    		getSmallHospitalList(); 
 	    	}
 	    } 
@@ -633,13 +699,13 @@
  
 	    		hospitalName = val; 
 	    		
-				for(var i=0; i < existCnt; i++){
-    				console.log(list[i].BIZPLC_NM + "/ " + hospitalName);  
-    				if(list[i].BIZPLC_NM == hospitalName){
+				for(var i=0; i < totCnt; i++){
+    				//console.log(list[i].BIZPLC_NM + "/ " + hospitalName);
+    				//console.log(list[i].BIZPLC_NM);   
+    				if(list[i].BIZPLC_NM == hospitalName){ 
     					//console.log("no["+ i +"]");    
     					
     					obj = list[i];
-    					
     					selectObj = obj;
     					
     					hospitalName = obj.BIZPLC_NM;			//병원명 
@@ -650,25 +716,37 @@
     					addrList = fullAddr.split(" "); 
     					sido = addrList[0];
     					sigun = addrList[1];
+    					dong = addrList[2];
+    					lat = obj.REFINE_WGS84_LAT;
+    					logt = obj.REFINE_WGS84_LOGT;
+    					tel = obj.LOCPLC_FACLT_TELNO;
+    						
+    					console.log(lat + " | " + logt); 
     					
-    					if(sigun.charAt(2) == "구"){
+    					if(dong.includes('구') && !dong.includes('동')){  
     						gu = addrList[2];
     						dong = addrList[3];
     					} else {
     						gu = "";
-    						dong = addrList[2];  
-    					}
-    					   
-    					alert(dong);   
+    					} 
+    					console.log(dong);    
+    					//alert(dong);   
     					//$("select[id=dong]").val(dong).prop("disabled", true);
     					getDongList(dong); 
     					console.log($("select[id=dong]").val());  
+    					console.log(hospitalName + "/" + existYn + "/" + sickBedCnt + "/" + medStaffCnt + "/" + fullAddr + "/" + sido + "/" + sigun + "/" + dong);   
     					//$("#dong").val(dong).prop("disabled", true);
     					$("#dongCon").show();       
     					console.log(hospitalName + "/" + existYn + "/" + sickBedCnt + "/" + medStaffCnt + "/" + fullAddr + "/" + sido + "/" + sigun + "/" + dong);   
     					//$("#dong").val(dong).prop("selected", true);  
     					//$("#dong").val(dong).prop("disabled", true); 
+    					
+    					$("#addr").val(fullAddr);    
     					 
+    					$("#tel").empty(); 
+    					$("#tel").val(tel);
+    					$("#telTd").show(); 
+    					
     					console.log(val); 
     					break; 
 	    				 
@@ -679,10 +757,13 @@
 	    	//console.log("hospitalName : " + hospitalName);
 	    }
 	     
-	    function selectSmallList(){
+	    function changeSmallList(){
+	    	console.log("changeSmallList()");
+	    
 	    	var val = $("select[id=smallListSelect]").val();
 	    	var obj = {};
 	    	
+	    	console.log("병원명 : " + val); 
 	    	
 	    	if(val == "no"){ 
 	    		$("#inputHospital").show(); 
@@ -690,19 +771,23 @@
 	    		fullAddr = ""; 
 	    		sido = "";
 	    		sigun = "";
+	    		gu = "";
 	    		dong = "";
 	    		 
 	    	} else {
 	    		$("#inputHospital").hide(); 
+	    		$("#dong").empty();
+	    		
 	    		hospitalName = val;
 	    		
-				for(var i=0; i < existCnt; i++){
-    				
+				for(var i=0; i < totCnt; i++){
+					console.log(list[i].BIZPLC_NM + "/ " + hospitalName);
+					console.log(list[i].BIZPLC_NM); 
+					
     				if(list[i].BIZPLC_NM == hospitalName){
     					//console.log("no["+ i +"]");    
     					
     					obj = list[i];
-    					
     					selectObj = obj; 
     					
     					hospitalName = obj.BIZPLC_NM;			//병원명 
@@ -714,11 +799,31 @@
     					sido = addrList[0];
     					sigun = addrList[1]; 
     					dong = addrList[2];  
-						
-    					break;
-	    				 
+    					lat = obj.REFINE_WGS84_LAT;
+    					logt = obj.REFINE_WGS84_LOGT;
+    					
+    					//console.log(lat + " | " + logt); 
+    					
+    					if(dong.includes('구')){ 
+    						gu = addrList[2];
+    						dong = addrList[3];
+    					} else { 
+    						gu = "";
+    					} 
+    					console.log(dong);    
+    					
+    					getDongList(dong);
+    					
+    					//console.log($("select[id=dong]").val());  
+    					console.log(hospitalName + "/" + existYn + "/" + sickBedCnt + "/" + medStaffCnt + "/" + fullAddr + "/" + sido + "/" + sigun + "/" + dong);   
+    					
+    					$("#dongCon").show();       
+    					 
+    					$("#addr").val(fullAddr);   
+    					 
+    					break; 
     				} 	
-    			}  
+    			}   
 				//console.log(hospitalName + " / " + existYn + " / " + sickBedCnt + " / " + medStaffCnt + " / " + addr + "("+ sido + "/" + sigun + "/" + dong +")");
 	    	} 
 	    	//console.log("hospitalName : " + hospitalName); 
@@ -726,12 +831,27 @@
 	    
 	    function getSigunguList(){
 	    	$("#sigun").empty(); 
+	    	$("#dong").empty(); 
+	    	$("#dongCon").hide(); 
+	    	
 	    	$("#sigun").append("<option value=''>선택</option>");
-	    	  
-	    	var param = {
+
+	    	$("#addr").val("");
+	    	$("#tel").val("");
+	    	$("#telTd").hide(); 
+	    	
+	    	$("#bigListSelect").empty();
+	    	$("#smallListSelect").empty();  
+	    	$("#bigListSelect").append("<option value=''>선택</option>"); 
+			$("#smallListSelect").append("<option value=''>선택</option>"); 
+	    	$("#bigListSelect").val("").prop("selected", true); 
+	    	$("#smallListSelect").val("").prop("selected", true); 
+	    	 
+	    	var param = { 
 	    		sdNm : $("#sido").val()
 	    	}
 	    	
+	    	//exceptionDong(dong); 
 	    	
 			var splitSg = "";
 
@@ -768,24 +888,37 @@
 	    	$("#dong").empty(); 
 	    	$("#dong").append("<option value=''>선택</option>");
 	    	 
-	    	//alert($("#sigun").val());
-	    	
 	    	var param = {
 	    		sgNm : $("#sigun").val()
 	    	}; 
 	    	    
 	    	console.log(param); 
 	    	
+	    	//예외처리
+	    	if(dong.includes('1동') || dong.includes('2동') || dong.includes('3동') || dong.includes('4동')){
+	    		dong = dong.replace(/[0-9]/g, "");
+				//alert("숫자 포함"); 
+			}    
+	    	if(dong == "" && $("#sigun").val() == "시흥시"){
+	    			dong = "정왕동";
+    		} 	
+	    	  
+	    	console.log("동 : " + dong); 
+	    	 
+	    	
 	    	if(param.dnNm != ""){ 
 				$.ajax({
 		    		url : CONTEXT_PATH + "/dong", 
 		    		type: "POST",
-		    		data: param,  
+		    		data: param,   
 		    		success: function(data){
-		    			console.log(data.length); 
-		    			
-		    			for(var i = 0; i < data.length; i++){
-		    				dnList[i] = data[i].dnNm;  
+		    			/* console.log(data.length); 
+		    			console.log(data); 
+		    			console.log(dnList); 
+		    			console.log(dong);  */
+		    			for(var i = 0; i < data.length; i++){ 
+		   					 
+		    				dnList[i] = data[i].dnNm;   
 		    				
 		    				if(dong == dnList[i]){
 		    					$("#dong").append("<option value='"+ dnList[i] +"' selected='selected'>" + dnList[i] +"</option>");  
@@ -802,6 +935,8 @@
 		    			console.log("error");  
 		    		}
 		    	});
+				
+				$("#dong").val(dong).prop("disabled", true);  
 	    	}
 	    }
 	
@@ -831,6 +966,19 @@
 				return;
 			}
 		} 
+		
+		function changeSigungu(){
+	    	$("#dong").empty(); 
+	    	$("#dongCon").hide();
+	    	
+	    	$("#addr").val("");
+	    	$("#tel").val("");
+	    	$("#telTd").hide(); 
+	    	
+	    	$("#bigListSelect").val("").prop("selected", true);
+	    	$("#smallListSelect").val("").prop("selected", true); 
+		}
+		
 </script>
 </body>
 </html>

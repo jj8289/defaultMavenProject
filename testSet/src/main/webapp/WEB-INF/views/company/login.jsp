@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>로그인</title>
+<jsp:include page="../common/common.jsp" />    
 <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
 <script src="resources/login.js"></script>      
 <style type="text/css"> 
