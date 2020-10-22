@@ -19,7 +19,6 @@ import kr.co.jj.company.service.CompanyService;
 import kr.co.jj.company.vo.AddrDTO;
 import kr.co.jj.company.vo.CompanyVO;
 import kr.co.jj.user.controller.UserController;
-import kr.co.jj.user.vo.UserVO;
 
 @Controller
 public class CompanyController {
