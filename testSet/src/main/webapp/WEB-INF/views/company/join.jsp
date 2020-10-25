@@ -1219,6 +1219,29 @@
 			
 				
 		}  
+/*
+ *지번주소 조회 api 샘플 코드
+
+	 var xhr = new XMLHttpRequest();
+	 var url = 'http://openapi.epost.go.kr/postal/retrieveLotNumberAdressAreaCdService/retrieveLotNumberAdressAreaCdService/getDetailListAreaCd'; 
+	// 키 : B7Sp9Qnt6oSFAUJ84bfSXiQIPZhfng1UVp3d7%2B2Du4Nentr3Xl%2BONrA7N%2BhAEXbPDS%2Ftprr5q4RnFa5WuauPrw%3D%3D
+	// url : http://openapi.epost.go.kr:80/postal/retrieveLotNumberAdressService?_wadl&type=xml
+	// 데이터포맷 : xml
+	 var queryParams = '?' + encodeURIComponent('ServiceKey') + '='+'서비스키'; 
+	 queryParams += '&' + encodeURIComponent('searchSe') + '=' + encodeURIComponent('dong');
+	 queryParams += '&' + encodeURIComponent('srchwrd') + '=' + encodeURIComponent('공평동'); 
+	 queryParams += '&' + encodeURIComponent('countPerPage') + '=' + encodeURIComponent('10'); 
+	 queryParams += '&' + encodeURIComponent('currentPage') + '=' + encodeURIComponent('1'); ㄴ
+	 xhr.open('GET', url + queryParams);
+	 xhr.onreadystatechange = function () {
+	     if (this.readyState == 4) {
+	         alert('Status: '+this.status+'nHeaders: '+JSON.stringify(this.getAllResponseHeaders())+'nBody: '+this.responseText);
+	     }
+	 };
+	
+	 xhr.send('');
+ 
+ */
 </script>
 </body>
 </html>
