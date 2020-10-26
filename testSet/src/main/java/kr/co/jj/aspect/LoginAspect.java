@@ -33,8 +33,8 @@ public class LoginAspect {
 		
 		if(req != null) {
 			System.out.println(req);  
-			if(req.contains("/sigungu") || req.contains("/dong")) { 
-				return jointPoint.proceed(); 
+			if(req.contains("/sigungu") || req.contains("/dong") || req.contains("/addrPop")) { 
+				return jointPoint.proceed();  
 			} 
 			else if(!req.contains("/join")) { // 회원가입 페이지는 세션 체크 제외 
 				if(!req.contains("/login")) { // 로그인 페이지는 세션 체크 제외 

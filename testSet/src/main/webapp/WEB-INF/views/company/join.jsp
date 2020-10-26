@@ -168,9 +168,8 @@
 								<label class="item">동읍면</label>   
 								<select id="dong" name="dong" class="item" style="width: 95px;"></select>  
 							</div>   
-							<div class="item"><button id="search" value="찾기" type="button" onclick="getBigHospitalList()" class="btnSearch">찾기</button></div>
 						</td>    
-					</tr> 
+					</tr>  
 					<tr> 
 						<td bgcolor="lightgrey" align="center">병원/의원 선택</td>
 						<td onchange="whatkind()"> 
@@ -200,8 +199,8 @@
 					<tr> 
 						<td bgcolor="lightgrey" align="center">병원 주소</td> 
 						<td style="display: flex;">
-							<input size="61" type="text" name="addr" id="addr">
-							<div class="item"><button id="findAddrBtn" value="확인" type="button">확인</button></div>
+							<input size="61" type="text" name="addr" id="addr" value="${res.roadFullAddr }"> 
+							<div class="item"><button id="findAddrBtn" value="검색" type="button" onclick="openPopup()">검색</button></div>
 						</td>
 					</tr>
 					<tr id="telTd">
@@ -231,6 +230,10 @@
 					<input type="button" value="홈으로" onclick="goHome()">
 					<input type='hidden' id='lat'>
 					<input type='hidden' id='logt'>
+					
+					<input type="hidden" id="confmKey" name="confmKey" value=""/>
+					<input type="hidden" id="returnUrl" name="returnUrl" value=""/>
+					<input type="hidden" id="resultType" name="resultType" value=""/>
 				</p> 
 			</form>
 		</div>  
@@ -278,6 +281,44 @@
 		$("#findAddrBtn").hide();
 		
 		setting(); 
+		
+		function openPopup(){
+			var pop = window.open(CONTEXT_PATH +"/addrPop", 'pop',"width=570,height=420, scrollbars=yes, resizable=yes");  
+		}        
+		   
+		function jusoCallBack(roadFullAddr, emdNm){		// 파라미터 : full주소, 동읍면이름
+			 // 2017년 2월 제공항목이 추가되었습니다. 원하시는 항목을 추가하여 사용하시면 됩니다.
+			 console.log(roadFullAddr); 
+			 console.log(emdNm); 
+			 
+			 document.joinForm.addr.value = roadFullAddr;
+			 
+			 dong = emdNm; 
+			 
+			 $("#dong").append("<option value='"+ emdNm +"' selected>"+ emdNm +"</option>");
+			 $("#dong").val(emdNm).prop("disabled", true);  
+			 $("#dongCon").show();  
+			 $("#dong").show(); 
+			 
+			 // 시군구의 동list 에  emdNm이 있는지 체크해야 함!
+		}   
+		
+		/* function jusoCallBack(roadFullAddr,roadAddrPart1,addrDetail,roadAddrPart2,engAddr, jibunAddr, zipNo, admCd,
+			rnMgtSn, bdMgtSn , detBdNmList, bdNm, bdKdcd, siNm, sggNm, emdNm, liNm, rn, udrtYn, buldMnnm,
+			buldSlno, mtYn, lnbrMnnm, lnbrSlno, emdNo){
+			 // 2017년 2월 제공항목이 추가되었습니다. 원하시는 항목을 추가하여 사용하시면 됩니다.
+			 
+			 console.log(roadFullAddr); 
+			 console.log(emdNm); 
+			 document.joinForm.addr.value = roadFullAddr;
+			 $("#dong").append("<option value='"+ emdNm +"' selected>"+ emdNm +"</option>");
+			 $("#dong").val(emdNm).prop("disabled", true);  
+			 $("#dongCon").show(); 
+			 $("#dong").show(); 
+			 
+			 // 시군구의 동list 에  emdNm이 있는지 체크해야 함!
+		}     
+ */
 		
 		function goHome() {
 			location.href = CONTEXT_PATH + "/";
@@ -822,17 +863,17 @@
     						
     					console.log(lat + " | " + logt); 
     					
-    					if(dong.includes('구') && !dong.includes('동')){  
+    					if((dong.includes('구') && !dong.includes('동')) || dong.includes('동구')){  
     						gu = addrList[2];
     						dong = addrList[3];
-    					} else {
+    					} else { 
     						gu = "";
-    					} 
-    					console.log(dong);    
+    					}  
+    					console.log(dong);     
     					//alert(dong);   
     					//$("select[id=dong]").val(dong).prop("disabled", true);
     					getDongList(dong); 
-    					console.log($("select[id=dong]").val());  
+    					
     					//$("#dong").val(dong).prop("disabled", true);
     					$("#dongCon").show();       
     					console.log(hospitalName + "/" + existYn + "/" + sickBedCnt + "/" + medStaffCnt + "/" + fullAddr + "/" + sido + "/" + sigun + "/" + dong);   
@@ -1132,31 +1173,27 @@
 	    		dong = "";   
 	    		tel = "";  */
 		    } else { 
-		    	$("#inputHospital").val("");   
-	    		$("#inputHospital").hide();  
-	    		$("#findAddrBtn").hide();   
+		    	if($("#smallListSelect").val() == "no"){
+			    	$("#inputHospital").val("");   
+		    		$("#inputHospital").show();
+		    		$("#findAddrBtn").show();   
+		    		$("#addr").val("");  
+		    		$("#tel").val(""); 
+		    		/* hostitalName = "";
+		    		fullAddr = ""; 
+		    		addr = "";
+		    		sido = "";  
+		    		sigun = "";  
+		    		gu = "";
+		    		dong = "";   
+		    		tel = "";  */
+			    } else {  
+			    	$("#inputHospital").val("");   
+		    		$("#inputHospital").hide(); 
+		    		$("#findAddrBtn").hide();  
+			    }
 		    }
-			
-			if($("#smallListSelect").val() == "no"){
-		    	$("#inputHospital").val("");   
-	    		$("#inputHospital").show();
-	    		$("#findAddrBtn").show();   
-	    		$("#addr").val("");  
-	    		$("#tel").val(""); 
-	    		/* hostitalName = "";
-	    		fullAddr = ""; 
-	    		addr = "";
-	    		sido = "";  
-	    		sigun = "";  
-	    		gu = "";
-	    		dong = "";   
-	    		tel = "";  */
-		    } else {  
-		    	$("#inputHospital").val("");   
-	    		$("#inputHospital").hide(); 
-	    		$("#findAddrBtn").hide();  
-		    }
-		}
+		} 
 		
 		// 조건 따라 setting
 		function setting(){
