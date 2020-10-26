@@ -199,7 +199,7 @@
 					<tr> 
 						<td bgcolor="lightgrey" align="center">병원 주소</td> 
 						<td style="display: flex;">
-							<input size="61" type="text" name="addr" id="addr" value="${res.roadFullAddr }"> 
+							<input size="61" type="text" name="addr" id="addr">  
 							<div class="item"><button id="findAddrBtn" value="검색" type="button" onclick="openPopup()">검색</button></div>
 						</td>
 					</tr>
@@ -210,9 +210,9 @@
 					<tr> 
 						<td bgcolor="lightgrey" align="center">사업자등록번호</td> 
 						<td style="display: flex;">
-							<input size="61" type="text" name="BusinessNum" id="BusinessNum">
+							<input size="61" type="text" name="businessNum" id="businessNum">
 							<div class="item"><button id="checkNum" value="확인" type="button">확인</button></div>
-						</td>
+						</td> 
 					</tr>
 					<tr> 
 						<td bgcolor="lightgrey" align="center">관리자 이메일</td>
@@ -286,15 +286,22 @@
 			var pop = window.open(CONTEXT_PATH +"/addrPop", 'pop',"width=570,height=420, scrollbars=yes, resizable=yes");  
 		}        
 		   
-		function jusoCallBack(roadFullAddr, emdNm){		// 파라미터 : full주소, 동읍면이름
+		function jusoCallBack(roadFullAddr, siNm, sggNm, emdNm){		// 파라미터 : full주소, 동읍면이름
 			 // 2017년 2월 제공항목이 추가되었습니다. 원하시는 항목을 추가하여 사용하시면 됩니다.
 			 console.log(roadFullAddr); 
-			 console.log(emdNm); 
-			 
+			 console.log(typeof roadFullAddr); 
+			 console.log(emdNm);  
+			  
 			 document.joinForm.addr.value = roadFullAddr;
-			 
+			 addr = roadFullAddr;  
+			 sido = siNm;
+			 sigun = sggNm; 
 			 dong = emdNm; 
 			 
+			 console.log(addr); 
+			 
+			 $("#addr").val(addr);   
+			 console.log("addr :  " + $("#addr").val()); 
 			 $("#dong").append("<option value='"+ emdNm +"' selected>"+ emdNm +"</option>");
 			 $("#dong").val(emdNm).prop("disabled", true);  
 			 $("#dongCon").show();  
@@ -318,7 +325,7 @@
 			 
 			 // 시군구의 동list 에  emdNm이 있는지 체크해야 함!
 		}     
- */
+ 		*/
 		
 		function goHome() {
 			location.href = CONTEXT_PATH + "/";
@@ -454,6 +461,7 @@
 	        			sido = $("#sido").val();
 	        			sigun = $("#sigun").val();
 	        			dong = $("#dong").val();
+	        			addr = $("#addr").val(); 
 	        		} 
 	        	}
 	        	if(frm.kind.value == "2"){
@@ -499,33 +507,38 @@
 	    }       
 	     
 	    function join(){
+	    	console.log("join()"); 
+	    	console.log(addr);
+	    	console.log($("#addr").val());
+	    	console.log($("input[name=kind]:checked").val());
 	    	
-	    	if(hospitalName == ""){ 
+	    	 if(hospitalName == ""){ 
 	    		hospitalName = $("#inputHospital").val();
 	    		fullAddr = ""; 
 	    		sido = "";
 	    		sigungu = "";
 	    		dong = "";
-	    	}    
-	    	 
+	    	 }     
+	    	    
 	    	var formData = {
-	    		  managerId : $("#managerId").val()
+    			  companyNm : hospitalName
+	    		, managerId : $("#managerId").val()
 	    		, managerPw : $("#managerPw").val()
 	    		, managerNm : $("#managerNm").val()
+	    		, addr : addr  
 	    		, phone : $("#phone").val()
-	    		, kind : $('input[name=kind]:checked').val()
-	    		, companyNm : hospitalName
-	    		, sido : sido
+	    		, tel : $("#tel").val()
+	    		, email : $("#email").val() 
+	    		, kind : $("input[name=kind]:checked").val()
+	    		, sido : sido 
 	    		, sigungu : sigun
 	    		, dong : dong 
-	    		, addr : fullAddr
-	    		, tel : tel
-	    		, email : $("#email").val() 
 	    		, intro : $("#intro").val()
 	    		, lat : lat
 	    		, logt : logt
-	    	};
-	    	  
+	    		, businessNum : $("#businessNum").val()
+   			};   
+	    	    
 	    	console.log(formData); 
 	    	
 	    	
@@ -547,7 +560,7 @@
 	    		   		location.href = CONTEXT_PATH + "/join";
 	    		   		console.log("error");
 	    		}
-	    	});   
+	    	});    
 	    }
 	    
 	    
@@ -908,6 +921,7 @@
 	    		$("#addr").val(""); 
  	    		$("#inputHospital").val(""); 
 	    		$("#inputHospital").show(); 
+	    		$("#findAddrBtn").show(); 
 	    		hostitalName = "";
 	    		fullAddr = ""; 
 	    		sido = "";
@@ -945,23 +959,27 @@
     					
     					//console.log(lat + " | " + logt); 
     					
-    					if(dong.includes('구')){ 
+    					if((dong.includes('구') && !dong.includes('동')) || dong.includes('동구')){  
     						gu = addrList[2];
     						dong = addrList[3];
     					} else { 
     						gu = "";
-    					} 
-    					console.log(dong);    
+    					}  
+    					console.log(dong);     
+    					//alert(dong);   
+    					//$("select[id=dong]").val(dong).prop("disabled", true);
+    					getDongList(dong); 
     					
-    					getDongList(dong);
-    					
-    					//console.log($("select[id=dong]").val());  
-    					console.log(hospitalName + "/" + existYn + "/" + sickBedCnt + "/" + medStaffCnt + "/" + fullAddr + "/" + sido + "/" + sigun + "/" + dong);   
-    					
+    					//$("#dong").val(dong).prop("disabled", true);
     					$("#dongCon").show();       
-    					 
-    					$("#addr").val(fullAddr);   
-    					 
+    					console.log(hospitalName + "/" + existYn + "/" + sickBedCnt + "/" + medStaffCnt + "/" + fullAddr + "/" + sido + "/" + sigun + "/" + dong);   
+    					//$("#dong").val(dong).prop("selected", true);  
+    					//$("#dong").val(dong).prop("disabled", true); 
+    					
+    					$("#addr").val(fullAddr);    
+     					addr = fullAddr; 
+     					
+    					console.log(val);  
     					break; 
     				} 	
     			}   

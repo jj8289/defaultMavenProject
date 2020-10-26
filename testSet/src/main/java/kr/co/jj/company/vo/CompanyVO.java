@@ -20,6 +20,7 @@ public class CompanyVO {
 	private String dong;
 	private String lat;
 	private String logt;
+	private String businessNum;
 	private String createDate;
 	
 	public String getCompanyNo() {
@@ -130,21 +131,25 @@ public class CompanyVO {
 	public void setLogt(String logt) {
 		this.logt = logt;
 	}
+	
+	public String getBusinessNum() {
+		return businessNum;
+	}
+	public void setBusinessNum(String businessNum) {
+		this.businessNum = businessNum;
+	}
 	public String getCreateDate() {
 		return createDate;
 	}
 	public void setCreateDate(String createDate) {
 		this.createDate = createDate;
 	}
-	
 	@Override
 	public String toString() {
 		return "CompanyVO [companyNo=" + companyNo + ", companyNm=" + companyNm + ", managerId=" + managerId
 				+ ", managerPw=" + managerPw + ", managerNm=" + managerNm + ", phone=" + phone + ", addr=" + addr
 				+ ", tel=" + tel + ", email=" + email + ", kind=" + kind + ", intro=" + intro + ", blackCnt=" + blackCnt
 				+ ", blackYn=" + blackYn + ", sido=" + sido + ", sigungu=" + sigungu + ", dong=" + dong + ", lat=" + lat
-				+ ", logt=" + logt + ", createDate=" + createDate + "]";
+				+ ", logt=" + logt + ", BusinessNum=" + businessNum + ", createDate=" + createDate + "]";
 	}
-
-	
 }

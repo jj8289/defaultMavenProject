@@ -73,11 +73,15 @@ public class CommonController {
 		String inputYn = request.getParameter("inputYn"); 
 		String roadFullAddr = request.getParameter("roadFullAddr"); 
 		String emdNm  = request.getParameter("emdNm");
+		String siNm = request.getParameter("siNm");
+		String sggNm = request.getParameter("sggNm");
 		
 		AddrApiVO vo = new AddrApiVO();
 		vo.setInputYn(inputYn);
 		vo.setRoadFullAddr(roadFullAddr);
 		vo.setEmdNm(emdNm); 
+		vo.setSiNm(siNm);
+		vo.setSggNm(sggNm);
 
 		mv.addObject("res", vo);
 		mv.setViewName("company/addrPop");

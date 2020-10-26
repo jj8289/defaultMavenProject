@@ -33,15 +33,57 @@
 	<select id="selectCompany" parameterType="CompanyVO" resultType="int">
 		SELECT COUNT(*)
 		  FROM TB_COMPANY
-		 WHERE MANAGER_ID = #{managerId}
-		   and MANAGER_PW = #{managerPw}
-	</select>
+		 WHERE BUSINESS_NUM = #{businessNum}
+	</select> 
 	
 	<select id="selectCompanyByManagerId" parameterType="CompanyVO" resultType="CompanyVO">
 		SELECT *
 		  FROM TB_COMPANY
 		 WHERE MANAGER_ID = #{managerId}
 	</select>
+	
+	<insert id="insertCompany" parameterType="CompanyVO">
+ 		INSERT INTO TB_COMPANY
+ 		(
+			  COMPANY_NM
+			, MANAGER_ID
+			, MANAGER_PW
+			, MANAGER_NM
+			, PHONE
+			, ADDR
+			, TEL
+			, EMAIL
+			, KIND
+			, INTRO
+			, SIDO
+			, SIGUNGU
+			, DONG
+			, LAT
+			, LOGT
+			, BUSINESS_NUM
+			, CREATE_DATE
+ 		) 
+ 		VALUES
+ 		(
+			  #{companyNm}
+			, #{managerId}
+			, #{managerPw}
+			, #{managerNm}
+			, #{phone}
+			, #{addr}
+			, #{tel} 
+			, #{email}
+			, #{kind}
+			, #{intro}
+			, #{sido}
+			, #{sigungu}
+			, #{dong}
+			, #{lat}
+			, #{logt}
+			, #{businessNum} 
+			, NOW()
+ 		) 
+ 	</insert> 
 	 
 	<!-- <select id="selectSgList" parameterType="AddrDTO" resultType="">
 		SELECT  A.ROWNUM

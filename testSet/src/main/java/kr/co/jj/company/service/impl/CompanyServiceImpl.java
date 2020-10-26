@@ -46,5 +46,10 @@ public class CompanyServiceImpl implements CompanyService{
 	public CompanyVO selectCompanyByManagerId(CompanyVO vo) throws Exception {
 		return dao.selectCompanyByManagerId(vo);
 	}
+
+	@Override
+	public void insertCompany(CompanyVO vo) throws Exception {
+		dao.insertCompany(vo);;
+	}
 	
 }

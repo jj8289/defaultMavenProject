@@ -57,18 +57,23 @@ public class CompanyController {
 	}
 	
 	@ResponseBody
-	@PostMapping(value = "/join/joinChk")
+	@PostMapping(value = "/join/joinChk")  
 	public String joinChk(CompanyVO company, Model model) throws Exception{
 		
 		// 아이디 중복 체크
 		boolean chk = idDupleChk(company);
-		if(!chk) { 
-			
-			//userService.insertUser(user);
-			 
-			return "success";
-		}
 		
+		// 병원 중복체크
+		boolean chk2 = companyChk(company);
+		
+		if(!chk && !chk2) { 
+			 
+			System.out.println(company.toString()); 
+			companyService.insertCompany(company); 
+			 
+			return "success"; 
+		}
+		 
 		return "fail";
 	}
 	
