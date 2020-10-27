@@ -554,7 +554,7 @@
 	    			} else {  
 	    				alert("ID 또는 PW를 확인해주세요.");
 	    				location.href = CONTEXT_PATH + "/company/join";
-	    			} 
+	    			}  
 	    		},
 	    		error: function(data){ 
 	    		   		location.href = CONTEXT_PATH + "/company/join";
@@ -1040,7 +1040,7 @@
 	    	  
 	    	if(param.sdNm != ""){ 
 				$.ajax({
-		    		url : CONTEXT_PATH + "/sigungu", 
+		    		url : CONTEXT_PATH + "/common/sigungu", 
 		    		type: "POST",
 		    		data: param,  
 		    		success: function(data){
@@ -1088,7 +1088,7 @@
 	    	
 	    	if(param.dnNm != ""){ 
 				$.ajax({
-		    		url : CONTEXT_PATH + "/dong", 
+		    		url : CONTEXT_PATH + "/common/dong", 
 		    		type: "POST",
 		    		data: param,   
 		    		success: function(data){
@@ -1236,7 +1236,7 @@
 		    	};
 				
 				$.ajax({
-		    		url : CONTEXT_PATH + "/sigungu", 
+		    		url : CONTEXT_PATH + "/common/sigungu", 
 		    		type: "POST",
 		    		data: param,  
 		    		success: function(data){
