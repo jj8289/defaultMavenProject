@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -24,12 +25,18 @@ import kr.co.jj.company.vo.AddrDTO;
 
 
 @Controller
+@RequestMapping("/common")
 public class CommonController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(CommonController.class);
 	
 	@Autowired
 	CompanyService companyService;
+	
+	@GetMapping("/join") 
+	public String join() throws Exception {
+		return "common/join";
+	}
 	
 	@PostMapping("/sigungu")
 	@ResponseBody

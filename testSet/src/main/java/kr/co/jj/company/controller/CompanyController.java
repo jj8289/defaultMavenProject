@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.jj.common.vo.AddrVO;
@@ -21,6 +22,7 @@ import kr.co.jj.company.vo.CompanyVO;
 import kr.co.jj.user.controller.UserController;
 
 @Controller
+@RequestMapping("/company")
 public class CompanyController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -30,8 +32,8 @@ public class CompanyController {
 	private CompanyService companyService;
 
 	
-	@GetMapping("/company/join")
-	public String join(Model model) {
+	@GetMapping("/join")
+	public String join(Model model) throws Exception {
 		//parsingXML();
 		
 		AddrDTO dto = new AddrDTO();
@@ -275,7 +277,7 @@ public class CompanyController {
 	public List<AddrVO> getAddr() throws Exception {
 		List<AddrVO> list = companyService.selectSdList();
 		
-		return list;
+		return list; 
 	}
 	
 }

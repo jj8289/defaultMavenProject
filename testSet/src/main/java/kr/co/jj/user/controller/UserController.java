@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -25,6 +26,7 @@ import kr.co.jj.user.vo.RegisterVO;
 import kr.co.jj.user.vo.UserVO;
 
 @Controller
+@RequestMapping("/user")
 public class UserController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -32,7 +34,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@GetMapping("/user/join")
+	@GetMapping("/join")
 	public String join(Model model) {
 		
 		return "user/join"; 
@@ -42,7 +44,7 @@ public class UserController {
 	public String login(Model model) {
 		
 		return "user/login"; 
-	}
+	} 
 	
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
