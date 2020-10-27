@@ -26,7 +26,7 @@ import kr.co.jj.user.vo.RegisterVO;
 import kr.co.jj.user.vo.UserVO;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/user") 
 public class UserController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -34,26 +34,38 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
+	/**
+	 * 회원 가입
+	 */
 	@GetMapping("/join")
 	public String join(Model model) {
 		
 		return "user/join"; 
 	}
 	
+	@ResponseBody
+	@PostMapping(value = "/join/joinChk")
+	public String joinChk(UserVO user, Model model) throws Exception{
+		
+		// 아이디 중복 체크
+		boolean chk = idDupleChk(user);
+		if(!chk) { 
+			userService.insertUser(user);
+			
+			return "success";
+		}
+		
+		return "fail";
+	}
+	
+	/**
+	 * 로그인
+	 */
 	@GetMapping("/login")
 	public String login(Model model) {
 		
 		return "user/login"; 
 	} 
-	
-	@GetMapping("/logout")
-	public String logout(HttpSession session) {
-		logger.debug("logout()");
-		
-		session.invalidate();
-		
-		return "redirect:/"; 
-	}
 	
 	@GetMapping("/register")
 	public String register(Model model) {

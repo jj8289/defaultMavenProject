@@ -21,4 +21,6 @@ public interface CompanyService{
 	public CompanyVO selectCompanyByManagerId(CompanyVO vo) throws Exception;
 	
 	public void insertCompany(CompanyVO vo) throws Exception;
+	
+	public CompanyVO selectManager(CompanyVO vo) throws Exception;
 }

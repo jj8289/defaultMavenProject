@@ -1,0 +1,56 @@
+@charset "UTF-8";
+
+body {
+	margin: 0; 
+	padding: 0;
+}
+
+#container {
+	
+}
+
+.temp {
+	height: 50px;
+}
+
+.minicon {
+	width: 500px;
+	margin: 0 auto;
+}
+
+.title {
+	width: 100%;
+	/* background-color: powderblue; */
+	margin: 0;
+	height: 45px;
+	font-size: 30px;
+	text-align: center;
+}
+
+form {
+	margin: 20px;
+}
+
+form p {
+	margin: 70px;
+}
+
+.but {
+	text-align: center;
+}
+
+.but input {
+	border: none;
+	background-color: #424242;
+	color: white;
+	width: 100px;
+	height: 30px;
+}
+
+button {
+	border: none;
+	background-color: #424242;
+	color: white;
+	width: 100px;
+	height: 30px; 
+}   

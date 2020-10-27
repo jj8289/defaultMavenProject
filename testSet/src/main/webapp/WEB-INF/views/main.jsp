@@ -25,19 +25,19 @@
 </head>
 <body> 
 <c:choose>
-	<c:when test="${empty user.userId }">
+	<c:when test="${empty login }">
 		<div class="menu_bar"> 
-			<div class="menu join" onclick="location.href='/jj/join'">join</div>   
-			<div class="menu login" onclick="location.href='/jj/login'">login</div>
-		</div>  
-	</c:when>  
-	<c:otherwise>  
+			<div class="menu join" onclick="location.href='/jj/common/join'">join</div>   
+			<div class="menu login" onclick="location.href='/jj/common/login'">login</div>  
+		</div>   
+	</c:when>   
+	<c:otherwise>    
 		<div class="menu_bar">  
-			<div class="menu login" onclick="location.href='/jj/logout'">logout</div>
-			<c:if test="${reg == null}"><div class="menu register" onclick="location.href='/jj/register'">register</div></c:if>
-			<div class="menu mypage" onclick="location.href='/jj/mypage'">mypage</div>  
+			<div class="menu login" onclick="location.href='/jj/common/logout'">logout</div>
+			<c:if test="${reg == null}"><div class="menu register" onclick="location.href='/jj/user/register'">register</div></c:if>
+			<div class="menu mypage" onclick="location.href='/jj/user/mypage'">mypage</div>  
 			<div class="menu match" onclick="match()">match</div>    
-		</div>	 
+		</div>	  
 	</c:otherwise>      
 </c:choose>  	         
 </body>  

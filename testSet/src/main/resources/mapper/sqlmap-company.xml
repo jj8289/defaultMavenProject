@@ -42,6 +42,13 @@
 		 WHERE MANAGER_ID = #{managerId}
 	</select>
 	
+	<select id="selectManager" parameterType="CompanyVO" resultType="CompanyVO">
+		SELECT *
+		  FROM TB_COMPANY
+		 WHERE MANAGER_ID = #{managerId}
+		   AND MANAGER_PW = #{managerPw}
+	</select>
+	
 	<insert id="insertCompany" parameterType="CompanyVO">
  		INSERT INTO TB_COMPANY
  		(

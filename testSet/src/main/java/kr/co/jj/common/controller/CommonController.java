@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,9 +34,28 @@ public class CommonController {
 	@Autowired
 	CompanyService companyService;
 	
+	
+	@GetMapping("/login") 
+	public String login() throws Exception {
+		return "common/login";
+	} 
+	
+	
 	@GetMapping("/join") 
 	public String join() throws Exception {
 		return "common/join";
+	}
+	
+	/**
+	 * 로그아웃
+	 */
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		logger.debug("logout()");
+		
+		session.invalidate();
+		
+		return "redirect:/"; 
 	}
 	
 	@PostMapping("/sigungu")

@@ -2,6 +2,8 @@ package kr.co.jj.company.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.XML;
@@ -20,6 +22,7 @@ import kr.co.jj.company.service.CompanyService;
 import kr.co.jj.company.vo.AddrDTO;
 import kr.co.jj.company.vo.CompanyVO;
 import kr.co.jj.user.controller.UserController;
+import kr.co.jj.user.vo.UserVO;
 
 @Controller
 @RequestMapping("/company")
@@ -30,7 +33,27 @@ public class CompanyController {
 	
 	@Autowired
 	private CompanyService companyService;
-
+	
+	
+	@GetMapping("/login")
+	public String login(Model model) throws Exception {
+		return "company/login";
+	}
+	
+	@ResponseBody
+	@PostMapping(value = "/login/loginChk")
+	public String loginChk(CompanyVO vo, Model model, HttpSession session) throws Exception{
+		logger.debug(vo.toString());
+		
+		// 로그인 체크 
+		CompanyVO manager = companyService.selectManager(vo);
+		
+		System.out.println(manager.toString());
+		
+		session.setAttribute("loginId", manager.getManagerId());
+		return "success";  
+	} 
+	
 	
 	@GetMapping("/join")
 	public String join(Model model) throws Exception {

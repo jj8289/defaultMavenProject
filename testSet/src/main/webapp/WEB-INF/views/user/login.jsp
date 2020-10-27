@@ -5,14 +5,16 @@
 <head>
 <meta charset="UTF-8">
 <title>로그인</title>
-<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
-<script src="resources/login.js"></script>      
-<style type="text/css"> 
-body {
-	margin: 0; 
-	padding: 0;
-}
-
+<!-- <link rel="stylesheet" type="text/css" href="/jj/resources/css/login.css">  -->
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/login.css">  
+<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script> 
+<script src="${pageContext.request.contextPath}/resources/login.js"></script>        
+<!-- <style type="text/css">     
+body { 
+	margin: 0;  
+	padding: 0; 
+} 
+  
 #container {
 	
 }
@@ -63,8 +65,8 @@ button {
 	height: 30px; 
 }  
 	
-</style>
-</head>
+</style>-->  
+</head> 
 <body>
 	<div id="container">
 		<div class="temp"></div>
@@ -106,8 +108,9 @@ button {
 		</div> 
 	</div> 
 <script type="text/javascript">
-	var CONTEXT_PATH = "/jj";	
-	 
+	var CONTEXT_PATH = "${pageContext.request.contextPath}";
+	//var CONTEXT_PATH = "/jj";	  
+	  
 	function goHome() { 
 		// controller URL
 		location.href = CONTEXT_PATH + "/";
@@ -137,7 +140,7 @@ button {
     	};
 		
 		$.ajax({
-    		url : CONTEXT_PATH + "/login/loginChk", 
+    		url : CONTEXT_PATH + "/user/login/loginChk", 
     		type: "POST",  
     		data: formData,
     		success: function(data){
@@ -147,14 +150,14 @@ button {
         			location.href = CONTEXT_PATH + "/";  
     			} else {  
     				alert("ID 또는 PW를 확인해주세요.");
-    				location.href = CONTEXT_PATH + "/login";
+    				location.href = CONTEXT_PATH + "/user/login";
     			} 
     		},
     		error: function(data){ 
-    		   		location.href = CONTEXT_PATH + "/login";
+    		   		location.href = CONTEXT_PATH + "/user/login";
     		   		console.log("error");
     		}
-    	});  
+    	});   
 	}
 </script>
 </body>

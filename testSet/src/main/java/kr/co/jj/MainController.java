@@ -38,25 +38,27 @@ public class MainController {
 		
 		model.addAttribute("cityList", cityList);
 		 
-		String userId = (String) session.getAttribute("loginId");
-		System.out.println(userId);
 		
-		if(userId == null) {
-			model.addAttribute("user", null);
+		// 세션을 병원 /알바로 나눌 필요가 있음. ex) userLoginId, companyLoginId
+		String loginId = (String) session.getAttribute("loginId");
+		System.out.println(loginId);
+		
+		if(loginId == null) {
+			model.addAttribute("login", null);
 		} else {
-			UserVO u = new UserVO();
-			u.setUserId(userId);
+//			UserVO u = new UserVO();
+//			u.setUserId(userId);
+//			
+//			UserVO user = userService.selectUserByUserId(u);
+			model.addAttribute("login", loginId); 
 			
-			UserVO user = userService.selectUserByUserId(u);
-			model.addAttribute("user", user); 
-			
-			RegisterVO reg = userService.selectRegister(user);
-			
-			if(reg == null) {
-				model.addAttribute("reg", null);  
-			} else { 
-				model.addAttribute("reg", reg);  
-			}
+//			RegisterVO reg = userService.selectRegister(user);
+//			
+//			if(reg == null) {
+//				model.addAttribute("reg", null);  
+//			} else { 
+//				model.addAttribute("reg", reg);  
+//			} 
 		}  
 		
 		return "main";

@@ -543,7 +543,7 @@
 	    	
 	    	
 	    	$.ajax({
-	    		url : CONTEXT_PATH + "/join/joinChk", 
+	    		url : CONTEXT_PATH + "/company/join/joinChk", 
 	    		type: "POST",  
 	    		data: formData,
 	    		success: function(data){
@@ -553,11 +553,11 @@
 	        			//location.href = CONTEXT_PATH + "/";  
 	    			} else {  
 	    				alert("ID 또는 PW를 확인해주세요.");
-	    				location.href = CONTEXT_PATH + "/join";
+	    				location.href = CONTEXT_PATH + "/company/join";
 	    			} 
 	    		},
 	    		error: function(data){ 
-	    		   		location.href = CONTEXT_PATH + "/join";
+	    		   		location.href = CONTEXT_PATH + "/company/join";
 	    		   		console.log("error");
 	    		}
 	    	});    

@@ -81,13 +81,13 @@ button {
 					<tr>
 						<td bgcolor="lightgrey" align="center">아이디</td>
 						<td>
-							<input type="text" name="userId" id="userId" size="30">
+							<input type="text" name="managerId" id="managerId" size="30">
 						</td>	
 					</tr>
 					<tr>
 						<td bgcolor="lightgrey" align="center">비밀번호</td>
 						<td>
-							<input type="password" name="userPw" id="userPw" size="30">
+							<input type="password" name="managerPw" id="managerPw" size="30">
 						</td>
 					</tr>
 				</table> 
@@ -117,13 +117,13 @@ button {
 	function loginChk() {  
 	    var frm = document.loginForm;
 	    
-	    if (!frm.userId.value) { //아이디를 입력하지 않으면.
+	    if (!frm.managerId.value) { //아이디를 입력하지 않으면.
             alert("아이디를 입력하세요.");
-            frm.userId.focus();
+            frm.managerId.focus();
             return;
-        } else if (!frm.userPw.value) { //패스워드를 입력하지 않으면.
+        } else if (!frm.managerPw.value) { //패스워드를 입력하지 않으면.
             alert("패스워드를 입력하세요.");
-            frm.userPw.focus(); 
+            frm.managerPw.focus(); 
             return;
         }
 	    
@@ -133,12 +133,12 @@ button {
 	function login() {
 		
 		var formData = {
-                userId: $('#userId').val()
-              , userPw: $('#userPw').val()
+				managerId: $('#managerId').val()
+              , managerPw: $('#managerPw').val()
     	};
 		
 		$.ajax({
-    		url : CONTEXT_PATH + "/login/loginChk", 
+    		url : CONTEXT_PATH + "/company/login/loginChk", 
     		type: "POST",  
     		data: formData,
     		success: function(data){
@@ -148,11 +148,11 @@ button {
         			location.href = CONTEXT_PATH + "/";  
     			} else {  
     				alert("ID 또는 PW를 확인해주세요.");
-    				location.href = CONTEXT_PATH + "/login";
+    				location.href = CONTEXT_PATH + "/company/login";
     			} 
-    		},
-    		error: function(data){ 
-    		   		location.href = CONTEXT_PATH + "/login";
+    		}, 
+    		error: function(){  
+    		   		location.href = CONTEXT_PATH + "/company/login";
     		   		console.log("error");
     		}
     	});  

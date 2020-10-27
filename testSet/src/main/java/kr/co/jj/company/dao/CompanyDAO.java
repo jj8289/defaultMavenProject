@@ -31,4 +31,9 @@ public interface CompanyDAO {
 	public CompanyVO selectCompanyByManagerId(CompanyVO vo) throws Exception;
 	
 	public void insertCompany(CompanyVO vo) throws Exception;
+	
+	/**
+	 * 로그인 체크
+	 */
+	public CompanyVO selectManager(CompanyVO vo) throws Exception;
 }

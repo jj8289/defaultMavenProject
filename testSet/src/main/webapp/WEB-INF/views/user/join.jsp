@@ -212,21 +212,22 @@
 	    	};
 	    	 
 	    	$.ajax({
-	    		url : CONTEXT_PATH + "/join/joinChk", 
+	    		url : CONTEXT_PATH + "/user/join/joinChk", 
 	    		type: "POST",  
 	    		data: formData,
 	    		success: function(data){
 	    			console.log("join");  
 	    			
 	    			if(data == 'success'){
+	    				alert("가입 완료!");
 	        			location.href = CONTEXT_PATH + "/";  
 	    			} else {  
 	    				alert("ID 또는 PW를 확인해주세요.");
-	    				location.href = CONTEXT_PATH + "/join";
+	    				location.href = CONTEXT_PATH + "/user/join";
 	    			} 
 	    		},
 	    		error: function(data){ 
-	    		   		location.href = CONTEXT_PATH + "/join";
+	    		   		location.href = CONTEXT_PATH + "/user/join";
 	    		   		console.log("error");
 	    		}
 	    	});   

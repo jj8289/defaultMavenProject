@@ -38,11 +38,11 @@ public class LoginAspect {
 			} 
 			else if(!req.contains("/join")) { // 회원가입 페이지는 세션 체크 제외 
 				if(!req.contains("/login")) { // 로그인 페이지는 세션 체크 제외 
-					//로그인 세션 체크     
-					HttpSession session = request.getSession();
+					//로그인 세션 체크      
+					HttpSession session = request.getSession(); 
 					String loginId = (String)session.getAttribute("loginId");
 					if(loginId == null) {
-						log.debug("no session " + loginId);
+						log.debug("no session " + loginId); 
 						return "redirect:/login";
 					} else {
 						log.debug("exist session " + loginId);
