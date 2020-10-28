@@ -7,10 +7,10 @@
 <title>로그인</title>
 <jsp:include page="../common/common.jsp" />    
 <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
-<script src="resources/login.js"></script>      
+<script src="${pageContext.request.contextPath}/resources/js/company/login.js"></script>        
 <style type="text/css"> 
-body {
-	margin: 0; 
+body { 
+	margin: 0;  
 	padding: 0;
 }
 

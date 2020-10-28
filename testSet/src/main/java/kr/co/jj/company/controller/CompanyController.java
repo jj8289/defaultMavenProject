@@ -50,7 +50,7 @@ public class CompanyController {
 		
 		System.out.println(manager.toString());
 		
-		session.setAttribute("loginId", manager.getManagerId());
+		session.setAttribute("mgloginId", manager.getManagerId());
 		return "success";  
 	} 
 	

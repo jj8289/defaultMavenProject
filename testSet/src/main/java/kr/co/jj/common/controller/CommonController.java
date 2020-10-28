@@ -45,7 +45,7 @@ public class CommonController {
 	public String join() throws Exception {
 		return "common/join";
 	}
-	
+	 
 	/**
 	 * 로그아웃
 	 */

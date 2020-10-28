@@ -3,9 +3,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>등록</title>
-<style type="text/css">
+	<meta charset="UTF-8">
+	<jsp:include page="../common/common.jsp" />  
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
+	<title>등록</title>
+<style type="text/css"> 
 /*datepicer 버튼 롤오버 시 손가락 모양 표시*/
 .ui-datepicker-trigger{cursor: pointer;}
 /*datepicer input 롤오버 시 손가락 모양 표시*/
@@ -65,9 +69,6 @@ form p {
 	display: flex; 
 } 
 </style>   
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
 </head>    
 <body>   
 	<div id="container">    

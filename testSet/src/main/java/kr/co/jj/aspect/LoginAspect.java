@@ -33,22 +33,25 @@ public class LoginAspect {
 		
 		if(req != null) {
 			System.out.println(req);  
-			if(req.contains("/sigungu") || req.contains("/dong") || req.contains("/addrPop")) { 
-				return jointPoint.proceed();  
+			if(req.contains("/sigungu") || req.contains("/dong") || req.contains("/addrPop") || req.contains("/logout")) { 
+				return jointPoint.proceed();   
 			} 
 			else if(!req.contains("/join")) { // 회원가입 페이지는 세션 체크 제외 
 				if(!req.contains("/login")) { // 로그인 페이지는 세션 체크 제외 
-					//로그인 세션 체크      
+					//로그인 세션 체크       
 					HttpSession session = request.getSession(); 
-					String loginId = (String)session.getAttribute("loginId");
-					if(loginId == null) {
-						log.debug("no session " + loginId); 
-						return "redirect:/login";
-					} else {
-						log.debug("exist session " + loginId);
+					String usrlogin = (String)session.getAttribute("usrlogin");
+					String mglogin = (String)session.getAttribute("mglogin");
+					
+					if(usrlogin == null && mglogin == null) {
+						log.debug("no session");  
+						return "redirect:/";  
+					} else { 
+						log.debug("exist session " + usrlogin);
+						log.debug("exist session " + mglogin);
 						return jointPoint.proceed();
-					} 
-				}
+					}  
+				}   
 			}		
 		}
 		return jointPoint.proceed();

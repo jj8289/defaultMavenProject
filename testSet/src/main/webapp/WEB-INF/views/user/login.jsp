@@ -4,68 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>로그인</title>
-<!-- <link rel="stylesheet" type="text/css" href="/jj/resources/css/login.css">  -->
+<jsp:include page="../common/common.jsp" />  
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/login.css">  
 <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script> 
-<script src="${pageContext.request.contextPath}/resources/login.js"></script>        
-<!-- <style type="text/css">     
-body { 
-	margin: 0;  
-	padding: 0; 
-} 
-  
-#container {
-	
-}
-
-.temp {
-	height: 50px;
-}
-
-.minicon {
-	width: 500px;
-	margin: 0 auto;
-}
-
-.title {
-	width: 100%;
-	/* background-color: powderblue; */
-	margin: 0;
-	height: 45px;
-	font-size: 30px;
-	text-align: center;
-}
-
-form {
-	margin: 20px;
-}
-
-form p {
-	margin: 70px;
-}
-
-.but {
-	text-align: center;
-}
-
-.but input {
-	border: none;
-	background-color: #424242;
-	color: white;
-	width: 100px;
-	height: 30px;
-}
-
-button {
-	border: none;
-	background-color: #424242;
-	color: white;
-	width: 100px;
-	height: 30px; 
-}  
-	
-</style>-->  
+<script src="${pageContext.request.contextPath}/resources/js/user/login.js"></script>  
+<title>로그인</title>     
 </head> 
 <body>
 	<div id="container">
@@ -108,14 +51,6 @@ button {
 		</div> 
 	</div> 
 <script type="text/javascript">
-	var CONTEXT_PATH = "${pageContext.request.contextPath}";
-	//var CONTEXT_PATH = "/jj";	  
-	  
-	function goHome() { 
-		// controller URL
-		location.href = CONTEXT_PATH + "/";
-	} 
-	
 	function loginChk() {  
 	    var frm = document.loginForm;
 	    

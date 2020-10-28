@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<jsp:include page="../common/common.jsp" />  
 	<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
 	<meta charset="UTF-8">
 	<title>회원가입</title>
@@ -142,12 +143,6 @@
 		</div>  
 	</div> 
 <script type="text/javascript">
-		var CONTEXT_PATH = "/jj";	
-	
-		function goHome() {
-			location.href = CONTEXT_PATH + "/";
-		} 
-		 
 		function joinChk() {  
 	        var frm = document.joinForm;
 	        if (!frm.userId.value) { //아이디를 입력하지 않으면.

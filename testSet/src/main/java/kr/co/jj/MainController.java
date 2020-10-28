@@ -40,17 +40,21 @@ public class MainController {
 		 
 		
 		// 세션을 병원 /알바로 나눌 필요가 있음. ex) userLoginId, companyLoginId
-		String loginId = (String) session.getAttribute("loginId");
-		System.out.println(loginId);
+		String usrloginId = (String) session.getAttribute("usrloginId");
+		String mgloginId = (String) session.getAttribute("mgloginId");
+		System.out.println("usr : " + usrloginId);
+		System.out.println("mg : " + mgloginId);
 		
-		if(loginId == null) {
-			model.addAttribute("login", null);
+		if(usrloginId == null && mgloginId == null) {
+			model.addAttribute("usrlogin", null);
+			model.addAttribute("mglogin", null);
 		} else {
 //			UserVO u = new UserVO();
 //			u.setUserId(userId);
 //			
 //			UserVO user = userService.selectUserByUserId(u);
-			model.addAttribute("login", loginId); 
+			model.addAttribute("usrlogin", usrloginId); 
+			model.addAttribute("mglogin", mgloginId);  
 			
 //			RegisterVO reg = userService.selectRegister(user);
 //			

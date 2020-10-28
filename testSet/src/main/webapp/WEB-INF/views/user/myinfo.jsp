@@ -5,6 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<jsp:include page="../common/common.jsp" />    
 <title>마이페이지</title>
 <style type="text/css">
 /*datepicer 버튼 롤오버 시 손가락 모양 표시*/
@@ -165,14 +166,5 @@ form p {
 			</form>    
 		</div>   
 	</div>     
-	
-<script type="text/javascript">
-	var CONTEXT_PATH = "/jj"; 
-	
-	function goHome(){ 
-		location.href = CONTEXT_PATH + "/";
-	} 
-	
-</script>	
 </body>
 </html>

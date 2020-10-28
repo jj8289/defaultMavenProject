@@ -162,7 +162,7 @@ public class UserController {
 		// 아이디 중복 체크
 		boolean chk = userChk(user);
 		if(chk) { 
-			session.setAttribute("loginId", user.getUserId());
+			session.setAttribute("usrloginId", user.getUserId());
 			return "success"; 
 		}
 		
