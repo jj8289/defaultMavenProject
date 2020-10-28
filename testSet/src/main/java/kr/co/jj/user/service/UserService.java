@@ -1,6 +1,6 @@
 package kr.co.jj.user.service;
 
-import kr.co.jj.user.vo.RegisterVO;
+import kr.co.jj.user.vo.RequireVO;
 import kr.co.jj.user.vo.UserVO;
 
 public interface UserService {
@@ -20,7 +20,7 @@ public interface UserService {
 
 	public void insertUser(UserVO user) throws Exception;
 	
-	public RegisterVO selectRegister(UserVO user) throws Exception;
+	public RequireVO selectRequire(UserVO user) throws Exception;
 	
-	public void updateRegister(RegisterVO vo) throws Exception;
+	public void updateRequire(RequireVO vo) throws Exception;
 }

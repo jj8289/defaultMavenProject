@@ -22,6 +22,12 @@ public class CompanyVO {
 	private String logt;
 	private String businessNum;
 	private String createDate;
+	private String regNo;
+	private String lunchSt;
+	private String lunchEnd;
+	private String lunchYn;
+	private String etc;
+	
 	
 	public String getCompanyNo() {
 		return companyNo;
@@ -131,7 +137,6 @@ public class CompanyVO {
 	public void setLogt(String logt) {
 		this.logt = logt;
 	}
-	
 	public String getBusinessNum() {
 		return businessNum;
 	}
@@ -144,12 +149,44 @@ public class CompanyVO {
 	public void setCreateDate(String createDate) {
 		this.createDate = createDate;
 	}
+	public String getRegNo() {
+		return regNo;
+	}
+	public void setRegNo(String regNo) {
+		this.regNo = regNo;
+	}
+	public String getLunchSt() {
+		return lunchSt;
+	}
+	public void setLunchSt(String lunchSt) {
+		this.lunchSt = lunchSt;
+	}
+	public String getLunchEnd() {
+		return lunchEnd;
+	}
+	public void setLunchEnd(String lunchEnd) {
+		this.lunchEnd = lunchEnd;
+	}
+	public String getLunchYn() {
+		return lunchYn;
+	}
+	public void setLunchYn(String lunchYn) {
+		this.lunchYn = lunchYn;
+	}
+	public String getEtc() {
+		return etc;
+	}
+	public void setEtc(String etc) {
+		this.etc = etc;
+	}
+	
 	@Override
 	public String toString() {
 		return "CompanyVO [companyNo=" + companyNo + ", companyNm=" + companyNm + ", managerId=" + managerId
 				+ ", managerPw=" + managerPw + ", managerNm=" + managerNm + ", phone=" + phone + ", addr=" + addr
 				+ ", tel=" + tel + ", email=" + email + ", kind=" + kind + ", intro=" + intro + ", blackCnt=" + blackCnt
 				+ ", blackYn=" + blackYn + ", sido=" + sido + ", sigungu=" + sigungu + ", dong=" + dong + ", lat=" + lat
-				+ ", logt=" + logt + ", BusinessNum=" + businessNum + ", createDate=" + createDate + "]";
+				+ ", logt=" + logt + ", businessNum=" + businessNum + ", createDate=" + createDate + ", regNo=" + regNo
+				+ ", lunchSt=" + lunchSt + ", lunchEnd=" + lunchEnd + ", lunchYn=" + lunchYn + ", etc=" + etc + "]";
 	}
 }

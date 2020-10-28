@@ -12,10 +12,11 @@
 
     <typeAliases>
     	<typeAlias type="kr.co.jj.user.vo.UserVO" alias="UserVO"/>
-    	<typeAlias type="kr.co.jj.user.vo.RegisterVO" alias="RegisterVO"/>
+    	<typeAlias type="kr.co.jj.user.vo.RequireVO" alias="RequireVO"/>
     	<typeAlias type="kr.co.jj.company.vo.CompanyVO" alias="CompanyVO"/>
     	<typeAlias type="kr.co.jj.company.vo.AddrDTO" alias="AddrDTO"/>
     	<typeAlias type="kr.co.jj.company.vo.AddrVO" alias="AddrVO"/>
+    	<typeAlias type="kr.co.jj.company.vo.RegisterVO" alias="RegisterVO"/>
     </typeAliases>
 
 </configuration>

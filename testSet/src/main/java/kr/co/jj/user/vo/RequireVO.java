@@ -2,7 +2,7 @@ package kr.co.jj.user.vo;
 
 import java.util.List;
 
-public class RegisterVO {
+public class RequireVO {
 	
 	private String reqNo;
 	private String userNo;
@@ -16,7 +16,7 @@ public class RegisterVO {
 	private String searchTime;		// 1 : 상관없음 / 2 : 오전 / 3 : 오후 / 4 : 하루	
 	private String location;
 	private List<String> dowList;
-	private List<String> locList;
+	private List<String> locList; 
 	private String createDate;
 	
 	
@@ -106,10 +106,10 @@ public class RegisterVO {
 	}
 	@Override
 	public String toString() {
-		return "RegisterVO [reqNo=" + reqNo + ", userNo=" + userNo + ", salaryHour=" + salaryHour
+		return "RequireVO [reqNo=" + reqNo + ", userNo=" + userNo + ", salaryHour=" + salaryHour
 				+ ", salaryDay=" + salaryDay + ", searchType=" + searchType + ", searchDate=" + searchDate
 				+ ", searchStart=" + searchStart + ", searchEnd=" + searchEnd + ", searchDow=" + searchDow
 				+ ", searchTime=" + searchTime + ", location=" + location + ", dowList=" + dowList + ", locList="
 				+ locList + ", createDate=" + createDate + "]";
-	}
+	} 
 }

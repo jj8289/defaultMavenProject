@@ -49,6 +49,12 @@
 		   AND MANAGER_PW = #{managerPw}
 	</select>
 	
+	<select id="selectRegister" parameterType="CompanyVO" resultType="RegisterVO">
+		SELECT *
+		  FROM TB_REGISTER
+		 WHERE COMPANY_NO = #{companyNo}
+	</select>
+	
 	<insert id="insertCompany" parameterType="CompanyVO">
  		INSERT INTO TB_COMPANY
  		(

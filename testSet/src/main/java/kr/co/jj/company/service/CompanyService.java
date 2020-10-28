@@ -5,6 +5,7 @@ import java.util.List;
 import kr.co.jj.common.vo.AddrVO;
 import kr.co.jj.company.vo.AddrDTO;
 import kr.co.jj.company.vo.CompanyVO;
+import kr.co.jj.company.vo.RegisterVO;
 
 public interface CompanyService{
 	
@@ -19,6 +20,8 @@ public interface CompanyService{
 	public int selectCompany(CompanyVO vo) throws Exception;
 
 	public CompanyVO selectCompanyByManagerId(CompanyVO vo) throws Exception;
+	
+	public List<RegisterVO> selectRegister(CompanyVO vo) throws Exception;
 	
 	public void insertCompany(CompanyVO vo) throws Exception;
 	

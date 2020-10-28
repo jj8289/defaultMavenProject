@@ -57,13 +57,14 @@
  	</insert> 
  	
  	 	
- 	<select id="selectRegister" parameterType="UserVO" resultType="RegisterVO">
- 		SELECT *
- 		  FROM TB_REQUIRE
- 		 WHERE REQ_NO = #{userNo}
- 	</select>
+ 	<select id="selectRequire" parameterType="UserVO" resultType="RequireVO">
+ 		SELECT 	*
+ 		  FROM  TB_USER A, TB_REQUIRE B
+ 		 WHERE  A.USER_NO = B.USER_NO 
+ 		   AND  A.USER_ID = #{userId}  
+ 	</select> 
  	
- 	<insert id="updateRegister" parameterType="RegisterVO">
+ 	<insert id="updateRequire" parameterType="RequireVO">
  		INSERT INTO TB_REQUIRE
 		(    
 			  REQ_NO
@@ -107,7 +108,7 @@
 			, CREATE_DATE = NOW()
  	</insert> 
  	
- 	<delete id="deleteRegister">
+ 	<delete id="deleteRequire">
  		DELETE 
  		  FROM TB_REQUIRE 
  		 WHERE CREATE_DATE = (

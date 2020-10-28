@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import kr.co.jj.user.dao.UserDAO;
 import kr.co.jj.user.service.UserService;
-import kr.co.jj.user.vo.RegisterVO;
+import kr.co.jj.user.vo.RequireVO;
 import kr.co.jj.user.vo.UserVO;
 
 @Service
@@ -35,14 +35,13 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public RegisterVO selectRegister(UserVO user) throws Exception {
-		
-		return userDAO.selectRegister(user);
+	public RequireVO selectRequire(UserVO user) throws Exception {
+		return userDAO.selectRequire(user);
 	}
-	
+
 	@Override
-	public void updateRegister(RegisterVO vo) throws Exception {
-		userDAO.updateRegister(vo);
+	public void updateRequire(RequireVO vo) throws Exception {
+		userDAO.updateRequire(vo);
 	}
 
 }

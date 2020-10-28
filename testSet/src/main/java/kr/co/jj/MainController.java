@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import kr.co.jj.company.service.CompanyService;
+import kr.co.jj.company.vo.CompanyVO;
+import kr.co.jj.company.vo.RegisterVO;
 import kr.co.jj.user.service.UserService;
-import kr.co.jj.user.vo.RegisterVO;
+import kr.co.jj.user.vo.RequireVO;
 import kr.co.jj.user.vo.UserVO;
 
 @Controller
@@ -25,6 +28,9 @@ public class MainController {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	CompanyService companyService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String main(Model model, HttpSession session) throws Exception {
@@ -49,20 +55,24 @@ public class MainController {
 			model.addAttribute("usrlogin", null);
 			model.addAttribute("mglogin", null);
 		} else {
-//			UserVO u = new UserVO();
-//			u.setUserId(userId);
-//			
-//			UserVO user = userService.selectUserByUserId(u);
 			model.addAttribute("usrlogin", usrloginId); 
 			model.addAttribute("mglogin", mgloginId);  
 			
-//			RegisterVO reg = userService.selectRegister(user);
-//			
-//			if(reg == null) {
-//				model.addAttribute("reg", null);  
-//			} else { 
-//				model.addAttribute("reg", reg);  
-//			} 
+			if(usrloginId != null) {
+				UserVO u = new UserVO();
+				u.setUserId(usrloginId);
+				RequireVO ureq = userService.selectRequire(u);
+				
+				model.addAttribute("usrReq", ureq);   
+				
+			} else if(mgloginId != null) {
+				CompanyVO c = new CompanyVO();
+				c.setManagerId(mgloginId); 
+				
+				List<RegisterVO> creg = companyService.selectRegister(c);
+				
+				System.out.println(creg.toString()); 
+			} 
 		}  
 		
 		return "main";

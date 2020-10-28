@@ -21,8 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.jj.user.service.UserService;
-import kr.co.jj.user.vo.RegisterOneVO;
-import kr.co.jj.user.vo.RegisterVO;
+import kr.co.jj.user.vo.RequireVO;
 import kr.co.jj.user.vo.UserVO;
 
 @Controller
@@ -67,93 +66,6 @@ public class UserController {
 		return "user/login"; 
 	} 
 	
-	@GetMapping("/register")
-	public String register(Model model) {
-		
-		return "user/register";
-	}
-	
-	@GetMapping("/mypage")
-	public String mypage(Model model, HttpSession session) throws Exception {
-		
-		String id = (String)session.getAttribute("loginId");
-		
-		UserVO user = getUser(id);
-		
-		RegisterVO registerVO = userService.selectRegister(user);
-		
-		//model.addAttribute("vo", registerVO);
-		model.addAttribute("user", user);
-		
-		List<String> locList = new ArrayList<String>(); 
-		List<String> dowList = new ArrayList<String>();
-		
-		if(registerVO == null) {
-			model.addAttribute("dowList", dowList);
-			model.addAttribute("locList", locList);
-		} else {
-			
-			System.out.println("registerVO : " + registerVO.toString());
-		
-			
-			String[] strLocList = {}; 
-			String loc = registerVO.getLocation();
-			System.out.println("loc : " + loc); 
-			
-			if(!loc.equals("0")) {
-				strLocList = registerVO.getLocation().split("/");
-				
-				for(int i = 0; i < strLocList.length; i++) {
-					locList.add(strLocList[i]);
-				} 
-			} else {
-				locList.add("0"); 
-			}
-			
-			System.out.println("locList : " + locList);
-			registerVO.setLocList(locList);
-			 
-			model.addAttribute("locList", locList);
-			
-			
-			///////////////////
-			String[] strDowList = {};
-			if(registerVO.getSearchDow() == null || registerVO.getSearchDow().equals("")) {
-				dowList.add("");
-			} else { 
-				strDowList = registerVO.getSearchDow().split("/");
-				
-				for(int i = 0; i < strDowList.length; i++) {
-					dowList.add(strDowList[i]);
-				} 
-			} 
-			System.out.println("dowList : " + dowList);
-			registerVO.setDowList(dowList);
-			 
-			model.addAttribute("dowList", dowList);
-			
-			model.addAttribute("vo", registerVO);
-		}  
-		
-		
-		return "user/mypage";
-	}
-	
-	@GetMapping("/myinfo")
-	public String myinfo(Model model, HttpSession session) throws Exception {
-		
-		String id = (String)session.getAttribute("loginId");
-		
-		UserVO user = getUser(id);
-		
-		logger.debug(user.toString());
-		
-		model.addAttribute("user", user);
-		
-		return "user/myinfo";
-	}
-	
-	
 	@ResponseBody
 	@PostMapping(value = "/login/loginChk")
 	public String loginChk(UserVO user, Model model, HttpSession session) throws Exception{
@@ -169,10 +81,18 @@ public class UserController {
 		return "fail";
 	}
 	
+	/**
+	 * 조건 등록
+	 */
+	@GetMapping("/require")
+	public String require(Model model) {
+		
+		return "user/require";
+	}
 	
-	@PostMapping(value = "register/registerChk")
+	@PostMapping(value = "require/requireChk")
 	@ResponseBody 
-	public Map<String, Object> registerChk(@RequestBody RegisterVO json, Model model, HttpSession session){
+	public Map<String, Object> requireChk(@RequestBody RequireVO json, Model model, HttpSession session){
 		System.out.println(json.toString());
 		 
 		Map<String, Object> res = new HashMap<String, Object>(); 
@@ -181,7 +101,7 @@ public class UserController {
 			List<String> locList = json.getLocList();
 			List<String> dowList = json.getDowList();
 			
-			String userId = (String) session.getAttribute("loginId");
+			String userId = (String) session.getAttribute("usrloginId");
 			UserVO vo = new UserVO();
 			vo.setUserId(userId);
 			
@@ -217,7 +137,7 @@ public class UserController {
 			logger.debug(json.toString());
 			
 			//조건 등록이 이미 있다면 변경되게끔.
-			userService.updateRegister(json);
+			userService.updateRequire(json);
 			
 			res.put("list", json);  
 			  
@@ -230,6 +150,93 @@ public class UserController {
 		
 		return res;
 	}
+	
+	/**
+	 * 마이페이지
+	 */
+	@GetMapping("/mypage")
+	public String mypage(Model model, HttpSession session) throws Exception {
+		
+		String id = (String)session.getAttribute("usrloginId");
+		
+		UserVO user = getUser(id);
+		
+		RequireVO requireVO = userService.selectRequire(user);
+		
+		model.addAttribute("user", user);
+		
+		List<String> locList = new ArrayList<String>(); 
+		List<String> dowList = new ArrayList<String>();
+		
+		if(requireVO == null) {
+			model.addAttribute("dowList", dowList);
+			model.addAttribute("locList", locList);
+		} else {
+			
+			System.out.println("requireVO : " + requireVO.toString());
+		
+			 
+			String[] strLocList = {}; 
+			String loc = requireVO.getLocation();
+			System.out.println("loc : " + loc); 
+			
+			if(!loc.equals("0")) {
+				strLocList = requireVO.getLocation().split("/");
+				
+				for(int i = 0; i < strLocList.length; i++) {
+					locList.add(strLocList[i]);
+				} 
+			} else {
+				locList.add("0"); 
+			}
+			
+			System.out.println("locList : " + locList);
+			requireVO.setLocList(locList);
+			 
+			model.addAttribute("locList", locList);
+			
+			
+			///////////////////
+			String[] strDowList = {};
+			if(requireVO.getSearchDow() == null || requireVO.getSearchDow().equals("")) {
+				dowList.add("");
+			} else { 
+				strDowList = requireVO.getSearchDow().split("/");
+				
+				for(int i = 0; i < strDowList.length; i++) {
+					dowList.add(strDowList[i]);
+				} 
+			} 
+			System.out.println("dowList : " + dowList);
+			requireVO.setDowList(dowList);
+			 
+			model.addAttribute("dowList", dowList);
+			
+			model.addAttribute("vo", requireVO);
+		}  
+		
+		
+		return "user/mypage";
+	}
+	
+	
+	/**
+	 * 내정보
+	 */
+	@GetMapping("/myinfo")
+	public String myinfo(Model model, HttpSession session) throws Exception {
+		
+		String id = (String)session.getAttribute("usrloginId");
+		
+		UserVO user = getUser(id);
+		
+		logger.debug(user.toString());
+		
+		model.addAttribute("user", user);
+		
+		return "user/myinfo";
+	}
+	
 	
 	// 아이디 중복 체크
 	public boolean idDupleChk(UserVO user) throws Exception {

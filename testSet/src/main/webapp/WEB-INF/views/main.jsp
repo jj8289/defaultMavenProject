@@ -6,7 +6,7 @@
 <head> 
 <jsp:include page="\/common/common.jsp" />                 
 <meta charset="UTF-8">  
-<title>Insert title here</title>
+<title>Insert title here</title> 
 <style type="text/css">
 .menu_bar {
 	height: 40px; 
@@ -47,17 +47,17 @@
 		<div class="menu_bar">
 			<c:if test="${not empty usrlogin }">
 				<div class="menu login" onclick="logout()">logout</div>
-				<c:if test="${reg == null}"><div class="menu register" onclick="location.href='/jj/user/register'">register</div></c:if>
+				<c:if test="${usrReq == null}"><div class="menu require" onclick="location.href='${pageContext.request.contextPath}/user/require'">require</div></c:if>
 				<div class="menu mypage" onclick="location.href='/jj/user/mypage'">mypage</div>  
 				<div class="menu match" onclick="match()">match</div>   
 				<div class="hi" >반갑습니다~ 유저 ${usrlogin } 님</div>    
-			</c:if>   
+			</c:if>    
 			<c:if test="${not empty mglogin }">  
 				<div class="menu login" onclick="logout()">logout</div>
-				<%-- <c:if test="${reg == null}"><div class="menu register" onclick="location.href='/jj/user/register'">register</div></c:if>
-				<div class="menu mypage" onclick="location.href='/jj/user/mypage'">mypage</div>  
-				<div class="menu match" onclick="match()">match</div>    --%> 
-				<div class="hi" >반갑습니다~ 관리자 ${mglogin } 님</div> 
+				<c:if test="${mgReg == null}"><div class="menu register" onclick="location.href='${pageContext.request.contextPath}/company/register'">register</div></c:if>
+				<div class="menu mypage" onclick="location.href='/jj/company/mypage'">mypage</div>  
+				<div class="menu match" onclick="match()">match</div>    
+				<div class="hi" >반갑습니다~ 관리자 ${mglogin } 님</div>  
 			</c:if>   
 		</div>	    
 	</c:otherwise>       
@@ -78,8 +78,8 @@
 		}
 	}    
   
-	function goMatch(){ 
-		location.href='/jj/match';
+	function goMatch(){  
+		location.href='/jj/common/match';
 	}
 	
 	function logout(){

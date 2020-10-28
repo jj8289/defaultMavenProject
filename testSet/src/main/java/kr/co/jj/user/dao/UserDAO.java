@@ -2,7 +2,7 @@ package kr.co.jj.user.dao;
 
 import org.springframework.stereotype.Repository;
 
-import kr.co.jj.user.vo.RegisterVO;
+import kr.co.jj.user.vo.RequireVO;
 import kr.co.jj.user.vo.UserVO;
 
 @Repository
@@ -22,9 +22,8 @@ public interface UserDAO {
 	
 	public void insertUser(UserVO user) throws Exception;
 	
-	public RegisterVO selectRegister(UserVO user) throws Exception;
+	public RequireVO selectRequire(UserVO user) throws Exception;
 	
-	public void updateRegister(RegisterVO vo) throws Exception;
-	
+	public void updateRequire(RequireVO vo) throws Exception;
 	
 }

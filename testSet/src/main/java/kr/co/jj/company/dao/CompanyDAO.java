@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import kr.co.jj.common.vo.AddrVO;
 import kr.co.jj.company.vo.AddrDTO;
 import kr.co.jj.company.vo.CompanyVO;
+import kr.co.jj.company.vo.RegisterVO;
 
 
 @Repository
@@ -29,6 +30,8 @@ public interface CompanyDAO {
 	public int selectCompany(CompanyVO vo) throws Exception;
 
 	public CompanyVO selectCompanyByManagerId(CompanyVO vo) throws Exception;
+	
+	public List<RegisterVO> selectRegister(CompanyVO vo) throws Exception;
 	
 	public void insertCompany(CompanyVO vo) throws Exception;
 	

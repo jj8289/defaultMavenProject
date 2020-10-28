@@ -4,8 +4,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<jsp:include page="../common/common.jsp" />    
+	<meta charset="UTF-8">
+	<jsp:include page="../common/common.jsp" />    
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage.css" media="screen"/> 
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
 <title>마이페이지</title>
 <style type="text/css">
 /*datepicer 버튼 롤오버 시 손가락 모양 표시*/
@@ -91,11 +95,11 @@ form {
 	text-align: center; 
 	margin-top: 15px; 
 }
-</style>      
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link type="text/css" rel="stylesheet" href="resources/css/mypage.css" media="screen"/> 
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
+
+#salary_hour, #salary_day{
+	height: 24px; 
+}   
+</style>        
 </head>    
 <body>   
 	<div id="container">      
@@ -178,23 +182,19 @@ form {
 					</tr>  
 					<tr>
 						<td bgcolor="lightgrey" align="center">시급/일급</td>   
-						<td id="selectSalary"> 
-							<c:if test="${not empty vo.salaryHour}">
-								<select id="salType" name="salType" onchange="setSalaryType()">
-									<option value="">선택</option> 
-									<option value="hour" selected>시급</option> 
-									<option value="day">일급</option>  
-								</select>
-								<input type="text" name="salary_hour" id="salary_hour" size="10"  value="${vo.salaryHour }" > 원 이상  	 
-							</c:if>
-							<c:if test="${not empty vo.salaryDay}">
-								<select id="salType" name="salType" onchange="setSalaryType()">
-									<option value="">선택</option>   
-									<option value="hour">시급</option>  
-									<option value="day" selected>일급</option>  
-								</select>
-								<input type="text" name="salary_day" id="salary_day" size="10" value="${vo.salaryDay }"> 원 이상 	  
-							</c:if>
+						<td id="selectSalary">
+							<select id="salType" name="salType" onchange="setSalaryType()">
+								<option value="">선택</option> 
+								<option value="hour" selected>시급</option> 
+								<option value="day">일급</option>  
+							</select>
+							<div id="salaryHourBox">
+								<input type="text" name="salary_hour" id="salary_hour" size="10"  value="${vo.salaryHour }"> 	 
+							</div> 
+							<div id="salaryDayBox">
+								<input type="text" name="salary_day" id="salary_day" size="10" value="${vo.salaryDay }">
+							</div> 
+							<div id="salaryBox"></div>
 						</td>   
 					</tr>   
 					<tr> 
@@ -272,21 +272,32 @@ form {
 	</c:if>            
 	</div>      
 <script type="text/javascript">
-	var salaryHour = "";
-	var salaryDay = "";
+	var salaryHour = "${vo.salaryHour }";
+	var salaryDay = "${vo.salaryDay }";
 	var dowList = ${dowList};
 	var locList = ${locList}; 
 	var locLen = locList.length;  
 	var frm = document.regForm;     
 	var reg = "${vo}";    
 	var matchStat = "${user.matchStatus}"; 
-	   
+	
+	console.log(salaryHour + " | " + salaryDay); 
+	
 	$(document).ready(function () {    
 		$("#for_one").hide();
 		$("#for_date").hide();
 		$("#for_dow").hide();
-		$("#salary_hour").show();
-		$("#salary_day").show();
+		
+		$("#salaryDayBox").show();
+		$("#salaryBox").text("원 이상"); 
+		
+		if(salaryHour != ""){
+			$("#salaryHourBox").show();
+			$("#salaryDayBox").hide();
+		} else if(salaryDay != ""){
+			$("#salaryDayBox").show();
+			$("#salaryHourBox").hide();
+		} 
 		
 		for(var i = 0; i<locLen; i++){ 
 			document.getElementById("loc"+locList[i]).checked = true; 
@@ -448,10 +459,10 @@ form {
             return;
 		}  
 		
-		registerChk(frm);
+		requireChk(frm);
 	}
 		  
-	function registerChk(frm) {
+	function requireChk(frm) {
 		var params = {};		
 		 
 		if($("select[name=salType]").val() == "hour"){
@@ -478,7 +489,7 @@ form {
 		//console.log(params);
 		   
 		$.ajax({
-    		url : CONTEXT_PATH + "/register/registerChk", 
+    		url : CONTEXT_PATH + "/require/requireChk", 
     		type: "POST",
     		data: JSON.stringify(params),     
     		dataType: 'json',   
@@ -498,15 +509,20 @@ form {
 	
 	function setSalaryType() {
 		var salType = $("select[name=salType]").val(); // 선택된 값
-		//console.log($("select[name=salType]").val());   
-		if(salType == "hour"){ 
-			$("#salary_hour").show();
-			$("#salary_day").hide();
- 			
+		console.log($("select[name=salType]").val());   
+		if(salType == "hour"){  
+			$("#salaryBox").text("원 이상");
+			$("#salaryHourBox").show();
+			$("#salaryDayBox").hide();
 		} else if(salType == "day"){
-			$("#salary_hour").hide();  
-			$("#salary_day").show();
-		}       
+			$("#salaryBox").text("원 이상");
+			$("#salaryHourBox").hide();
+			$("#salaryDayBox").show();
+		} else { 
+			$("#salaryBox").text("");
+			$("#salaryHourBox").hide();
+			$("#salaryDayBox").hide();
+		}    
 	}   
 	
 	function setDatepicker() { 
@@ -583,13 +599,13 @@ form {
 	
 	function save(){
 		$.ajax({
-    		url : CONTEXT_PATH + "/register/registerChk", 
+    		url : CONTEXT_PATH + "/require/requireChk", 
     		type: "POST",
     		data: JSON.stringify(params),     
     		dataType: 'json',   
     		contentType:"application/json;charset=UTF-8",
     		success: function(data){
-    			console.log("registerChk");  
+    			console.log("requireChk");  
     			alert("저장 완료");
     			console.log(data.list); 
     			//location.href = CONTEXT_PATH + "/";  

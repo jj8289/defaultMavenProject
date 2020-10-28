@@ -127,7 +127,8 @@ form p {
 								<option value="day">일급</option>   
 							</select>
 							<input type="text" name="salary_hour" id="salary_hour" size="10">
-							<input type="text" name="salary_day" id="salary_day" size="10"> 원 이상  
+							<input type="text" name="salary_day" id="salary_day" size="10">
+							<div id="salaryBox"></div>  
 						</td> 
 					</tr>   
 					<tr> 
@@ -309,7 +310,7 @@ form p {
  		 
 		params = {
 				salaryHour : salaryHour
-			  , salaryDay : salaryDay
+			  , salaryDay : salaryDay 
 			  , searchType : $("select[name=term]").val()
 			  , salaryHour : salaryHour
 			  , salaryDay : salaryDay 
@@ -408,15 +409,22 @@ form p {
 		var salType = $("select[name=salType]").val(); // 선택된 값
 		//console.log($("select[name=salType]").val());   
 		console.log(salType);   
+		
+		// $("#salaryBox").remove();
+		
 		if(salType == "hour"){
-			$("#salary_hour").show();
-			$("#salary_day").hide();
+			$("#salaryBox").text("원 이상");  
+			$("#salary_hour").show(); 
+			$("#salary_day").hide(); 
  			
 		} else if(salType == "day"){
+			$("#salaryBox").text("원 이상"); 
 			$("#salary_hour").hide();  
-			$("#salary_day").show();
-		}       
-	}   
+			$("#salary_day").show();  
+		} else { 
+			$("#salaryBox").text("");  
+		}
+	}    
 	
 	function setDatepicker() {
 		

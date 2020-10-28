@@ -10,6 +10,7 @@ import kr.co.jj.company.dao.CompanyDAO;
 import kr.co.jj.company.service.CompanyService;
 import kr.co.jj.company.vo.AddrDTO;
 import kr.co.jj.company.vo.CompanyVO;
+import kr.co.jj.company.vo.RegisterVO;
 
 @Service
 public class CompanyServiceImpl implements CompanyService{
@@ -48,6 +49,10 @@ public class CompanyServiceImpl implements CompanyService{
 	}
 
 	@Override
+	public List<RegisterVO> selectRegister(CompanyVO vo) throws Exception {
+		return dao.selectRegister(vo);
+	}
+	@Override
 	public void insertCompany(CompanyVO vo) throws Exception {
 		dao.insertCompany(vo);;
 	}
@@ -56,5 +61,6 @@ public class CompanyServiceImpl implements CompanyService{
 	public CompanyVO selectManager(CompanyVO vo) throws Exception {
 		return dao.selectManager(vo);
 	}
+
 	
 }
