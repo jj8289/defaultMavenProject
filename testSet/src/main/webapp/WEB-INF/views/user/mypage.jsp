@@ -489,7 +489,7 @@ form {
 		//console.log(params);
 		   
 		$.ajax({
-    		url : CONTEXT_PATH + "/require/requireChk", 
+    		url : CONTEXT_PATH + "/user/require/requireChk", 
     		type: "POST",
     		data: JSON.stringify(params),     
     		dataType: 'json',   
@@ -498,8 +498,8 @@ form {
     			alert("변경 완료!"); 
     			location.href = CONTEXT_PATH + "/";  
     		}, 
-    		error: function(data){  
-   		   		//console.log("error");
+    		error: function(data){   
+   		   		console.log("error");
    		   		//console.log(data.errmsg);  
    		   		//console.log(data.param); 
     		} 
@@ -563,10 +563,10 @@ form {
 			if(obj[i].checked == true){
 				 
 				if(obj[i].value == "0"){
-					for(var k = 1; k<len-1; k++){
+					for(var k = 1; k<len; k++){
 						obj[k].checked = false;
 					}
-				} 
+				}  
 				
 				locList.push(obj[i].value);
 			}   
