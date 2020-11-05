@@ -16,9 +16,30 @@
  	</select>
  	
  	<select id="selectUserByUserId" parameterType="UserVO" resultType="UserVO">
- 		SELECT *
- 		  FROM TB_USER
- 		 WHERE USER_ID = #{userId}
+ 		SELECT    A.USER_NO 
+				, A.USER_ID 
+				, A.USER_PW 
+				, A.USER_NM 
+				, A.AGE 
+				, B.JOB_NO
+				, B.JOB_NM
+				, A.SEX
+				, A.CAREER
+				, A.PHONE 
+				, A.ADDR
+				, A.EMAIL 
+				, A.INTRO 
+				, DATE_FORMAT(A.CREATE_DATE, '%Y-%m-%d') CREATE_DATE
+				, A.MATCH_STATUS
+				, A.LICENSE_NO 
+				, A.REQUIRE_NO
+				, A.SKILL
+				, A.PHOTO_NO 
+ 		  FROM TB_USER A
+ 		  	   , TB_JOB B
+ 		 WHERE 1=1
+ 		   AND A.JOB_NO = B.JOB_NO
+ 		   AND USER_ID = #{userId}
  	</select>
 
  	<insert id="insertUser" parameterType="UserVO">
@@ -28,7 +49,7 @@
 			, USER_PW
 			, USER_NM
 			, AGE
-			, JOB
+			, JOB_NO
 			, SEX
 			, CAREER
 			, PHONE
@@ -44,7 +65,7 @@
 			, #{userPw}
 			, #{userNm}
 			, #{age} 
-			, #{job}
+			, #{jobNo}
 			, #{sex}
 			, #{career}
 			, #{phone}

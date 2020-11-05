@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.co.jj.common.vo.Job;
 import kr.co.jj.user.service.UserService;
 import kr.co.jj.user.vo.RequireVO;
 import kr.co.jj.user.vo.UserVO;
@@ -232,7 +233,23 @@ public class UserController {
 		
 		logger.debug(user.toString());
 		
+		String jobNm = user.getJobNm();
+		
+		Map<String, Object> jobMap = new HashMap<String, Object>();
+		
+		for(Job job : Job.values()) {
+			jobMap.put(job.name(), job.getName());
+			if(jobNm.equals(job.name())) {
+				System.out.println("job.name : " + job.name());
+				System.out.println("job.getName : " + job.getName());
+				System.out.println("user.getJobNm() : " + jobNm);
+				 
+			}
+		} 
+		
 		model.addAttribute("user", user);
+		model.addAttribute("jobNm", jobNm);
+		model.addAttribute("jobList", jobMap);
 		
 		return "user/myinfo";
 	}

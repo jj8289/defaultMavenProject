@@ -7,7 +7,8 @@ public class UserVO {
 	private String userPw;
 	private String userNm;
 	private String age; 
-	private String job;
+	private String jobNo;
+	private String jobNm;
 	private String sex;
 	private String career;
 	private String phone;
@@ -51,11 +52,17 @@ public class UserVO {
 	public void setAge(String age) {
 		this.age = age;
 	}
-	public String getJob() {
-		return job;
+	public String getJobNo() {
+		return jobNo;
 	}
-	public void setJob(String job) {
-		this.job = job;
+	public void setJobNo(String jobNo) {
+		this.jobNo = jobNo;
+	}
+	public String getJobNm() {
+		return jobNm;
+	}
+	public void setJobNm(String jobNm) {
+		this.jobNm = jobNm;
 	}
 	public String getSex() {
 		return sex;
@@ -133,9 +140,9 @@ public class UserVO {
 	@Override
 	public String toString() {
 		return "UserVO [userNo=" + userNo + ", userId=" + userId + ", userPw=" + userPw + ", userNm=" + userNm
-				+ ", age=" + age + ", job=" + job + ", sex=" + sex + ", career=" + career + ", phone=" + phone
-				+ ", email=" + email + ", addr=" + addr + ", intro=" + intro + ", createDate=" + createDate
-				+ ", licenseNo=" + licenseNo + ", requireNo=" + requireNo + ", matchStatus=" + matchStatus + ", skill="
-				+ skill + ", photoNo=" + photoNo + "]";
+				+ ", age=" + age + ", jobNo=" + jobNo + ", jobNm=" + jobNm + ", sex=" + sex + ", career=" + career
+				+ ", phone=" + phone + ", email=" + email + ", addr=" + addr + ", intro=" + intro + ", createDate="
+				+ createDate + ", licenseNo=" + licenseNo + ", requireNo=" + requireNo + ", matchStatus=" + matchStatus
+				+ ", skill=" + skill + ", photoNo=" + photoNo + "]";
 	}
 }

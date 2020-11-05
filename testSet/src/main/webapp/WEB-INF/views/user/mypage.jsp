@@ -106,7 +106,7 @@ form {
 		<div class="temp"></div>
 		<h2 class="title">마이페이지</h2>   
 		<div class="temp"></div>   
-		<div class="infocon"><input type="button" value="내 정보 수정" onclick="location.href='/jj/myinfo'"></div>
+		<div class="infocon"><input type="button" value="내 정보 수정" onclick="location.href='${pageContext.request.contextPath}/user/myinfo'"></div>
 		<div class="temp"></div>   
 		<h3 class="subtitle">상태</h3>    
 		<div>  
@@ -185,8 +185,8 @@ form {
 						<td id="selectSalary">
 							<select id="salType" name="salType" onchange="setSalaryType()">
 								<option value="">선택</option> 
-								<option value="hour" selected>시급</option> 
-								<option value="day">일급</option>  
+								<option id="hour" value="hour">시급</option> 
+								<option id="day" value="day">일급</option>  
 							</select>
 							<div id="salaryHourBox">
 								<input type="text" name="salary_hour" id="salary_hour" size="10"  value="${vo.salaryHour }"> 	 
@@ -288,16 +288,18 @@ form {
 		$("#for_date").hide();
 		$("#for_dow").hide();
 		
-		$("#salaryDayBox").show();
-		$("#salaryBox").text("원 이상"); 
+		//$("#salaryDayBox").show();
+		
 		
 		if(salaryHour != ""){
 			$("#salaryHourBox").show();
 			$("#salaryDayBox").hide();
+			$("#hour").prop("selected", true);
 		} else if(salaryDay != ""){
 			$("#salaryDayBox").show();
 			$("#salaryHourBox").hide();
-		} 
+			$("#day").prop("selected", true);
+		}  
 		
 		for(var i = 0; i<locLen; i++){ 
 			document.getElementById("loc"+locList[i]).checked = true; 
@@ -403,7 +405,8 @@ form {
 	
 	function validationChk(){
 		console.log("!!");
-		console.log(frm.time.value); 
+		console.log(frm.time.value);
+		console.log(frm.salType.value); 
 		
 		if(!frm.term.value){
 			alert("근무기간을 선택해주세요.");

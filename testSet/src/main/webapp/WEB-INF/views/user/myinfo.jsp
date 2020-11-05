@@ -97,7 +97,18 @@ form p {
 					</tr>  
 					<tr>  	
 						<td bgcolor="lightgrey" align="center">직업</td>    
-						<td><input type="text" id="job" name="job" value="${user.job }" ></td>     
+						<td>
+							<select>
+								<option value="">선택</option>
+								<c:forEach var="item" items="${jobList }">
+									<option id="${item.key }" value="${item.key }">${item.value }</option>
+									<c:if test="${item.key == jobNm }">
+										<option id="${item.key }" value="${item.key }" selected>${item.value }</option>
+									</c:if>  
+								</c:forEach> 
+							</select> 
+						
+						</td>     
 					</tr> 
 					<tr>  	
 						<td bgcolor="lightgrey" align="center">성별</td>    
@@ -117,7 +128,7 @@ form p {
 					</tr> 
 					<tr>  	 
 						<td bgcolor="lightgrey" align="center">주소</td>    
-						<td><input type="text" id="addr" name="addr" value="${user.addr }" disabled="disabled"></td>     
+						<td><input type="text" id="addr" name="addr" value="${user.addr }" ></td>     
 					</tr> 
 					<tr>  	 
 						<td bgcolor="lightgrey" align="center">간단 소개</td>    
