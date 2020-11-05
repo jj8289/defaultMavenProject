@@ -40,6 +40,14 @@ public class UserController {
 	@GetMapping("/join")
 	public String join(Model model) {
 		
+		Map<String, Object> jobMap = new HashMap<String, Object>();
+		
+		for(Job job : Job.values()) {
+			jobMap.put(job.name(), job.getName());
+		} 
+		
+		model.addAttribute("jobList", jobMap);
+		
 		return "user/join"; 
 	}
 	

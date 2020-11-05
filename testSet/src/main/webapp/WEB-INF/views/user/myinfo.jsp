@@ -101,10 +101,14 @@ form p {
 							<select>
 								<option value="">선택</option>
 								<c:forEach var="item" items="${jobList }">
-									<option id="${item.key }" value="${item.key }">${item.value }</option>
-									<c:if test="${item.key == jobNm }">
-										<option id="${item.key }" value="${item.key }" selected>${item.value }</option>
-									</c:if>  
+									<c:choose>
+										<c:when test="${item.key == jobNm }">
+											<option id="${item.key }" value="${item.key }" selected>${item.value }</option>
+										</c:when>
+										<c:otherwise>
+											<option id="${item.key }" value="${item.key }">${item.value }</option>
+										</c:otherwise>
+									</c:choose>
 								</c:forEach> 
 							</select> 
 						

@@ -33,7 +33,7 @@ public class LoginAspect {
 		
 		if(req != null) {
 			System.out.println(req);  
-			if(req.contains("/sigungu") || req.contains("/dong") || req.contains("/addrPop") || req.contains("/logout")) { 
+			if(req.contains("/sigungu") || req.contains("/dong") || req.contains("/addrPop") || req.contains("/logout") || req.contains("/join")) { 
 				return jointPoint.proceed();   
 			} 
 			else if(!req.contains("/join")) { // 회원가입 페이지는 세션 체크 제외 

@@ -67,15 +67,23 @@
 		width: 800px;
 		height: 180px
 	}
+	
+	#addCareer, #delCareer{
+		border: none;
+		background-color: #d3d3d3;
+		color: black;
+		width: 25px;
+		height: 25px; 
+	}
 </style>
 </head>
-<body>
+<body> 
 	<div id="container">
 		<div class="temp"></div>
 		<h2 class="title">회원가입</h2>
 		<div class="temp"></div>
 		<div class="minicon"> 
-			<form id="joinForm" name="joinForm"> 
+			<form id="joinForm" name="joinForm" enctype="multipart/form-data" method="post"> 
 				<table cellspacing="3">
 				<colgroup> 
    					<col width="15%"/> 
@@ -99,7 +107,14 @@
 					</tr>
 					<tr>
 						<td bgcolor="lightgrey" align="center">직업</td>
-						<td><input type="text" name="job" id="job"> ex) dev</td>
+						<td>
+							<select>
+								<option value="">선택</option>
+								<c:forEach var="item" items="${jobList }">
+									<option id="${item.key }" value="${item.key }">${item.value }</option>
+								</c:forEach>  
+							</select> 
+						</td> 
 					</tr>
 					<tr>
 						<td bgcolor="lightgrey" align="center">성별</td>
@@ -107,13 +122,13 @@
 							<input type="radio" name="sex" id="sex1" value="F" > 여
 							<input type="radio" name="sex" id="sex2" value="M" > 남
 						</td> 
-					</tr>
-					<tr>
+					</tr> 
+					<tr id="careerTr">
 						<td bgcolor="lightgrey" align="center">경력</td>
-						<td><input type="text" name="career" id="career"> ex) 3</td>
-					</tr>
-					<tr>
-						<td bgcolor="lightgrey" align="center">핸드폰</td>
+						<td><input type="text" name="career" id="career" size="2" onchange="createAddBtn()">년 <input type="button" id="addCareer" onclick="add()" value="+" hidden="true"></td>    
+					</tr>  
+					<tr> 
+						<td bgcolor="lightgrey" align="center">핸드폰</td>  
 						<td><input type="text" name="phone" id="phone"> ex) 01012345678</td>
 					</tr>
 					<tr>
@@ -132,6 +147,10 @@
 						<td bgcolor="lightgrey" align="center">스킬</td>
 						<td><input size="70" type="text" name="skill" id="skill"></td>
 					</tr>
+					<tr>
+						<td bgcolor="lightgrey" align="center">면허증</td> 
+						<td><input type="file" name="file" id="imageFileOpenInput" accept="image/*"></td> 
+					</tr>
 				</table>
 
 				<p class="but" align="center" >
@@ -143,6 +162,74 @@
 		</div>  
 	</div> 
 <script type="text/javascript">
+	
+	function createAddBtn(){
+		console.log($("#career").val());  
+		if($("#career").val() == "0"){ 
+			$("#addCareer").prop("hidden", true);
+		} else { 
+			$("#addCareer").prop("hidden", false);
+		}
+	}
+	
+	function add(){
+		var html = "";
+		
+		html += "<tr name='addTr'>";
+		html += "<td bgcolor='" + "lightgrey" +"' align='" + "center" +"'>경력 상세</td>";
+		html += "<td> 직장명 <input type='text' id='companyNm' name='companyNm' style='height:18px'>   직급 <input type='text' id='lev' name='lev' style='height:18px' size='3'>   기간 <input type='text' id='workPeriod' name='workPeriod' style='height:18px' size='3'>개월</td>";
+		html += "<td><button type='button' id='" + "delCareer' class='delCareer' onclick='del()'>-</button></td>"; 
+		html += "</tr>";  
+		  
+		$("#careerTr").after(html);
+		 
+		/* if (addCnt == 1) {
+			$("#careerTr").after(html);
+		}else {  
+			$("#addTr"+ (addCnt-1)).after(html); 
+		} */
+	} 
+	
+	function del(){ 
+		var target = $(event.target).parent().parent(); 
+		console.log(target); 
+		 
+		target.remove(); 
+		/* $(".delCareer").on("click", function(e){
+			console.log("!!"); 
+			var tr = $(e.target).parent().parent();
+			console.log(tr);  
+			//$(e.target)	
+		}); */
+	}
+	
+	
+	
+	/* function del(obj){
+		console.log(obj);
+		console.log(typeof(obj)); 
+		
+		console.log(obj.parent()); 
+		 
+	} */
+	/*function uploadFile(){
+		 var form = $('#joinForm')[0];
+         var formData = new FormData(form);
+         formData.append("fileObj", $("#joinForm")[0].files[0]);
+
+         $.ajax({
+             url: '',
+             processData: false,
+             contentType: false,
+             data: formData,
+             type: 'POST',
+             success: function(result){
+                 alert("업로드 성공!!");
+             }
+         });
+
+	}*/
+	
 		function joinChk() {  
 	        var frm = document.joinForm;
 	        if (!frm.userId.value) { //아이디를 입력하지 않으면.
