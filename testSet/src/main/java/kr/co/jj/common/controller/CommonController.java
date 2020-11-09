@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.jj.common.vo.AddrApiVO;
 import kr.co.jj.common.vo.AddrVO;
+import kr.co.jj.common.vo.Job;
 import kr.co.jj.company.service.CompanyService;
 import kr.co.jj.company.vo.AddrDTO;
 
@@ -115,4 +116,5 @@ public class CommonController {
 		 
 		return mv; 
 	} 
+	
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,17 +14,28 @@
 /*datepicer 버튼 롤오버 시 손가락 모양 표시*/
 .ui-datepicker-trigger{cursor: pointer;}
 /*datepicer input 롤오버 시 손가락 모양 표시*/
-.hasDatepicker{cursor: pointer;}
+.hasDatepicker{cursor: pointer; height: 28px;} 
 
-#selectSalary{
+#timeBox, #timeSetBox {
+	display: flex; 
+}     
+
+#selectSalary { 
 	height: 30px; 
 	display: flex; 
 }
 
-.temp {
-	height: 50px; 
+#selectPT, #selectOrder{
+	height: 30px; 
+	display: flex; 
+	/* justify-content: space-around; */
+	column-gap: 10px; 
 }
-
+ 
+.temp {
+	height: 30px; 
+}
+ 
 body {
 	margin: 0; 
 	padding: 0;
@@ -38,7 +50,7 @@ body {
 } 
 
 .minicon {
- 	margin: 0 auto;   
+ 	margin: 0 auto; 
 } 
 
 table { 
@@ -68,7 +80,20 @@ form p {
 #location {
 	display: flex; 
 } 
-</style>   
+
+td, select {
+	padding-left: 3px;
+	height: 30px;      
+} 
+
+#ptWork, #otherWork, #detailBox {
+	height: 30px;   
+} 
+  
+#work, #detailWork {
+	height: 22px;   
+}  
+</style>    
 </head>    
 <body>   
 	<div id="container">    
@@ -82,6 +107,7 @@ form p {
 	   					<col width="30%"/>
 	    				<col width="30%"/> 
 	 				</colgroup> -->  
+	 				<tr><td>알바조건<td></tr>  
 	 				<tr> 
 						<td bgcolor="lightgrey" align="center">근무기간</td> 
 						<td>
@@ -94,11 +120,11 @@ form p {
 						</td>     
 					</tr>
 					<tr id="for_one">  
-						<td bgcolor="lightgrey" align="center">날짜</td>
+						<td bgcolor="lightgrey" align="center">근무 시작 날짜</td>
 						<td>
 							<input type="text" id="datepicker" name="datepicker">
 						</td>
-					</tr>
+					</tr> 
 					<tr id="for_date">
 						<td bgcolor="lightgrey" align="center">원하는 시작일</td> 
 						<td onchange="setDatepicker()">
@@ -126,52 +152,232 @@ form p {
 								<option value="hour">시급</option> 
 								<option value="day">일급</option>   
 							</select>
-							<input type="text" name="salary_hour" id="salary_hour" size="10">
-							<input type="text" name="salary_day" id="salary_day" size="10">
-							<div id="salaryBox"></div>  
-						</td> 
+							<div style="padding-left: 3px; height: 30px">
+								<input type="text" name="salary_hour" id="salary_hour" size="10" style="height: 24px">
+								<input type="text" name="salary_day" id="salary_day" size="10" style="height: 24px"> 
+							</div> 	   
+							<div id="salaryBox"></div>   
+						</td>    
 					</tr>   
-					<tr> 
-						<td bgcolor="lightgrey" align="center">시간</td> 
-						<td>
-							<select id="time" name="time">
+					<tr>  
+						<td bgcolor="lightgrey" align="center">근무 시간</td> 
+						<td id="timeBox">
+							<select id="start_hour" name="start_hour" onchange="selectStartHour()"> 
+								<option value=""></option> 
+								<c:forEach var="i" begin="6" end="24">
+									<option value="${i }">${i>9?i:'0' }${i>9?'':i }</option>  
+								</c:forEach>      
+							</select> 
+							<div style="padding: 5px;"> : </div>  
+							<select id="start_min" name="start_min"> 
+								<option value=""></option> 
+								<c:forEach var="i" begin="0" end="60" step="5">
+									<option value="${i }">${i<10?'0':i }${i<10?i:'' }</option>   
+								</c:forEach>       
+							</select> 
+							<div style="padding: 5px;"> ~ </div>
+							<select id="end_hour" name="end_hour">  
+								<option value=""></option> 
+								<c:forEach var="i" begin="6" end="24">
+									<option value="${i }">${i>9?i:'0' }${i>9?'':i }</option>  
+								</c:forEach>       
+							</select> 
+							<div style="padding: 5px;"> : </div>       
+							<select id="end_min" name="end_min"> 
+								<option value=""></option> 
+								<c:forEach var="i" begin="0" end="60" step="5">
+									<option value="${i }">${i<10?'0':i }${i<10?i:'' }</option>   
+								</c:forEach>       
+							</select> 
+							<!-- 
+							<select id="time" name="time"> 
 								<option value="1">상관없음</option>
 								<option value="2">오전</option>
 								<option value="3">오후</option> 
 								<option value="4">하루</option>
 							</select>
-						</td>   
+							<div id="timeSetBox">
+								<input type="text" name="time_start" id="time_start" size="10"> ~ 
+								<input type="text" name="time_end" id="time_end" size="10">
+						 	</div>  -->
+						</td>     
 					</tr> 
-					<tr onchange="selectLoc()"> 
-						<td bgcolor="lightgrey" align="center" rowspan="2">동/읍/면</td>  
-						<td id="location" rowspan="2">     
-							<label><input type="checkbox" name="loc" value="0"> 전체</label>
-							<label><input type="checkbox" name="loc" value="1"> 통진읍</label>
-							<label><input type="checkbox" name="loc" value="2"> 고촌읍</label>
-							<label><input type="checkbox" name="loc" value="3"> 양촌읍</label>
-							<label><input type="checkbox" name="loc" value="4"> 대곶면</label>
-							<label><input type="checkbox" name="loc" value="5"> 월곶면</label>
-							<label><input type="checkbox" name="loc" value="6"> 하성면</label>
-							<label><input type="checkbox" name="loc" value="7"> 김포본동</label>
-						</td>    
-					</tr> 
-					<tr onchange="selectLoc()"> 
-						<td id="location">   
-							<label><input type="checkbox" name="loc" value="8"> 장기본동</label>
-							<label><input type="checkbox" name="loc" value="9"> 사우동</label>
-							<label><input type="checkbox" name="loc" value="10"> 풍무동</label>
-							<label><input type="checkbox" name="loc" value="11"> 장기동</label>
-							<label><input type="checkbox" name="loc" value="12"> 구래동</label>
-							<label><input type="checkbox" name="loc" value="13"> 마산동</label>
-							<label><input type="checkbox" name="loc" value="14"> 운양동</label>
+					<tr>
+						<td bgcolor="lightgrey" align="center">직종</td>
+						<td>
+							<select id="job" name="job" onchange="selectJob()">
+								<option value="">선택</option>
+								<c:forEach var="item" items="${jobList }">
+									<option id="${item.key }" value="${item.key }">${item.value }</option>
+								</c:forEach>
+							</select>   
+						</td>
+					</tr>
+					<tr>
+						<td bgcolor="lightgrey" align="center">성별</td>
+						<td id="sexBox"> 
+							<select id="sex" name="sex">
+								<option value="">성별 무관</option>
+								<option value="F">여</option>
+								<option value="M">남</option>
+							</select>   
+						</td> 
+					</tr>
+					<tr>
+						<td bgcolor="lightgrey" align="center">나이</td>
+						<td id="ageBox"> 
+							<select id="age" name="age">
+								<option value="">나이 무관</option>
+								<c:forEach var="i" begin="20" end="40" step="10">
+									<option value="${i }">${i }대</option> 
+								</c:forEach>
+								<option value="50">50대 이상</option> 
+							</select>   
 						</td> 
 					</tr>   
+					<tr><td>근무 조건<td></tr>  
+					<tr class="forPT"> 
+						<td bgcolor="lightgrey" align="center">구분</td>
+						<td id="kindBox" onchange="selectKind()"> 
+							<label><input type="radio" name="kind" value="os"> OS</label>
+							<label><input type="radio" name="kind" value="ns"> NS</label>
+						</td>  
+					</tr>
+					<tr> 
+						<td bgcolor="lightgrey" align="center">업무</td>
+						<td id="workBox" onchange="selectWork()"> 
+							<div id="ptWork" class="forOS">
+								<label><input type="checkbox" name="workOS" value="1"> 통증 치료</label>
+								<label><input type="checkbox" name="workOS" value="2"> 심플</label>
+								<label><input type="checkbox" name="workOS" value="3"> 10분 메뉴얼</label>
+								<label><input type="checkbox" name="workOS" value="4"> 도수 치료(30분 이상)</label>
+								<label><input type="checkbox" name="workOS" value="5"> 운동 치료</label>
+							</div>
+							<div id="ptWork" class="forNS">
+								<label><input type="checkbox" name="workNS" value="0"> 신경계 치료</label>
+							</div>       
+							<div id="otherWork" class="forOther"><input size="70" type="text" name="work" id="work"></div>
+						</td> 
+					</tr>
+					<tr class="forOS">   
+						<td bgcolor="lightgrey" align="center">세부 업무</td>
+						<td id="selectPT">  
+							<label style="background-color: lightgrey; text-align: center;">초음파</label>   
+							<select id="micro">     
+								<option value="N">X</option>  
+								<option value="Y">O</option>
+							</select>  
+							<label style="background-color: lightgrey; text-align: center;">ESWT</label>    
+							<select id="eswt">    
+								<option value="N">X</option> 
+								<option value="Y">O</option>
+							</select>  
+							<label style="background-color: lightgrey;">CPM(Knee)</label>    
+							<select id="knee">   
+								<option value="N">X</option> 
+								<option value="Y">O</option>
+							</select>  
+							<label style="background-color: lightgrey;">CPM(Shoulder)</label>    
+							<select id="sh">   
+								<option value="N">X</option> 
+								<option value="Y">O</option>  
+							</select>      
+							<label style="background-color: lightgrey;">이온치료</label>  
+							<select id="ion">
+								<option value="N">X</option> 
+								<option value="Y">O</option>
+							</select>
+						</td>    
+					</tr>
+					<tr class="forPT">  
+						<td bgcolor="lightgrey" align="center">인센티브</td>
+						<td id="insentiveBox"> 
+							<label><input type="radio" name="insentive" value="Y"> 유</label> 
+							<label><input type="radio" name="insentive" value="N"> 무</label>
+						</td>   
+					</tr> 
+					<tr>
+						<td bgcolor="lightgrey" align="center">업무 관련 추가 설명</td>
+						<td id="detailBox"><textarea name="detailWork" id="detailWork"  rows="5" cols="50" style="margin: 0px; width: 478px; height: 80px;"></textarea></td> 
+					</tr>
+					<tr>  
+						<td bgcolor="lightgrey" align="center">점심 시간</td> 
+						<td id="timeBox">
+							<select id="lunch_start_hour" name="lunch_start_hour" onchange="selectLunchStartHour()"> 
+								<option value=""></option> 
+								<c:forEach var="i" begin="11" end="15">
+									<option value="${i }">${i>9?i:'0' }${i>9?'':i }</option>  
+								</c:forEach>      
+							</select>   
+							<div style="padding: 5px;"> : </div>      
+							<select id="lunch_start_min" name="lunch_start_min"> 
+								<option value=""></option> 
+								<c:forEach var="i" begin="0" end="60" step="5">
+									<option value="${i }">${i<10?'0':i }${i<10?i:'' }</option>   
+								</c:forEach>       
+							</select> 
+							<div style="padding: 5px;"> ~ </div>
+							<select id="lunch_end_hour" name="lunch_end_hour">  
+								<option value=""></option> 
+								<c:forEach var="i" begin="11" end="15">
+									<option value="${i }">${i>9?i:'0' }${i>9?'':i }</option>  
+								</c:forEach>      
+							</select> 
+							<div style="padding: 5px;"> : </div>       
+							<select id="lunch_end_min" name="lunch_end_min"> 
+								<option value=""></option>  
+								<c:forEach var="i" begin="0" end="60" step="5">
+									<option value="${i }">${i<10?'0':i }${i<10?i:'' }</option>   
+								</c:forEach>       
+							</select> 
+						</td>  
+					</tr> 
+					<tr>
+						<td bgcolor="lightgrey" align="center">근무자 수</td>
+						<td><input size="2" type="text" name="peerCnt" id="peerCnt">명</td> 
+					</tr>
+					<tr>
+						<td bgcolor="lightgrey" align="center">일 평균 환자수</td>
+						<td><input size="2" type="text" name="avgCnt" id="avgCnt">명      <a style="color: red; font-size: 12px;">* 거짓일 경우 이 서비스에서 영구 제명 가능.</a></td>  
+					</tr>   
+					<tr>
+						<td bgcolor="lightgrey" align="center">기타 복지 및 소개글</td> 
+						<td><textarea name="etc" id="etc"  rows="5" cols="50" style="margin: 0px; width: 478px; height: 80px;"></textarea></td>  
+					</tr>   
+					<!-- <tr><td>우선순위<td></tr>    
+					<tr>
+						<td bgcolor="lightgrey" align="center">순위</td>
+						<td id="selectOrder">
+						<label style="background-color: lightgrey; text-align: center;">1순위</label>
+						<select id="order1" onchange="selectOrder1()">    
+							<option value="">선택</option> 
+							<option value="pay">시급/일급</option> 
+							<option value="period">근무기간</option> 
+							<option value="time">근무시간</option> 
+							<option value="sex">성별</option> 
+							<option value="age">나이</option> 
+							<option value="career">경력</option> 
+							<option value="loc">인근 거주자</option> 
+						</select>     
+						<label style="background-color: lightgrey; text-align: center;">2순위</label>
+						<select id="order2">      
+							<option value="">선택</option>
+							<option value="pay">시급/일급</option> 
+							<option value="period">근무기간</option> 
+							<option value="time">근무시간</option> 
+							<option value="sex">성별</option> 
+							<option value="age">나이</option> 
+							<option value="career">경력</option> 
+							<option value="loc">인근 거주자</option> 
+						</select>     
+						</td>     
+					</tr>  -->
 				</table> 
 				<p class="but" align="center" > 
 					<button id="reg" value="등록" type="button" onclick="validationChk()" class="btn">등록</button>  
 					<input type="reset" value="리셋">  
 					<input type="button" value="홈으로" onclick="goHome()">
-				</p> 
+				</p>  
 			</form>    
 		</div>  
 	</div>  
@@ -179,8 +385,7 @@ form p {
 	var CONTEXT_PATH = "/jj";
 	var salaryHour = "";
 	var salaryDay = "";
-	var dowList = [];
-	var locList = [];
+	var ptWorkList = [];
 	var frm = "";
 	
 	$(document).ready(function () {
@@ -189,6 +394,10 @@ form p {
 		$("#for_dow").hide();
 		$("#salary_hour").hide();
 		$("#salary_day").hide();
+		//$("#ptWork").hide();
+		$(".forPT").hide();
+		$(".forOS").hide();
+		$(".forNS").hide();
 	}); 
  
 	$(function() {
@@ -218,6 +427,105 @@ form p {
         //$('#datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
 	});  
 	 
+	function selectStartHour(){
+		var sel = Number($("select[id=start_hour]").val());
+		
+		$("select[id=end_hour]").children().remove();  
+		$("select[id=end_hour]").append("<option value=''></option>"); 
+		for(var i = sel+1; i<24 + 1; i++){ 
+			$("select[id=end_hour]").append("<option value='"+i+"'>"+i+"</option>");
+		} 
+	}  
+	
+	function selectLunchStartHour(){
+		var sel = Number($("select[id=lunch_start_hour]").val());
+		
+		$("select[id=lunch_end_hour]").children().remove();  
+		$("select[id=lunch_end_hour]").append("<option value=''></option>"); 
+		for(var i = sel+1; i<17; i++){ 
+			$("select[id=lunch_end_hour]").append("<option value='"+i+"'>"+i+"</option>");
+		}    
+	} 
+	
+	function selectOrder1(){
+		var sel = $("select[id=order1]").val();
+		
+		if(sel != ""){
+			$("select[id=order2] option[value='"+ sel +"']").prop('disabled', true);  
+			$("select[id=order2] option[value!='"+ sel +"']").prop('disabled', false);   
+		} else {
+			$("select[id=order2]").children('option').prop('disabled', false);   
+		} 
+	}    
+	
+	function selectKind(){
+		var sel = $("input[name=kind]:checked").val();
+		 
+		ptWorkList = [];
+		
+		if(sel == 'os'){
+			$("input[name=workOS]").prop("checked", false); 
+			$("input[name=workOS]").prop("disabled", false);  
+			$(".forOS").show(); 
+			$(".forNS").hide();
+		} else if(sel == 'ns'){
+			$(".forOS").hide();
+			$(".forNS").show();
+			$("input[name=workNS]").prop("checked", true); 
+			$("input[name=workNS]").prop("disabled", true);  
+			ptWorkList.push("0"); 
+		}  
+	}  
+	 
+	function selectJob(){
+		//var sel = $("#job option:selected").val();
+		var sel = $("select[id=job]").val(); 
+		
+		if(sel == "PT"){
+			//$("#ptWork").show();
+			$("input[name=kind]").prop("checked", false); 
+			$("input[name=work]").prop("checked", false); 
+			$(".forPT").show(); 
+			$("#otherWork").hide();
+		} else { 
+			//$("#ptWork").hide();
+			$(".forPT").hide();
+			$(".forOS").hide();
+			$(".forNS").hide();
+			$("#otherWork").show();
+		} 
+		 
+		console.log(sel); 
+		
+	}
+	
+	function selectWork(){
+		var obj = document.getElementsByName("workOS");
+		var objNS = document.getElementsByName("workNS");
+		var len = obj.length;	
+		ptWorkList = [];
+		
+		if($("input[name=kind]:checked").val() == "ns"){
+			ptWorkList.push("0");
+		} else {
+			for(var i = 0; i<len; i++){
+				if(obj[i].checked == true){
+					 
+					/* if(obj[0].value == "0"){
+						for(var k = 1; k<len; k++){
+							obj[k].checked = false;
+						} 
+					}   */
+					 
+					ptWorkList.push(obj[i].value);
+				}   
+			}
+		}	
+		 
+		console.log(ptWorkList); 
+		//sconsole.log(locList);
+	}
+	
 	function calDate(mon){
 		var today = new Date();
 		var dd = today.getDate();
@@ -228,8 +536,9 @@ form p {
 	}
 	
 	function validationChk(){
-		frm = document.regForm;
+		frm = document.regForm; 		
 		
+		//알바조건
 		if(!frm.term.value){
 			alert("근무기간을 선택해주세요.");
             frm.term.focus();
@@ -276,15 +585,57 @@ form p {
 				} 
 			}
 		} 
+		 
+		//근무조건
+		if(frm.start_hour.value == ""|| frm.start_min.value == ""|| frm.end_hour.value == "" || frm.end_min.value == ""){
+			alert("근무시간을 입력해주세요.");  
+		} else {
+			if(!frm.job.value){
+				alert("직종을 선택해주세요."); 
+				frm.job.focus();
+			} else {
+				// PT
+				if(frm.job.value == "PT"){
+					alert("PT");
+					if(!frm.kind.value){
+						alert("OS 또는 NS 구분을 선택해주세요.");
+					} else {
+						console.log("ptWorkList.length :" + ptWorkList.length); 
+						if(ptWorkList.length == 0){ 
+							alert("업무를 선택해주세요.");
+						} else if(!frm.insentive.value){
+							alert("인센티브 유무를 선택해주세요.");
+						} else if(frm.lunch_start_hour.value == ""|| frm.lunch_start_min.value == ""|| frm.lunch_end_hour.value == "" || frm.lunch_end_min.value == ""){
+							alert("점심시간을 입력해주세요.");  
+						} else {
+							if(!frm.peerCnt.value){
+								alert("근무자 수를 입력해주세요.");
+							} else if(!frm.avgCnt.value){
+								alert("일 평균 환자수를 입력해주세요.");
+							}
+						}
+					}
+				//PT 외 다른 직종
+				} else if(frm.job.value != "PT"){
+					console.log(frm.job.value);
+					if(!frm.work.value){
+						alert("업무 내용을 작성해주세요.");
+					} else if(frm.lunch_start_hour.value == ""|| frm.lunch_start_min.value == ""|| frm.lunch_end_hour.value == "" || frm.lunch_end_min.value == ""){
+						alert("점심시간을 입력해주세요.");  
+					} else {
+						if(!frm.peerCnt.value){
+							alert("근무자 수를 입력해주세요.");
+						} else if(!frm.avgCnt.value){
+							alert("일 평균 환자수를 입력해주세요.");
+						}
+					}
+				}	
+			} 
+		} 
 		
-		if(locList.length == 0){
-			alert("동/읍/면을 선택해주세요.");
-            return;
-		}  
-		
-		registerChk(frm);
+		//registerChk(frm);
 	}  
-	 
+	
 	function registerChk(frm) {
 		var params = {};		
 		 
@@ -413,17 +764,17 @@ form p {
 		// $("#salaryBox").remove();
 		
 		if(salType == "hour"){
-			$("#salaryBox").text("원 이상");  
+			$("#salaryBox").text("원");  
 			$("#salary_hour").show(); 
 			$("#salary_day").hide(); 
  			
 		} else if(salType == "day"){
-			$("#salaryBox").text("원 이상"); 
+			$("#salaryBox").text("원"); 
 			$("#salary_hour").hide();  
 			$("#salary_day").show();  
 		} else { 
 			$("#salaryBox").text("");  
-		}
+		} 
 	}    
 	
 	function setDatepicker() {

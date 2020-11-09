@@ -71,6 +71,8 @@ public class MainController {
 				
 				List<RegisterVO> creg = companyService.selectRegister(c);
 				
+				model.addAttribute("reqList", creg);
+				
 				System.out.println(creg.toString()); 
 			} 
 		}  

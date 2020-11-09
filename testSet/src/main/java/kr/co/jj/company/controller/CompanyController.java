@@ -1,6 +1,8 @@
 package kr.co.jj.company.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -17,7 +19,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.co.jj.common.controller.CommonController;
+import kr.co.jj.common.service.CommonService;
 import kr.co.jj.common.vo.AddrVO;
+import kr.co.jj.common.vo.Job;
 import kr.co.jj.company.service.CompanyService;
 import kr.co.jj.company.vo.AddrDTO;
 import kr.co.jj.company.vo.CompanyVO;
@@ -30,6 +35,8 @@ public class CompanyController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
+	@Autowired
+	private CommonService commonService;
 	
 	@Autowired
 	private CompanyService companyService;
@@ -104,6 +111,20 @@ public class CompanyController {
 	
 	@GetMapping("/register")
 	public String register(Model model) throws Exception {
+		
+		Map<String, Object> list = commonService.getJobList();
+		
+		model.addAttribute("jobList", list);
+		
+		System.out.println(list.toString()); 
+//		Map<String, Object> jobMap = new HashMap<String, Object>();
+//		
+//		for(Job job : Job.values()) {
+//			jobMap.put(job.name(), job.getName());
+//		} 
+//		
+//		model.addAttribute("jobList", jobMap);
+		
 		return "company/register";
 	} 
 	

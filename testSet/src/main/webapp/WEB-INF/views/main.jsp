@@ -49,35 +49,48 @@
 				<div class="menu login" onclick="logout()">logout</div>
 				<c:if test="${usrReq == null}"><div class="menu require" onclick="location.href='${pageContext.request.contextPath}/user/require'">require</div></c:if>
 				<div class="menu mypage" onclick="location.href='/jj/user/mypage'">mypage</div>  
-				<div class="menu match" onclick="match()">match</div>   
+				<div class="menu match" onclick="userMatch()">match</div>   
 				<div class="hi" >반갑습니다~ 유저 ${usrlogin } 님</div>    
 			</c:if>    
 			<c:if test="${not empty mglogin }">  
 				<div class="menu login" onclick="logout()">logout</div>
 				<c:if test="${mgReg == null}"><div class="menu register" onclick="location.href='${pageContext.request.contextPath}/company/register'">register</div></c:if>
 				<div class="menu mypage" onclick="location.href='/jj/company/mypage'">mypage</div>  
-				<div class="menu match" onclick="match()">match</div>    
+				<div class="menu match" onclick="mgMatch()">match</div>    
 				<div class="hi" >반갑습니다~ 관리자 ${mglogin } 님</div>  
 			</c:if>   
 		</div>	    
 	</c:otherwise>       
-</c:choose>  
+</c:choose>   
 
       
 </body>  
 <script type="text/javascript">  
-	var user = "${user.userId}";   
-	var req = "${reg.reqNo}";   
+	var usr = "${usrlogin}";   
+	var userReq = "${usrReq}";   
 	
-	function match(){     
-		if(req == ""){
-			alert("조건을 먼저 등록해주세요.");
-		} else { 
-			console.log(req);  
+	var mg = "${mglogin}";
+	var reqList = "${reqList}";    
+	
+	function userMatch(){     
+		if(userReq == ""){
+			alert("사용자님! 조건을 먼저 등록해주세요.");
+		} else {  
+			console.log(userReq);  
 			goMatch(); 
 		}
-	}    
+	}     
   
+	function mgMatch(){     
+		if(reqList.length == 0){
+			alert("관리자님! 조건을 먼저 등록해주세요.");
+		} else {   
+			console.log(reqList.length);  
+			goMatch();   
+		}  
+	}      
+  
+	
 	function goMatch(){  
 		location.href='/jj/common/match';
 	}
