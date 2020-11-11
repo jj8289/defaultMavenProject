@@ -16,7 +16,7 @@
 /*datepicer input 롤오버 시 손가락 모양 표시*/
 .hasDatepicker{cursor: pointer; height: 28px;} 
 
-#timeBox, #timeSetBox {
+.timeBox, #timeSetBox {
 	display: flex; 
 }     
 
@@ -86,7 +86,7 @@ td, select {
 	height: 30px;      
 } 
 
-#ptWork, #otherWork, #detailBox {
+.ptWork, #otherWork, #detailBox {
 	height: 30px;   
 } 
   
@@ -119,14 +119,14 @@ td, select {
 							</select>  
 						</td>     
 					</tr>
-					<tr id="for_one">  
-						<td bgcolor="lightgrey" align="center">근무 시작 날짜</td>
-						<td>
+					<tr id="for_one">   
+						<td bgcolor="lightgrey" align="center">근무 날짜</td>
+						<td> 
 							<input type="text" id="datepicker" name="datepicker">
 						</td>
 					</tr> 
 					<tr id="for_date">
-						<td bgcolor="lightgrey" align="center">원하는 시작일</td> 
+						<td bgcolor="lightgrey" align="center">근무 시작 날짜</td> 
 						<td onchange="setDatepicker()">
 							<input type="text" id="datepicker_start" name="datepicker_start">
 						</td>  
@@ -161,7 +161,7 @@ td, select {
 					</tr>   
 					<tr>  
 						<td bgcolor="lightgrey" align="center">근무 시간</td> 
-						<td id="timeBox">
+						<td id="workTimeBox" class="timeBox">
 							<select id="start_hour" name="start_hour" onchange="selectStartHour()"> 
 								<option value=""></option> 
 								<c:forEach var="i" begin="6" end="24">
@@ -171,7 +171,7 @@ td, select {
 							<div style="padding: 5px;"> : </div>  
 							<select id="start_min" name="start_min"> 
 								<option value=""></option> 
-								<c:forEach var="i" begin="0" end="60" step="5">
+								<c:forEach var="i" begin="0" end="55" step="5">
 									<option value="${i }">${i<10?'0':i }${i<10?i:'' }</option>   
 								</c:forEach>       
 							</select> 
@@ -184,8 +184,8 @@ td, select {
 							</select> 
 							<div style="padding: 5px;"> : </div>       
 							<select id="end_min" name="end_min"> 
-								<option value=""></option> 
-								<c:forEach var="i" begin="0" end="60" step="5">
+								<option value=""></option>  
+								<c:forEach var="i" begin="0" end="55" step="5">
 									<option value="${i }">${i<10?'0':i }${i<10?i:'' }</option>   
 								</c:forEach>       
 							</select> 
@@ -234,6 +234,18 @@ td, select {
 								<option value="50">50대 이상</option> 
 							</select>   
 						</td> 
+					</tr>
+					<tr>
+						<td bgcolor="lightgrey" align="center">경력</td>
+						<td id="careerBox"> 
+							<select id="career" name="career">
+								<option value="">경력 무관</option>
+								<option value="1">1년차만</option>   
+								<c:forEach var="i" begin="2" end="10" step="1">
+									<option value="${i }">${i }년차 이상</option> 
+								</c:forEach>   
+							</select>   
+						</td>  
 					</tr>   
 					<tr><td>근무 조건<td></tr>  
 					<tr class="forPT"> 
@@ -246,14 +258,14 @@ td, select {
 					<tr> 
 						<td bgcolor="lightgrey" align="center">업무</td>
 						<td id="workBox" onchange="selectWork()"> 
-							<div id="ptWork" class="forOS">
+							<div id="osWork" class="forOS ptWork">
 								<label><input type="checkbox" name="workOS" value="1"> 통증 치료</label>
 								<label><input type="checkbox" name="workOS" value="2"> 심플</label>
 								<label><input type="checkbox" name="workOS" value="3"> 10분 메뉴얼</label>
 								<label><input type="checkbox" name="workOS" value="4"> 도수 치료(30분 이상)</label>
 								<label><input type="checkbox" name="workOS" value="5"> 운동 치료</label>
 							</div>
-							<div id="ptWork" class="forNS">
+							<div id="nsWork" class="forNS ptWork">
 								<label><input type="checkbox" name="workNS" value="0"> 신경계 치료</label>
 							</div>       
 							<div id="otherWork" class="forOther"><input size="70" type="text" name="work" id="work"></div>
@@ -298,11 +310,11 @@ td, select {
 					</tr> 
 					<tr>
 						<td bgcolor="lightgrey" align="center">업무 관련 추가 설명</td>
-						<td id="detailBox"><textarea name="detailWork" id="detailWork"  rows="5" cols="50" style="margin: 0px; width: 478px; height: 80px;"></textarea></td> 
+						<td id="detailBox"><textarea name="detailWork" id="detailWork"  rows="5" cols="50" style="margin: 0px; width: 478px; height: 80px;" placeholder="충격파  타수, 충격파 일 평균 환자 수, 충격파 기계 종류 등"></textarea></td> 
 					</tr>
 					<tr>  
 						<td bgcolor="lightgrey" align="center">점심 시간</td> 
-						<td id="timeBox">
+						<td id="lunchTimeBox" class="timeBox">
 							<select id="lunch_start_hour" name="lunch_start_hour" onchange="selectLunchStartHour()"> 
 								<option value=""></option> 
 								<c:forEach var="i" begin="11" end="15">
@@ -312,7 +324,7 @@ td, select {
 							<div style="padding: 5px;"> : </div>      
 							<select id="lunch_start_min" name="lunch_start_min"> 
 								<option value=""></option> 
-								<c:forEach var="i" begin="0" end="60" step="5">
+								<c:forEach var="i" begin="0" end="55" step="5">
 									<option value="${i }">${i<10?'0':i }${i<10?i:'' }</option>   
 								</c:forEach>       
 							</select> 
@@ -326,13 +338,14 @@ td, select {
 							<div style="padding: 5px;"> : </div>       
 							<select id="lunch_end_min" name="lunch_end_min"> 
 								<option value=""></option>  
-								<c:forEach var="i" begin="0" end="60" step="5">
+								<c:forEach var="i" begin="0" end="55" step="5">
 									<option value="${i }">${i<10?'0':i }${i<10?i:'' }</option>   
-								</c:forEach>       
-							</select> 
-						</td>  
-					</tr> 
-					<tr>
+								</c:forEach>        
+							</select>
+							<label style="padding-left: 20px; text-align: center; vertical-align: center;"><input type="checkbox" id="lunchFlag" name="lunchFlag" value="1" onchange="clickNoLunch()"> 점심시간 없음</label> 
+						</td>      
+					</tr>  
+					<tr>  
 						<td bgcolor="lightgrey" align="center">근무자 수</td>
 						<td><input size="2" type="text" name="peerCnt" id="peerCnt">명</td> 
 					</tr>
@@ -385,7 +398,10 @@ td, select {
 	var CONTEXT_PATH = "/jj";
 	var salaryHour = "";
 	var salaryDay = "";
+	var dowList = [];
 	var ptWorkList = [];
+	var time = "";
+	var lunchFlag = "";
 	var frm = "";
 	
 	$(document).ready(function () {
@@ -427,6 +443,17 @@ td, select {
         //$('#datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
 	});  
 	 
+	function clickNoLunch(){
+		lunchFlag = $("#lunchFlag:checked").val();
+		
+		if(lunchFlag == "1"){
+			$("#lunchTimeBox select").val(""); 
+			$("#lunchTimeBox select").prop("disabled", true); 
+		} else {
+			$("#lunchTimeBox select").prop("disabled", false); 
+		}  
+	} 
+	
 	function selectStartHour(){
 		var sel = Number($("select[id=start_hour]").val());
 		
@@ -460,8 +487,9 @@ td, select {
 	
 	function selectKind(){
 		var sel = $("input[name=kind]:checked").val();
-		 
-		ptWorkList = [];
+		
+		$("#work").val(""); 
+		ptWorkList = []; 
 		
 		if(sel == 'os'){
 			$("input[name=workOS]").prop("checked", false); 
@@ -589,56 +617,93 @@ td, select {
 		//근무조건
 		if(frm.start_hour.value == ""|| frm.start_min.value == ""|| frm.end_hour.value == "" || frm.end_min.value == ""){
 			alert("근무시간을 입력해주세요.");  
+			return;
 		} else {
 			if(!frm.job.value){
 				alert("직종을 선택해주세요."); 
 				frm.job.focus();
+				return;
 			} else {
 				// PT
 				if(frm.job.value == "PT"){
-					alert("PT");
 					if(!frm.kind.value){
 						alert("OS 또는 NS 구분을 선택해주세요.");
+						return;
 					} else {
-						console.log("ptWorkList.length :" + ptWorkList.length); 
 						if(ptWorkList.length == 0){ 
 							alert("업무를 선택해주세요.");
+							return;
 						} else if(!frm.insentive.value){
 							alert("인센티브 유무를 선택해주세요.");
-						} else if(frm.lunch_start_hour.value == ""|| frm.lunch_start_min.value == ""|| frm.lunch_end_hour.value == "" || frm.lunch_end_min.value == ""){
-							alert("점심시간을 입력해주세요.");  
+							return;
+						} else if((frm.lunch_start_hour.value == ""|| frm.lunch_start_min.value == ""|| frm.lunch_end_hour.value == "" || frm.lunch_end_min.value == "") && $("#lunchFlag:checked").val() != 1){
+							alert("점심시간을 입력해주세요.");   
+							return; 
 						} else {
 							if(!frm.peerCnt.value){
 								alert("근무자 수를 입력해주세요.");
+								return;
 							} else if(!frm.avgCnt.value){
 								alert("일 평균 환자수를 입력해주세요.");
+								return;
 							}
 						}
 					}
 				//PT 외 다른 직종
 				} else if(frm.job.value != "PT"){
-					console.log(frm.job.value);
 					if(!frm.work.value){
 						alert("업무 내용을 작성해주세요.");
-					} else if(frm.lunch_start_hour.value == ""|| frm.lunch_start_min.value == ""|| frm.lunch_end_hour.value == "" || frm.lunch_end_min.value == ""){
+						return;
+					} else if((frm.lunch_start_hour.value == ""|| frm.lunch_start_min.value == ""|| frm.lunch_end_hour.value == "" || frm.lunch_end_min.value == "") && $("#lunchFlag").val() != 1){
 						alert("점심시간을 입력해주세요.");  
+						return; 
 					} else {
 						if(!frm.peerCnt.value){
 							alert("근무자 수를 입력해주세요.");
+							return;
 						} else if(!frm.avgCnt.value){
 							alert("일 평균 환자수를 입력해주세요.");
+							return;
 						}
 					}
 				}	
 			} 
 		} 
 		
-		//registerChk(frm);
-	}  
+		registerChk(frm); 
+	}   
+	
+	function setTime(){
+		var st_hour = $("#start_hour").val();
+		var en_hour = $("#end_hour").val();
+		time = ""; 	// 오전(1), 오후(2) , 하루(3) 
+		
+		if(st_hour < 12) {
+			if(en_hour <= 13){
+				val = "1";
+			} else {
+				val = "3";
+			}
+		} else {
+			val = "2";
+		}
+		
+		return val;
+	}
 	
 	function registerChk(frm) {
 		var params = {};		
-		 
+		var ptDetailList = [];
+		var workStHour = $("#start_hour").val().length == "1"? "0"+$("#start_hour").val() : $("#start_hour").val();	
+		var workStMin = $("#start_min").val().length == "1"? "0"+$("#start_min").val() : $("#start_min").val()
+		var workEnHour = $("#end_hour").val().length == "1"? "0"+$("#end_hour").val() : $("#end_hour").val();
+		var workEnMin = $("#end_min").val().length == "1"? "0"+$("#end_min").val() : $("#end_min").val();
+		
+		var lunchStHour = $("#lunch_start_hour").val().length == "1"? "0"+$("#lunch_start_hour").val() : $("#lunch_start_hour").val();	
+		var lunchStMin = $("#lunch_start_min").val().length == "1"? "0"+$("#lunch_start_min").val() : $("#lunch_start_min").val();
+		var lunchEnHour = $("#lunch_end_hour").val().length == "1"? "0"+$("#lunch_end_hour").val() : $("#lunch_end_hour").val();
+		var lunchEnMin = $("#lunch_end_min").val().length == "1"? "0"+$("#lunch_end_min").val() : $("#lunch_end_min").val();
+		
 		if($("select[name=salType]").val() == "hour"){
 			salaryDay = "";
 			salaryHour = $("#salary_hour").val();
@@ -658,63 +723,66 @@ td, select {
 			console.log(dowList);
 		}
 		 
+ 		time = setTime();
  		 
+ 		if($("#job").val() == "PT" && $("#kindBox input:checked").val() == "os"){
+			ptDetailList.push($("#micro").val());
+			ptDetailList.push($("#eswt").val());
+			ptDetailList.push($("#knee").val());
+			ptDetailList.push($("#sh").val());
+			ptDetailList.push($("#ion").val());
+ 		} 
+ 		
+ 		console.log("time : " + time); 
+ 		
 		params = {
-				salaryHour : salaryHour
-			  , salaryDay : salaryDay 
-			  , searchType : $("select[name=term]").val()
-			  , salaryHour : salaryHour
-			  , salaryDay : salaryDay 
-			  , searchDate : $("#datepicker").val()
-			  , searchStart : $("#datepicker_start").val()
-			  , searchTime : $("select[name=time]").val()
-			  , dowList : dowList
-			  , locList : locList
+			    workType : $("select[name=term]").val()				// 일일, 장/단기, 토요 고정
+			  , salaryHour : salaryHour								// 시급
+			  , salaryDay : salaryDay 								// 일급
+			  , workDate : $("#datepicker").val()					// 근무 날짜(일일 알바)
+			  , workStart : $("#datepicker_start").val()			// 근무 시작 날짜 (장단기, 토요 고정 알바)
+			  , dowList : dowList									// 근무 요일 리스트
+			  , timeFlag : time										// 1: 오전 , 2: 오후, 3: 하루
+			  , workStTime : workStHour + ":" + workStMin
+			  , workEnTime : workEnHour + ":" + workEnMin
+			  , job : $("#job").val()
+			  , sex : $("#sex").val()
+			  , age : $("#age").val()
+			  , career : $("#career").val()
+			  , workFlag : $("#kindBox input:checked").val()
+			  , work : $("#work").val()								//PT 외 다른 직종 업무
+			  , workPtList : ptWorkList									//PT 업무  (0 : 신경계, 1: 통증 치료, 2: 심플, 3: 10분 메뉴얼, 4: 도수치료 , 5: 운동 치료) 
+			  , detailWorkPtList : ptDetailList							//PT 세부 업무 YN(obj[0]: 초음파YN, obj[1]: eswtYN, obj[2]: CPM(knee)YN, obj[3]: CPM(sh)YN, obj[4]: ionYN)
+			  , insenFlag : $("#insentiveBox input:checked").val()  // 인센티브 유무 (Y , N)
+			  , detailWork : $("#detailWork").val()
+			  , lunchStTime : lunchStHour + ":" + lunchStMin		// 점심 시작 시간
+			  , lunchEnTime : lunchEnHour + ":" + lunchEnMin		// 점심 종료 시간
+			  , peerCnt : $("#peerCnt").val()
+			  , avgCnt : $("#avgCnt").val()
+			  , etc : $("#etc").val() 
 		};  
-		 
-		/* if($("#term").val() != "one"){
-			params = $.extend(params, { 
-				dowList : dowList
-			});
-		} */
-		
+		  
 		console.log(params);
-		
-		 
-		/* if(frm.term.value == "dow"){
-			params = {
-				  	salaryHour : salaryHour
-				  , salaryDay : salaryDay
-				  , searchType : $("select[name=term]").val()
-				  , salaryHour : salaryHour
-				  , salaryDay : salaryDay 
-				  , searchDate : $("#datepicker").val()
-				  , searchStart : $("#datepicker_start").val()
-				  , searchEnd : $("#datepicker_end").val()
-				  , searchTime : $("select[name=time]").val()
-				  , dowList : dowList
-				  , locList : locList
-			}; 
-		} else {
-			params = {
-				  	salaryHour : salaryHour
-				  , salaryDay : salaryDay
-				  , searchType : $("select[name=term]").val()
-				  , salaryHour : salaryHour
-				  , salaryDay : salaryDay 
-				  , searchDate : $("#datepicker").val()
-				  , searchStart : $("#datepicker_start").val()
-				  , searchEnd : $("#datepicker_end").val()
-				  , searchTime : $("select[name=time]").val()
-				  , locList : locList
-			}; 
-		}  */
-		 
-		 
-		console.log(JSON.stringify(params));  
+		//console.log(JSON.stringify(params));  
 		
 		$.ajax({
-    		url : CONTEXT_PATH + "/register/registerChk", 
+    		url : CONTEXT_PATH + "/company/register/registerChk", 
+    		type: "POST",
+    		data: params,   
+    		contentType: "application/x-www-form-urlencoded; charset=UTF-8", 
+    		success: function(data){
+    			console.log("registerChk");   
+    			console.log(data.list); 
+    			location.href = CONTEXT_PATH + "/";  
+    		},   
+    		error: function(data){   
+   		   		console.log("error");
+   		   		console.log(data.errmsg);  
+   		   		console.log(data.param); 
+    		}
+    	});   
+		/* $.ajax({
+    		url : CONTEXT_PATH + "/company/register/registerChk", 
     		type: "POST",
     		data: JSON.stringify(params),     
     		dataType: 'json',   
@@ -729,12 +797,14 @@ td, select {
    		   		console.log(data.errmsg);  
    		   		console.log(data.param); 
     		}
-    	});   
+    	});    */
 	}
 	 
 	function setTerm() {
 		var term = $("select[name=term]").val(); // 선택된 값
 		console.log($("select[name=term]").val());   
+		
+		dowList = []; 
 		
 		if(term == "one"){
 			$("#for_one").show();
@@ -747,7 +817,7 @@ td, select {
 		} else if(term == "sat"){
 			$("#for_one").hide();
 			$("#for_date").show();
-			$("#for_dow").hide(); 
+			$("#for_dow").hide();
 		} else { 
 			$("#for_one").hide();
 			$("#for_date").hide();

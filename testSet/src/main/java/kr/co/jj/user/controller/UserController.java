@@ -99,7 +99,7 @@ public class UserController {
 		return "user/require";
 	}
 	
-	@PostMapping(value = "require/requireChk")
+	@PostMapping(value = "/require/requireChk")
 	@ResponseBody 
 	public Map<String, Object> requireChk(@RequestBody RequireVO json, Model model, HttpSession session){
 		System.out.println(json.toString());

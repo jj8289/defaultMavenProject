@@ -19,15 +19,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import kr.co.jj.common.controller.CommonController;
 import kr.co.jj.common.service.CommonService;
 import kr.co.jj.common.vo.AddrVO;
-import kr.co.jj.common.vo.Job;
 import kr.co.jj.company.service.CompanyService;
 import kr.co.jj.company.vo.AddrDTO;
 import kr.co.jj.company.vo.CompanyVO;
+import kr.co.jj.company.vo.RegisterDTO;
 import kr.co.jj.user.controller.UserController;
-import kr.co.jj.user.vo.UserVO;
 
 @Controller
 @RequestMapping("/company")
@@ -127,6 +125,14 @@ public class CompanyController {
 		
 		return "company/register";
 	} 
+	
+	@PostMapping("/register/registerChk")
+	@ResponseBody
+	public String registerChk(RegisterDTO param, Model model) throws Exception {
+		System.out.println("workType : " + param.getWorkType());
+		System.out.println("age : " + param.getAge());
+		return "success"; 
+	}
 	
 	// 아이디 중복 체크
 	public boolean idDupleChk(CompanyVO company) throws Exception {

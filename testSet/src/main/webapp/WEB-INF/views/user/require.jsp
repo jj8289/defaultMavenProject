@@ -363,7 +363,7 @@ form p {
 		console.log(JSON.stringify(params));  
 		
 		$.ajax({
-    		url : CONTEXT_PATH + "/require/requireChk", 
+    		url : CONTEXT_PATH + "/user/require/requireChk", 
     		type: "POST",
     		data: JSON.stringify(params),     
     		dataType: 'json',   
