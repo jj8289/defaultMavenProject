@@ -28,6 +28,8 @@ import kr.co.jj.company.vo.CompanyVO;
 import kr.co.jj.company.vo.RegisterDTO;
 import kr.co.jj.company.vo.RegisterVO;
 import kr.co.jj.user.controller.UserController;
+import kr.co.jj.user.vo.RequireVO;
+import kr.co.jj.user.vo.UserVO;
 
 @Controller
 @RequestMapping("/company")
@@ -216,6 +218,22 @@ public class CompanyController {
 			return "duplicate";
 		}
 	} 
+	
+	/**
+	 * 마이페이지
+	 */
+	@GetMapping("/mypage")
+	public String mypage(Model model, HttpSession session) throws Exception {
+		String id = (String)session.getAttribute("mgloginId");
+		
+		CompanyVO company = getCompany(id);
+		
+		List<RegisterVO> regList = companyService.selectRegister(company); 
+		
+		model.addAttribute("regList", regList);
+		
+		return "company/mypage";
+	}
 	
 	// 아이디 중복 체크
 	public boolean idDupleChk(CompanyVO company) throws Exception {
