@@ -39,4 +39,10 @@ public interface CompanyDAO {
 	 * 로그인 체크
 	 */
 	public CompanyVO selectManager(CompanyVO vo) throws Exception;
+	
+	//조건 등록
+	public void insertRegister(RegisterVO vo) throws Exception;
+	
+	//조건 중복 체크 
+	public int selectRegCnt(RegisterVO vo) throws Exception;
 }

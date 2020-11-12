@@ -17,6 +17,7 @@
     	<typeAlias type="kr.co.jj.company.vo.AddrDTO" alias="AddrDTO"/>
     	<typeAlias type="kr.co.jj.company.vo.AddrVO" alias="AddrVO"/>
     	<typeAlias type="kr.co.jj.company.vo.RegisterVO" alias="RegisterVO"/>
+    	<typeAlias type="kr.co.jj.company.vo.RegisterDTO" alias="RegisterDTO"/>
     </typeAliases>
 
 </configuration>

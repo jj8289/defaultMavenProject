@@ -98,6 +98,80 @@
  		) 
  	</insert> 
 	 
+	<insert id="insertRegister" parameterType="RegisterVO">
+		INSERT INTO TB_REGISTER
+		(
+			  COMPANY_NO
+			, SALARY_HOUR
+			, SALARY_DAY
+			, WORK_TYPE
+			, WORK_DATE
+			, WORK_START
+			, WORK_DOW
+			, TIME_FLAG
+			, WORK_ST_TIME
+			, WORK_EN_TIME
+			, JOB
+			, SEX
+			, AGE
+			, CAREER
+			, CREATE_DATE
+			, LUNCH_ST_TIME
+			, LUNCH_EN_TIME
+			, WORK_FLAG
+			, WORK
+			, DETAIL_WORK
+			, WORK_PT
+			, DETAIL_WORK_PT
+			, INSEN_FLAG
+			, PEER_CNT
+			, AVG_CNT
+			, ETC
+		) 
+		VALUES
+		(
+			  #{companyNo}
+			, #{salaryHour}
+			, #{salaryDay}
+			, #{workType} 
+			, #{workDate}
+			, #{workStart}
+			, #{workDow}
+			, #{timeFlag}
+			, #{workStTime}
+			, #{workEnTime}
+			, #{job}
+			, #{sex}
+			, #{age}
+			, #{career}
+			, NOW()
+			, #{lunchStTime}
+			, #{lunchEnTime}
+			, #{workFlag}
+			, #{work}
+			, #{detailWork}
+			, #{workPt}
+			, #{detailWorkPt}
+			, #{insenFlag}
+			, #{peerCnt}
+			, #{avgCnt}
+			, #{etc} 
+		)
+	</insert> 
+	 
+	<select id="selectRegCnt" parameterType="RegisterVO" resultType="int">
+		SELECT  COUNT(*)
+		  FROM  TB_REGISTER
+		 WHERE  COMPANY_NO = #{companyNo}
+		 <if test="job == 'PT'">
+		   AND  JOB = #{job}
+		   AND  WORK_FLAG = #{workFlag}
+		 </if>
+		 <if test="job != 'PT'">
+		   AND  JOB = #{job}
+		 </if>
+	</select> 
+	 
 	<!-- <select id="selectSgList" parameterType="AddrDTO" resultType="">
 		SELECT  A.ROWNUM
 				, A.SG_NM

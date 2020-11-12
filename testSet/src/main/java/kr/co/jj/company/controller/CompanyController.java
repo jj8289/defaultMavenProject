@@ -3,6 +3,7 @@ package kr.co.jj.company.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpSession;
 
@@ -25,6 +26,7 @@ import kr.co.jj.company.service.CompanyService;
 import kr.co.jj.company.vo.AddrDTO;
 import kr.co.jj.company.vo.CompanyVO;
 import kr.co.jj.company.vo.RegisterDTO;
+import kr.co.jj.company.vo.RegisterVO;
 import kr.co.jj.user.controller.UserController;
 
 @Controller
@@ -108,7 +110,15 @@ public class CompanyController {
 	}
 	
 	@GetMapping("/register")
-	public String register(Model model) throws Exception {
+	public String register(Model model, HttpSession session) throws Exception {
+		String mgId = (String) session.getAttribute("mgloginId");
+			
+		CompanyVO vo = new CompanyVO();
+		vo.setManagerId(mgId);
+		
+		System.out.println("mgId : " + mgId);
+		
+		vo = companyService.selectCompanyByManagerId(vo);
 		
 		Map<String, Object> list = commonService.getJobList();
 		
@@ -123,16 +133,89 @@ public class CompanyController {
 //		
 //		model.addAttribute("jobList", jobMap);
 		
+		model.addAttribute("companyNo", vo.getCompanyNo());
+		
 		return "company/register";
 	} 
 	
 	@PostMapping("/register/registerChk")
 	@ResponseBody
 	public String registerChk(RegisterDTO param, Model model) throws Exception {
-		System.out.println("workType : " + param.getWorkType());
-		System.out.println("age : " + param.getAge());
-		return "success"; 
-	}
+		logger.debug(param.toString());
+
+		int dup = 0;
+		
+		String patternNum = "[^0-9]";
+		String patternNY = "[^a-zA-Z]";
+		
+		String workDow = "";
+		String workPt = "";
+		String detailWorkPt = "";
+		
+		for(String str1 : param.getDowList()) {
+			if(workDow != "") {
+				workDow += "/";
+			}
+			str1 = str1.replaceAll(patternNum, "");
+			workDow += str1;
+		}   
+		
+		for(String str2 : param.getWorkPtList()) {
+			if(workPt != "") {
+				workPt += "/";
+			}
+			str2 = str2.replaceAll(patternNum, "");
+			workPt += str2;
+		} 
+		
+		for(String str3 : param.getDetailWorkPtList()) {
+			if(detailWorkPt != "") {
+				detailWorkPt += "/";
+			}
+			str3 = str3.replaceAll(patternNY, "");
+			detailWorkPt += str3;
+		} 
+		
+		RegisterVO vo = new RegisterVO();
+		vo.setCompanyNo(param.getCompanyNo());
+		vo.setSalaryHour(param.getSalaryHour());
+		vo.setSalaryDay(param.getSalaryDay());
+		vo.setWorkType(param.getWorkType());
+		vo.setWorkDate(param.getWorkDate());
+		vo.setWorkStart(param.getWorkStart());
+		vo.setWorkDow(workDow);
+		vo.setTimeFlag(param.getTimeFlag());
+		vo.setWorkStTime(param.getWorkStTime());
+		vo.setWorkEnTime(param.getWorkEnTime());
+		vo.setJob(param.getJob()); 
+		vo.setSex(param.getSex());
+		vo.setAge(param.getAge());
+		vo.setCareer(param.getCareer());
+		vo.setLunchStTime(param.getLunchStTime());
+		vo.setLunchEnTime(param.getLunchEnTime());
+		vo.setWorkFlag(param.getWorkFlag());
+		vo.setWork(param.getWork());
+		vo.setDetailWork(param.getDetailWork());
+		vo.setWorkPt(workPt);
+		vo.setDetailWorkPt(detailWorkPt);
+		vo.setInsenFlag(param.getInsenFlag());
+		vo.setPeerCnt(param.getPeerCnt());
+		vo.setAvgCnt(param.getAvgCnt());
+		vo.setEtc(param.getEtc());
+		
+		
+		//중복 체크
+		dup = companyService.selectRegCnt(vo);
+		
+		if(dup == 0) {
+			//병원 조건 DB insert
+			companyService.insertRegister(vo);
+			
+			return "success"; 
+		} else {
+			return "duplicate";
+		}
+	} 
 	
 	// 아이디 중복 체크
 	public boolean idDupleChk(CompanyVO company) throws Exception {

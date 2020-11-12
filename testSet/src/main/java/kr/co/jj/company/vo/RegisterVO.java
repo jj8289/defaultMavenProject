@@ -27,7 +27,7 @@ public class RegisterVO {
 	private String detailWork;
 	private String workFlag;
 	private String workPt;
-	private String workDetailPt;
+	private String detailWorkPt;
 	private String insenFlag;
 	private String peerCnt;
 	private String avgCnt;
@@ -193,11 +193,11 @@ public class RegisterVO {
 	public void setWorkPt(String workPt) {
 		this.workPt = workPt;
 	}
-	public String getWorkDetailPt() {
-		return workDetailPt;
+	public String getDetailWorkPt() {
+		return detailWorkPt;
 	}
-	public void setWorkDetailPt(String workDetailPt) {
-		this.workDetailPt = workDetailPt;
+	public void setDetailWorkPt(String detailWorkPt) {
+		this.detailWorkPt = detailWorkPt;
 	}
 	public String getInsenFlag() {
 		return insenFlag;
@@ -232,8 +232,9 @@ public class RegisterVO {
 				+ workEnTime + ", jobNo=" + jobNo + ", job=" + job + ", sex=" + sex + ", age=" + age + ", career="
 				+ career + ", createDate=" + createDate + ", lunchStTime=" + lunchStTime + ", lunchEnTime="
 				+ lunchEnTime + ", work=" + work + ", detailWork=" + detailWork + ", workFlag=" + workFlag + ", workPt="
-				+ workPt + ", workDetailPt=" + workDetailPt + ", insenFlag=" + insenFlag + ", peerCnt=" + peerCnt
+				+ workPt + ", detailWorkPt=" + detailWorkPt + ", insenFlag=" + insenFlag + ", peerCnt=" + peerCnt
 				+ ", avgCnt=" + avgCnt + ", etc=" + etc + ", dowList=" + dowList + ", workPtList=" + workPtList
 				+ ", detailWorkPtList=" + detailWorkPtList + "]";
 	}
+	
 }

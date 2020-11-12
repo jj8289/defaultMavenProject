@@ -26,4 +26,8 @@ public interface CompanyService{
 	public void insertCompany(CompanyVO vo) throws Exception;
 	
 	public CompanyVO selectManager(CompanyVO vo) throws Exception;
+	
+	public void insertRegister(RegisterVO vo) throws Exception;
+	
+	public int selectRegCnt(RegisterVO vo) throws Exception;
 }

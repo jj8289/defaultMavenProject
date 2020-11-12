@@ -121,7 +121,7 @@ td, select {
 					</tr>
 					<tr id="for_one">   
 						<td bgcolor="lightgrey" align="center">근무 날짜</td>
-						<td> 
+						<td onchange="setDatepicker()"> 
 							<input type="text" id="datepicker" name="datepicker">
 						</td>
 					</tr> 
@@ -310,8 +310,8 @@ td, select {
 					</tr> 
 					<tr>
 						<td bgcolor="lightgrey" align="center">업무 관련 추가 설명</td>
-						<td id="detailBox"><textarea name="detailWork" id="detailWork"  rows="5" cols="50" style="margin: 0px; width: 478px; height: 80px;" placeholder="충격파  타수, 충격파 일 평균 환자 수, 충격파 기계 종류 등"></textarea></td> 
-					</tr>
+						<td id="detailBox"><textarea name="detailWork" id="detailWork"  rows="5" cols="50" style="margin: 0px; width: 478px; height: 80px;" placeholder="사용하는 기계, 자세한 업무 설명, 알바에게 원하는 기술 등"></textarea></td> 
+					</tr> 
 					<tr>  
 						<td bgcolor="lightgrey" align="center">점심 시간</td> 
 						<td id="lunchTimeBox" class="timeBox">
@@ -355,7 +355,7 @@ td, select {
 					</tr>   
 					<tr>
 						<td bgcolor="lightgrey" align="center">기타 복지 및 소개글</td> 
-						<td><textarea name="etc" id="etc"  rows="5" cols="50" style="margin: 0px; width: 478px; height: 80px;"></textarea></td>  
+						<td><textarea name="etc" id="etc"  rows="5" cols="50" style="margin: 0px; width: 478px; height: 80px;" placeholder="유니폼 또는 가운 제공, 간식 제공 등 설명글 추가"></textarea></td>  
 					</tr>   
 					<!-- <tr><td>우선순위<td></tr>    
 					<tr>
@@ -396,6 +396,7 @@ td, select {
 	</div>  
 <script type="text/javascript">
 	var CONTEXT_PATH = "/jj";
+	var companyNo = "${companyNo}";
 	var salaryHour = "";
 	var salaryDay = "";
 	var dowList = [];
@@ -418,7 +419,7 @@ td, select {
  
 	$(function() {
 		$.datepicker.setDefaults({ 
-			 dateFormat: 'yy-mm-dd' //Input Display Format 변경
+			  dateFormat: 'yy-mm-dd' //Input Display Format 변경
              ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
              ,showMonthAfterYear:true //년도 먼저 나오고, 뒤에 월 표시
              ,changeYear: true //콤보박스에서 년 선택 가능
@@ -509,10 +510,11 @@ td, select {
 		//var sel = $("#job option:selected").val();
 		var sel = $("select[id=job]").val(); 
 		
-		if(sel == "PT"){
+		$("input[name=kind]").prop("checked", false); 
+		$("input[name=work]").prop("checked", false); 
+		
+		if(sel == "PT"){ 
 			//$("#ptWork").show();
-			$("input[name=kind]").prop("checked", false); 
-			$("input[name=work]").prop("checked", false); 
 			$(".forPT").show(); 
 			$("#otherWork").hide();
 		} else { 
@@ -670,7 +672,18 @@ td, select {
 			} 
 		} 
 		
-		registerChk(frm); 
+		if(dowList.length == "1" && dowList[0] == "6" && frm.term.value == "part"){
+			var d1= $("#datepicker").val();
+			var d2 = $("#datepicker_start").val();
+			
+			$("select[name=term]").val("sat").prop("checked", true);  
+			$("#datepicker").val(d1);
+			$("#datepicker_start").val(d2);
+		}  
+		
+		if(frm.datepicker.value )
+			$('#datepicker').datepicker('setDate', 'today');
+		register(frm); 
 	}   
 	
 	function setTime(){
@@ -691,18 +704,26 @@ td, select {
 		return val;
 	}
 	
-	function registerChk(frm) {
+	function register(frm) {
 		var params = {};		
+		
 		var ptDetailList = [];
+		
 		var workStHour = $("#start_hour").val().length == "1"? "0"+$("#start_hour").val() : $("#start_hour").val();	
 		var workStMin = $("#start_min").val().length == "1"? "0"+$("#start_min").val() : $("#start_min").val()
 		var workEnHour = $("#end_hour").val().length == "1"? "0"+$("#end_hour").val() : $("#end_hour").val();
 		var workEnMin = $("#end_min").val().length == "1"? "0"+$("#end_min").val() : $("#end_min").val();
 		
+		var workStTime = "";
+		var workEnTIme = "";
+		
 		var lunchStHour = $("#lunch_start_hour").val().length == "1"? "0"+$("#lunch_start_hour").val() : $("#lunch_start_hour").val();	
 		var lunchStMin = $("#lunch_start_min").val().length == "1"? "0"+$("#lunch_start_min").val() : $("#lunch_start_min").val();
 		var lunchEnHour = $("#lunch_end_hour").val().length == "1"? "0"+$("#lunch_end_hour").val() : $("#lunch_end_hour").val();
 		var lunchEnMin = $("#lunch_end_min").val().length == "1"? "0"+$("#lunch_end_min").val() : $("#lunch_end_min").val();
+		
+		var lunchStTime = "";
+		var lunchEnTime = "";
 		
 		if($("select[name=salType]").val() == "hour"){
 			salaryDay = "";
@@ -715,16 +736,11 @@ td, select {
 		if($("#term").val() == "sat"){
 			console.log("sat!!!");
 			dowList[0] = "6";
-			console.log(dowList);
 		}
 		if($("#term").val() == "one"){
 			console.log("one!!!");
-			dowList[0] = "";
-			console.log(dowList);
-		}
-		 
- 		time = setTime();
- 		 
+			dowList = []; 
+		} 
  		if($("#job").val() == "PT" && $("#kindBox input:checked").val() == "os"){
 			ptDetailList.push($("#micro").val());
 			ptDetailList.push($("#eswt").val());
@@ -733,71 +749,63 @@ td, select {
 			ptDetailList.push($("#ion").val());
  		} 
  		
- 		console.log("time : " + time); 
+ 		time = setTime();
  		
-		params = {
-			    workType : $("select[name=term]").val()				// 일일, 장/단기, 토요 고정
+ 		workStTime = workStHour + ":" + workStMin;
+		workEnTime = workEnHour + ":" + workEnMin;
+ 		
+ 		lunchStTime = $("#lunchFlag:checked").val() == "1"? "" : (lunchStHour + ":" + lunchStMin);
+ 		lunchEnTime = $("#lunchFlag:checked").val() == "1"? "" : (lunchEnHour + ":" + lunchEnMin);
+ 		
+		params = { 
+				companyNo : companyNo
+			  , workType : $("select[name=term]").val()				// 일일, 장/단기, 토요 고정
 			  , salaryHour : salaryHour								// 시급
 			  , salaryDay : salaryDay 								// 일급
 			  , workDate : $("#datepicker").val()					// 근무 날짜(일일 알바)
 			  , workStart : $("#datepicker_start").val()			// 근무 시작 날짜 (장단기, 토요 고정 알바)
-			  , dowList : dowList									// 근무 요일 리스트
-			  , timeFlag : time										// 1: 오전 , 2: 오후, 3: 하루
-			  , workStTime : workStHour + ":" + workStMin
-			  , workEnTime : workEnHour + ":" + workEnMin
+			  //, dowList : dowList									// 근무 요일 리스트
+			  , dowList : JSON.stringify(dowList)
+			  , timeFlag : time					 					// 1: 오전 , 2: 오후, 3: 하루
+			  , workStTime : workStTime 
+			  , workEnTime : workEnTime
 			  , job : $("#job").val()
 			  , sex : $("#sex").val()
 			  , age : $("#age").val()
 			  , career : $("#career").val()
 			  , workFlag : $("#kindBox input:checked").val()
 			  , work : $("#work").val()								//PT 외 다른 직종 업무
-			  , workPtList : ptWorkList									//PT 업무  (0 : 신경계, 1: 통증 치료, 2: 심플, 3: 10분 메뉴얼, 4: 도수치료 , 5: 운동 치료) 
-			  , detailWorkPtList : ptDetailList							//PT 세부 업무 YN(obj[0]: 초음파YN, obj[1]: eswtYN, obj[2]: CPM(knee)YN, obj[3]: CPM(sh)YN, obj[4]: ionYN)
+			  //, workPtList : ptWorkList
+			  //, detailWorkPtList : ptDetailList	
+			  , workPtList : JSON.stringify(ptWorkList)				//PT 업무  (0 : 신경계, 1: 통증 치료, 2: 심플, 3: 10분 메뉴얼, 4: 도수치료 , 5: 운동 치료) 
+			  , detailWorkPtList : JSON.stringify(ptDetailList)		//PT 세부 업무 YN(obj[0]: 초음파YN, obj[1]: eswtYN, obj[2]: CPM(knee)YN, obj[3]: CPM(sh)YN, obj[4]: ionYN)
 			  , insenFlag : $("#insentiveBox input:checked").val()  // 인센티브 유무 (Y , N)
 			  , detailWork : $("#detailWork").val()
-			  , lunchStTime : lunchStHour + ":" + lunchStMin		// 점심 시작 시간
-			  , lunchEnTime : lunchEnHour + ":" + lunchEnMin		// 점심 종료 시간
+			  , lunchStTime : lunchStTime							// 점심 시작 시간
+			  , lunchEnTime : lunchEnTime							// 점심 종료 시간
 			  , peerCnt : $("#peerCnt").val()
 			  , avgCnt : $("#avgCnt").val()
 			  , etc : $("#etc").val() 
-		};  
-		  
-		console.log(params);
-		//console.log(JSON.stringify(params));  
+		};   
 		
 		$.ajax({
     		url : CONTEXT_PATH + "/company/register/registerChk", 
     		type: "POST",
-    		data: params,   
+    		data: params,     
     		contentType: "application/x-www-form-urlencoded; charset=UTF-8", 
     		success: function(data){
-    			console.log("registerChk");   
-    			console.log(data.list); 
-    			location.href = CONTEXT_PATH + "/";  
+    			console.log("registerChk");
+    			if(data == "success"){
+    				location.href = CONTEXT_PATH + "/";  
+    			} else if(data == "duplicate"){
+    				alert("해당 직종에 대한 매칭 조건이 이미 등록되어있습니다.");
+    			} 
     		},   
     		error: function(data){   
    		   		console.log("error");
    		   		console.log(data.errmsg);  
-   		   		console.log(data.param); 
     		}
     	});   
-		/* $.ajax({
-    		url : CONTEXT_PATH + "/company/register/registerChk", 
-    		type: "POST",
-    		data: JSON.stringify(params),     
-    		dataType: 'json',   
-    		contentType:"application/json;charset=UTF-8",
-    		success: function(data){
-    			console.log("registerChk");  
-    			console.log(data.list); 
-    			location.href = CONTEXT_PATH + "/";  
-    		},   
-    		error: function(data){  
-   		   		console.log("error");
-   		   		console.log(data.errmsg);  
-   		   		console.log(data.param); 
-    		}
-    	});    */
 	}
 	 
 	function setTerm() {
@@ -805,7 +813,9 @@ td, select {
 		console.log($("select[name=term]").val());   
 		
 		dowList = []; 
-		
+		$("#datepicker").val("");
+		$("#datepicker_start").val("");
+		 
 		if(term == "one"){
 			$("#for_one").show();
 			$("#for_date").hide();
@@ -849,6 +859,7 @@ td, select {
 	
 	function setDatepicker() {
 		
+		console.log($("#datepicker").val()); 
 		console.log($("#datepicker_start").val()); 
 	}
 	

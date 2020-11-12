@@ -3,6 +3,7 @@ package kr.co.jj.company.vo;
 import java.util.List;
 
 public class RegisterDTO {
+	private String companyNo;
 	private String workType;
 	private String salaryHour;
 	private String salaryDay;
@@ -28,6 +29,13 @@ public class RegisterDTO {
 	private String avgCnt;
 	private String etc;
 	
+	
+	public String getCompanyNo() {
+		return companyNo;
+	}
+	public void setCompanyNo(String companyNo) {
+		this.companyNo = companyNo;
+	}
 	public String getWorkType() {
 		return workType;
 	}
@@ -172,15 +180,17 @@ public class RegisterDTO {
 	public void setEtc(String etc) {
 		this.etc = etc;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "RegisterDTO [workType=" + workType + ", salaryHour=" + salaryHour + ", salaryDay=" + salaryDay
-				+ ", workDate=" + workDate + ", workStart=" + workStart + ", dowList=" + dowList + ", timeFlag="
-				+ timeFlag + ", workStTime=" + workStTime + ", workEnTime=" + workEnTime + ", job=" + job + ", sex="
-				+ sex + ", age=" + age + ", career=" + career + ", lunchStTime=" + lunchStTime + ", lunchEnTime="
-				+ lunchEnTime + ", workFlag=" + workFlag + ", work=" + work + ", insenFlag=" + insenFlag
-				+ ", detailWork=" + detailWork + ", workPtList=" + workPtList + ", detailWorkPtList=" + detailWorkPtList
-				+ ", peerCnt=" + peerCnt + ", avgCnt=" + avgCnt + ", etc=" + etc + "]";
+		return "RegisterDTO [companyNo=" + companyNo + ", workType=" + workType + ", salaryHour=" + salaryHour
+				+ ", salaryDay=" + salaryDay + ", workDate=" + workDate + ", workStart=" + workStart + ", dowList="
+				+ dowList + ", timeFlag=" + timeFlag + ", workStTime=" + workStTime + ", workEnTime=" + workEnTime
+				+ ", job=" + job + ", sex=" + sex + ", age=" + age + ", career=" + career + ", lunchStTime="
+				+ lunchStTime + ", lunchEnTime=" + lunchEnTime + ", workFlag=" + workFlag + ", work=" + work
+				+ ", insenFlag=" + insenFlag + ", detailWork=" + detailWork + ", workPtList=" + workPtList
+				+ ", detailWorkPtList=" + detailWorkPtList + ", peerCnt=" + peerCnt + ", avgCnt=" + avgCnt + ", etc="
+				+ etc + "]";
 	}
+	
 }
