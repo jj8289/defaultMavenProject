@@ -2,7 +2,9 @@ package kr.co.jj.company.vo;
 
 import java.util.List;
 
-public class RegisterVO {
+import kr.co.jj.common.vo.PageVO;
+
+public class RegisterVO extends PageVO{
 	
 	private String regNo;
 	private String companyNo;
@@ -36,6 +38,11 @@ public class RegisterVO {
 	private List<String> dowList;
 	private List<String> workPtList;
 	private List<String> detailWorkPtList;
+	
+	private float calWorkTime;
+	private int calSalaryHour;
+	private int calSalaryDay;
+	
 	
 	public List<String> getDowList() {
 		return dowList;
@@ -222,6 +229,24 @@ public class RegisterVO {
 	}
 	public void setEtc(String etc) {
 		this.etc = etc;
+	}
+	public float getCalWorkTime() {
+		return calWorkTime;
+	}
+	public void setCalWorkTime(float calWorkTime) {
+		this.calWorkTime = calWorkTime;
+	}
+	public int getCalSalaryHour() {
+		return calSalaryHour;
+	}
+	public void setCalSalaryHour(int calSalaryHour) {
+		this.calSalaryHour = calSalaryHour;
+	}
+	public int getCalSalaryDay() {
+		return calSalaryDay;
+	}
+	public void setCalSalaryDay(int calSalaryDay) {
+		this.calSalaryDay = calSalaryDay;
 	}
 	
 	@Override

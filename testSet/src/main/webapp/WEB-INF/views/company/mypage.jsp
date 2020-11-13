@@ -75,9 +75,9 @@ form {
 	align-items: center; 
 	justify-content: center; 
 	text-align: center; 
-	margin-top: 35px; 
-}
-
+	margin: 35px;
+	height: 80px;
+} 
 .btn {
 	border: none;
 	background-color: #424242;
@@ -85,7 +85,7 @@ form {
 	width: 100px;
 	height: 30px;
 	margin: 0 5px; 
-}   
+}
 
 #on_off_match {
 	margin-left: 10px;
@@ -106,108 +106,201 @@ form {
 </style>        
 </head>    
 <body>   
-	<div id="container">      
-		<div class="temp"></div>
-		<h2 class="title">마이페이지</h2>   
-		<div class="temp"></div>   
-		<div class="infocon"><input type="button" value="내 정보 수정" onclick="location.href='${pageContext.request.contextPath}/user/myinfo'"></div>
-		<div class="temp"></div>   
-		<h3 class="subtitle">상태</h3>    
-		<div>  
-			<table> 
-				<tr style="height: 50px">      
-					<td>매칭 상태</td> 
-					<td id="switch_td" style="text-align: center; width: 150px;">    
-						<label class="switch">
-						    <input type="checkbox" id="switchBtn" onclick="toggle(this)"> 
-						    <span class="slider round"></span>
-						</label>   
-						<p id="on_off_match"></p> 
-					</td>       
-					<!-- <td><button id="save" value="저장" type="button" onclick="saveChk()" class="btn" style="width: 50px;">저장</button></td> -->
-				</tr>      
-			</table>     
-		</div>
-		<div style="height: 30px"></div>    
-		<!-- <h3 class="subtitle">매칭 조건</h3>   -->
-		<c:if test="${not empty regList }">
-		<div class="regCon">
-			<table id="listTable">
-				<caption style="height: 50px;">매칭 조건 리스트</caption>
-				<colgroup>  
-					<col style="width: 60px">
-					<col style="width: 60px">   
-					<col style="width: 130px">
-					<col style="width: 130px">
-					<col style="width: 160px">
-					<col style="width: 130px">
-					<col style="width: 130px"> 
-					<col style="width: 130px"> 
-					<col style="width: 130px">    
-					<col style="width: 120px">   
-				</colgroup> 
-				<thead>            
-					<tr>
-						<th scope="col">No</th>
-						<th scope="col">직종</th>
-						<th scope="col">근무 기간</th>
-						<th scope="col">시급/일급</th>
-						<th scope="col">근무 날짜(시작일)</th>
-						<th scope="col">근무 시간</th>
-						<th scope="col">성별</th>
-						<th scope="col">나이</th>
-						<th scope="col">경력</th>
-						<th scope="col">상세 및 수정</th>
-					</tr>
-				</thead>
-				<tbody id="listBody"> 
-					<c:forEach items="${regList }" var="reg">
-						<tr style="height: 40px;">  
-							<td><c:out value="${reg.regNo }" /></td>
-							<td><c:out value="${reg.job }" /></td>
-							<td><c:out value="${reg.workType }" /></td>
-							<td>
-								<c:if test="${reg.salaryHour != '' }"><c:out value="${reg.salaryHour }" />/hour</c:if>
-								<c:if test="${reg.salaryDay != '' }"><c:out value="${reg.salaryDay }" />/day</c:if>
-							</td> 
-							<td>
-								<c:if test="${reg.workDate != '' }"><c:out value="${reg.workDate }" /></c:if>
-								<c:if test="${reg.workStart != '' }"><c:out value="${reg.workStart }" /></c:if>
-							</td> 
-							<td>
-								<c:out value="${reg.workStTime }" /> ~ <c:out value="${reg.workEnTime }" />
-							</td>  
-							<td>
-								<c:if test="${reg.sex != '' }"><c:out value="${reg.sex }" /></c:if>
-								<c:if test="${reg.sex == '' }">성별 무관</c:if>
-							</td> 
-							<td>
-								<c:if test="${reg.age != '' }"><c:out value="${reg.age }" /></c:if>
-								<c:if test="${reg.age == '' }">나이 무관</c:if>
-							</td> 
-							<td>
-								<c:if test="${reg.career != '' }"><c:out value="${reg.career }" /></c:if>
-								<c:if test="${reg.career == '' }">경력 무관</c:if>
-							</td>  
-							<td><input type="button" value="상세"></td> 
-						</tr> 
-					</c:forEach> 
-				</tbody>
-			</table> 
-		</div>
-		</c:if>
-		<c:if test="${empty regList }">
-			등록된 매칭 조건이 없습니다.
-		</c:if>
-		<p class="but" align="center" > 
-			<button id="reg" value="변경" type="button" onclick="validationChk()" class="btn">변경</button>  
-			<input class="btn" type="reset" value="리셋">      
-			<input class="btn" type="button" value="홈으로" onclick="goHome()">
-		</p>              
-	</div>      
+	<div id="container">  
+		<form name="frm">    
+			<!-- //페이지 번호 -->
+            <input type="hidden" name="pageNo" />
+            
+			<div class="temp"></div>
+			<h2 class="title">마이페이지</h2>   
+			<div class="temp"></div>   
+			<div class="infocon"><input type="button" value="내 정보 수정" onclick="location.href='${pageContext.request.contextPath}/user/myinfo'"></div>
+			<div class="temp"></div>   
+			<h3 class="subtitle">상태</h3>    
+			<div>  
+				<table> 
+					<tr style="height: 50px">      
+						<td>매칭 상태</td> 
+						<td id="switch_td" style="text-align: center; width: 150px;">    
+							<label class="switch">
+							    <input type="checkbox" id="switchBtn" onclick="toggle(this)"> 
+							    <span class="slider round"></span>
+							</label>   
+							<p id="on_off_match"></p> 
+						</td>       
+						<!-- <td><button id="save" value="저장" type="button" onclick="saveChk()" class="btn" style="width: 50px;">저장</button></td> -->
+					</tr>      
+				</table>     
+			</div>
+			<div style="height: 30px"></div>    
+			<!-- <h3 class="subtitle">매칭 조건</h3>   -->
+			<div class="regCon">
+				<table id="listTable">
+					<caption style="height: 50px;">매칭 조건 리스트</caption>
+					<colgroup>  
+						<col style="width: 60px">
+						<col style="width: 130px">   
+						<col style="width: 130px">
+						<col style="width: 130px">
+						<col style="width: 160px">
+						<col style="width: 200px">
+						<col style="width: 130px"> 
+						<col style="width: 130px"> 
+						<col style="width: 130px">    
+						<col style="width: 120px">   
+					</colgroup>  
+					<thead>            
+						<tr>
+							<th scope="col">No</th>
+							<th scope="col">직종</th>
+							<th scope="col">근무 기간</th>
+							<th scope="col">시급/일급</th>
+							<th scope="col">근무 날짜(시작일)</th>
+							<th scope="col">근무 시간</th>
+							<th scope="col">성별</th>
+							<th scope="col">나이</th>
+							<th scope="col">경력</th>
+							<th scope="col">상세 및 수정</th>
+						</tr>
+					</thead>
+					<tbody id="listBody"> 
+						<c:if test="${not empty regList }">
+						<c:forEach items="${regList }" var="reg">
+							<tr style="height: 40px;">  
+								<td><c:out value="${reg.regNo }" /></td>
+								<td>
+									<c:forEach items="${jobList }" var="job">
+										<c:if test="${job.key == reg.job }">	
+											<c:out value="${job.value }" />
+										</c:if>
+									</c:forEach>    
+								</td> 
+								<td> 
+									<c:forEach items="${workList }" var="work">
+										<c:if test="${work.key == reg.workType }">	
+											<c:out value="${work.value }" />
+										</c:if>
+									</c:forEach>    
+								</td> 
+								<%-- 일급 입력 ==> 시급 계산해서 보여줌 / 시급 등록 ==> 일급 계산해서 보여줌 
+								<td>
+									<c:if test="${reg.calSalaryHour != '0' }"><c:out value="${reg.calSalaryHour }" />/hour</c:if>
+									<c:if test="${reg.calSalaryDay != '0' }"><c:out value="${reg.calSalaryDay }" />/day</c:if>
+								</td> --%>  
+								<td> 
+									<c:if test="${reg.salaryHour != '' }"><c:out value="${reg.salaryHour }" />/hour</c:if>
+									<c:if test="${reg.salaryDay != '' }"><c:out value="${reg.salaryDay }" />/day</c:if>
+								</td>  
+								<td>
+									<c:if test="${reg.workDate != '' }"><c:out value="${reg.workDate }" /></c:if>
+									<c:if test="${reg.workStart != '' }"><c:out value="${reg.workStart }" /></c:if>
+								</td> 
+								<td>
+									<c:out value="${reg.workStTime }" /> ~ <c:out value="${reg.workEnTime }" />
+									(<c:out value="${reg.calWorkTime }" />h) 
+								</td>  
+								<td>
+									<c:if test="${reg.sex == 'F' }">여자만</c:if>
+									<c:if test="${reg.sex == 'M' }">남자만</c:if> 
+									<c:if test="${reg.sex == '' }">성별 무관</c:if>
+								</td> 
+								<td>
+									<c:if test="${reg.age != '' }"><c:out value="${reg.age }" />대</c:if>
+									<c:if test="${reg.age == '' }">나이 무관</c:if>
+								</td> 
+								<td>
+									<c:if test="${reg.career != '' }"><c:out value="${reg.career }" />년 이상</c:if>
+									<c:if test="${reg.career == '' }">경력 무관</c:if>
+								</td>  
+								<td><input type="button" value="상세"></td> 
+							</tr> 
+						</c:forEach> 
+						</c:if>
+						<c:if test="${empty regList }">
+							등록된 매칭 조건이 없습니다.
+						</c:if>
+					</tbody>
+				</table>
+			</div>  
+			<div class="page-navi">
+				<ul>
+					<c:if test="${pageVO.pageNo != 0}">
+						<c:if test="${pageVO.pageBlock > 1}">
+							<li class="first"><a href="javascript:fn_movePage(1)">맨앞 </a></li>
+						</c:if>
+						<c:if test="${pageVO.prevBlockPage != 0}">
+							<li class="prev"><a href="javascript:fn_movePage(${pageVO.prevBlockPage})">이전</a></li>
+						</c:if>	
+						<span>
+			            <c:forEach var="i" begin="${pageVO.pageBegin}" end="${pageVO.pageEnd}" step="1">
+			                <c:choose>
+			                    <c:when test="${i eq pageVO.pageNo}">
+			                        <li>
+				                        <a href="javascript:fn_movePage(${i})">
+				                            <font style="font-weight: bold;">${i}</font>
+				                        </a>
+				                    </li>     
+			                    </c:when>
+			                    <c:otherwise>
+			                    	<li>
+			                        	<a href="javascript:fn_movePage(${i})">${i}</a>
+			                        </li>	
+			                    </c:otherwise>
+			                </c:choose>
+			            </c:forEach>
+			        	</span>
+			        	<c:if test="${pageVO.nextBlockPage != 0 }"> 
+							<li class="next"><a href="javascript:fn_movePage(${pageVO.nextBlockPage})">다음</a></li>
+						</c:if>	
+						<c:if test="${pageVO.pageBlock < pageVO.pageBlockCount }">	
+							<li class="last"><a href="javascript:fn_movePage(${pageVO.pageCount})">맨뒤</a></li>
+						</c:if>
+					</c:if>	
+				</ul>
+			</div>
+			<p class="but" align="center" > 
+				<input class="btn" type="button" value="홈으로" onclick="goHome()">
+			</p> 
+		</form>
+	</div>        
 <script type="text/javascript">
 	console.log(${regList[0].regNo});
+	console.log("${workList}");       
+	console.log(${regList[0].calWorkTime});    
 	
+	//calWorkTime = "${regList[0].workStTime }"
+	 
+	//$('div.page-navi').empty().html($.pageUtil.paging("gotoPage", $pageNo, "10", cnt)); //paging 
+	
+	$(window).on('popstate', function(event) {
+		console.log(event.originalEvent.state);
+		if(event.originalEvent.state == null) {
+			location.href = CONTEXT_PATH + "/company/mypage"
+		} else { 
+			loadHistoryBack(event.originalEvent.state);	 
+		}
+	});
+	  
+	function loadHistoryBack(paramVo){
+		console.log("loadHistoryback : " + paramVo.pageNo); 
+		getData({pageNo: paramVo.pageNo});  
+	}  
+
+	
+	function gotoPage(pageNo) {
+		 
+		 history.pushState({pageNo: pageNo}, null, CONTEXT_PATH + "/edit?pageNo=" + pageNo);  
+
+		 getData({pageNo:pageNo});   
+	} 
+	
+	//페이지 이동
+	function fn_movePage(val){
+		$("input[name=pageNo]").val(val);
+	    $("form[name=frm]").attr("method", "post");
+	    $("form[name=frm]").attr("action","/mypage").submit();
+	}
+
 	/* var salaryHour = "${vo.salaryHour }";
 	var salaryDay = "${vo.salaryDay }";
 	var dowList = ${dowList};

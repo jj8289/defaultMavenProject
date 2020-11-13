@@ -29,6 +29,10 @@ public class RegisterDTO {
 	private String avgCnt;
 	private String etc;
 	
+	private float calWorkTime;
+	private int calSalaryHour;
+	private int calSalaryDay;
+	
 	
 	public String getCompanyNo() {
 		return companyNo;
@@ -181,6 +185,26 @@ public class RegisterDTO {
 		this.etc = etc;
 	}
 
+	
+	
+	public float getCalWorkTime() {
+		return calWorkTime;
+	}
+	public void setCalWorkTime(float calWorkTime) {
+		this.calWorkTime = calWorkTime;
+	}
+	public int getCalSalaryHour() {
+		return calSalaryHour;
+	}
+	public void setCalSalaryHour(int calSalaryHour) {
+		this.calSalaryHour = calSalaryHour;
+	}
+	public int getCalSalaryDay() {
+		return calSalaryDay;
+	}
+	public void setCalSalaryDay(int calSalaryDay) {
+		this.calSalaryDay = calSalaryDay;
+	}
 	@Override
 	public String toString() {
 		return "RegisterDTO [companyNo=" + companyNo + ", workType=" + workType + ", salaryHour=" + salaryHour

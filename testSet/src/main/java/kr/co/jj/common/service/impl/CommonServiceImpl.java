@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import kr.co.jj.common.service.CommonService;
 import kr.co.jj.common.vo.Job;
+import kr.co.jj.common.vo.WorkFlag;
 
 @Service
 public class CommonServiceImpl implements CommonService{
@@ -22,4 +23,18 @@ public class CommonServiceImpl implements CommonService{
 		return jobMap;
 		//model.addAttribute("jobList", jobMap); 
 	}
+	
+
+	
+	public Map<String, Object> getWorkFlagList() {
+		Map<String, Object> workMap = new HashMap<String, Object>();
+		
+		for(WorkFlag work : WorkFlag.values()) {
+			workMap.put(work.name(), work.getName());
+		}
+		
+		return workMap;
+	}
+	
+	
 }

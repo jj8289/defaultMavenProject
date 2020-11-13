@@ -204,7 +204,9 @@ public class CompanyController {
 		vo.setPeerCnt(param.getPeerCnt());
 		vo.setAvgCnt(param.getAvgCnt());
 		vo.setEtc(param.getEtc());
-		
+		vo.setCalWorkTime(param.getCalWorkTime());
+		vo.setCalSalaryHour(param.getCalSalaryHour());
+		vo.setCalSalaryDay(param.getCalSalaryDay());
 		
 		//중복 체크
 		dup = companyService.selectRegCnt(vo);
@@ -231,6 +233,14 @@ public class CompanyController {
 		List<RegisterVO> regList = companyService.selectRegister(company); 
 		
 		model.addAttribute("regList", regList);
+		
+		Map<String, Object> workList = commonService.getWorkFlagList();
+		
+		model.addAttribute("workList", workList);
+		
+		Map<String, Object> jobList = commonService.getJobList();
+		
+		model.addAttribute("jobList", jobList);
 		
 		return "company/mypage";
 	}

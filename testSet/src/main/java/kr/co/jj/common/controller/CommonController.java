@@ -1,9 +1,7 @@
 package kr.co.jj.common.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -21,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import kr.co.jj.common.vo.AddrApiVO;
 import kr.co.jj.common.vo.AddrVO;
-import kr.co.jj.common.vo.Job;
 import kr.co.jj.company.service.CompanyService;
 import kr.co.jj.company.vo.AddrDTO;
 

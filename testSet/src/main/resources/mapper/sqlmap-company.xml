@@ -53,6 +53,7 @@
 		SELECT *
 		  FROM TB_REGISTER
 		 WHERE COMPANY_NO = #{companyNo}
+		 ORDER BY CREATE_DATE DESC 
 	</select>
 	
 	<insert id="insertCompany" parameterType="CompanyVO">
@@ -127,6 +128,9 @@
 			, PEER_CNT
 			, AVG_CNT
 			, ETC
+			, CAL_WORK_TIME
+			, CAL_SALARY_HOUR
+			, CAL_SALARY_DAY	
 		) 
 		VALUES
 		(
@@ -156,6 +160,9 @@
 			, #{peerCnt}
 			, #{avgCnt}
 			, #{etc} 
+			, #{calWorkTime}
+			, #{calSalaryHour}
+			, #{calSalaryDay}
 		)
 	</insert> 
 	 

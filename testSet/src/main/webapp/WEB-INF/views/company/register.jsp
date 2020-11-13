@@ -725,12 +725,18 @@ td, select {
 		var lunchStTime = "";
 		var lunchEnTime = "";
 		
+		var calWorkTime = ((Number($("#end_hour").val()) * 60 + Number($("#end_min").val())) - (Number($("#start_hour").val()) * 60 + Number($("#start_min").val())))/60;
+		var calSalaryHour = 0;
+		var calSalaryDay = 0;
+		
 		if($("select[name=salType]").val() == "hour"){
 			salaryDay = "";
 			salaryHour = $("#salary_hour").val();
+			calSalaryDay = Number($("#salary_hour").val()) * calWorkTime;
 		} else if($("select[name=salType]").val() == "day"){
 			salaryHour = "";
 			salaryDay = $("#salary_day").val();
+			calSalaryHour = Math.floor(Number($("#salary_day").val())/calWorkTime); 
 		}
 		
 		if($("#term").val() == "sat"){
@@ -751,11 +757,22 @@ td, select {
  		
  		time = setTime();
  		
+ 		if(time == "3"){
+ 			calWorkTime = ((Number($("#end_hour").val()) * 60 + Number($("#end_min").val())) - (Number($("#start_hour").val()) * 60 + Number($("#start_min").val())))/60 - 1;
+ 		}
+ 		
+ 		
  		workStTime = workStHour + ":" + workStMin;
 		workEnTime = workEnHour + ":" + workEnMin;
  		
  		lunchStTime = $("#lunchFlag:checked").val() == "1"? "" : (lunchStHour + ":" + lunchStMin);
  		lunchEnTime = $("#lunchFlag:checked").val() == "1"? "" : (lunchEnHour + ":" + lunchEnMin);
+ 		
+ 		if(lunchStTime != "" && lunchEnTime != ""){
+ 			calWorkTime = ((Number($("#end_hour").val()) * 60 + Number($("#end_min").val())) - (Number($("#start_hour").val()) * 60 + Number($("#start_min").val())))/60 - 1;
+ 		} else {
+ 			calWorkTime = ((Number($("#end_hour").val()) * 60 + Number($("#end_min").val())) - (Number($("#start_hour").val()) * 60 + Number($("#start_min").val())))/60;
+ 		}
  		
 		params = { 
 				companyNo : companyNo
@@ -786,6 +803,9 @@ td, select {
 			  , peerCnt : $("#peerCnt").val()
 			  , avgCnt : $("#avgCnt").val()
 			  , etc : $("#etc").val() 
+			  , calWorkTime : calWorkTime
+			  , calSalaryHour : calSalaryHour
+			  , calSalaryDay : calSalaryDay
 		};   
 		
 		$.ajax({
@@ -805,7 +825,7 @@ td, select {
    		   		console.log("error");
    		   		console.log(data.errmsg);  
     		}
-    	});   
+    	});  
 	}
 	 
 	function setTerm() {
@@ -849,7 +869,7 @@ td, select {
 			$("#salary_day").hide(); 
  			
 		} else if(salType == "day"){
-			$("#salaryBox").text("원"); 
+			$("#salaryBox").text("원");  
 			$("#salary_hour").hide();  
 			$("#salary_day").show();  
 		} else { 
