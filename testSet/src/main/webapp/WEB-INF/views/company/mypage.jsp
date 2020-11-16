@@ -7,10 +7,11 @@
 	<meta charset="UTF-8">
 	<jsp:include page="../common/common.jsp" />    
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/page.css">
 	<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mypage.css" media="screen"/> 
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
-<title>마이페이지</title>
+<title>마이페이지</title> 
 <style type="text/css">
 /*datepicer 버튼 롤오버 시 손가락 모양 표시*/
 .ui-datepicker-trigger{cursor: pointer;}
@@ -74,8 +75,8 @@ form {
 	display: flex;
 	align-items: center; 
 	justify-content: center; 
-	text-align: center; 
-	margin: 35px;
+	text-align: center;  
+	/* margin: 35px; */
 	height: 80px;
 } 
 .btn {
@@ -85,7 +86,7 @@ form {
 	width: 100px;
 	height: 30px;
 	margin: 0 5px; 
-}
+} 
 
 #on_off_match {
 	margin-left: 10px;
@@ -103,14 +104,23 @@ form {
 #salary_hour, #salary_day{
 	height: 24px; 
 }   
-</style>        
+
+.page-navi {
+ 	height: 70px;   
+ 	text-align: center;  
+ 	display: flex;
+ 	align-items: center; 
+ 	justify-content: center; 
+}      
+ 
+</style>         
 </head>    
 <body>   
 	<div id="container">  
 		<form name="frm">    
 			<!-- //페이지 번호 -->
             <input type="hidden" name="pageNo" />
-            
+            <input type="hidden" name="regNo" />
 			<div class="temp"></div>
 			<h2 class="title">마이페이지</h2>   
 			<div class="temp"></div>   
@@ -136,10 +146,10 @@ form {
 			<!-- <h3 class="subtitle">매칭 조건</h3>   -->
 			<div class="regCon">
 				<table id="listTable">
-					<caption style="height: 50px;">매칭 조건 리스트</caption>
-					<colgroup>  
+					<caption style="height: 50px;">매칭 조건 리스트  [ 총 개수 : ${pageVO.rowCount } ]</caption> 
+					<colgroup>   
 						<col style="width: 60px">
-						<col style="width: 130px">   
+						<col style="width: 130px">    
 						<col style="width: 130px">
 						<col style="width: 130px">
 						<col style="width: 160px">
@@ -167,8 +177,8 @@ form {
 						<c:if test="${not empty regList }">
 						<c:forEach items="${regList }" var="reg">
 							<tr style="height: 40px;">  
-								<td><c:out value="${reg.regNo }" /></td>
-								<td>
+								<td><c:out value="${reg.rowNum }" /></td>
+								<td> 
 									<c:forEach items="${jobList }" var="job">
 										<c:if test="${job.key == reg.job }">	
 											<c:out value="${job.value }" />
@@ -212,7 +222,7 @@ form {
 									<c:if test="${reg.career != '' }"><c:out value="${reg.career }" />년 이상</c:if>
 									<c:if test="${reg.career == '' }">경력 무관</c:if>
 								</td>  
-								<td><input type="button" value="상세"></td> 
+								<td><input type="button" value="상세" onclick="gotoRegDetail(${reg.regNo})"></td> 
 							</tr> 
 						</c:forEach> 
 						</c:if>
@@ -223,63 +233,62 @@ form {
 				</table>
 			</div>  
 			<div class="page-navi">
-				<ul>
-					<c:if test="${pageVO.pageNo != 0}">
-						<c:if test="${pageVO.pageBlock > 1}">
-							<li class="first"><a href="javascript:fn_movePage(1)">맨앞 </a></li>
-						</c:if>
-						<c:if test="${pageVO.prevBlockPage != 0}">
-							<li class="prev"><a href="javascript:fn_movePage(${pageVO.prevBlockPage})">이전</a></li>
-						</c:if>	
-						<span>
-			            <c:forEach var="i" begin="${pageVO.pageBegin}" end="${pageVO.pageEnd}" step="1">
-			                <c:choose>
-			                    <c:when test="${i eq pageVO.pageNo}">
-			                        <li>
-				                        <a href="javascript:fn_movePage(${i})">
-				                            <font style="font-weight: bold;">${i}</font>
-				                        </a>
-				                    </li>     
-			                    </c:when>
-			                    <c:otherwise>
-			                    	<li>
-			                        	<a href="javascript:fn_movePage(${i})">${i}</a>
-			                        </li>	
-			                    </c:otherwise>
-			                </c:choose>
-			            </c:forEach>
-			        	</span>
-			        	<c:if test="${pageVO.nextBlockPage != 0 }"> 
-							<li class="next"><a href="javascript:fn_movePage(${pageVO.nextBlockPage})">다음</a></li>
-						</c:if>	
-						<c:if test="${pageVO.pageBlock < pageVO.pageBlockCount }">	
-							<li class="last"><a href="javascript:fn_movePage(${pageVO.pageCount})">맨뒤</a></li>
-						</c:if>
+				<c:if test="${pageVO.pageNo != 0}"> 
+					<c:if test="${pageVO.pageBlock > 1}">
+						<a href="javascript:fn_movePage(1)">맨앞 </a>
+					</c:if>
+					<c:if test="${pageVO.prevBlockPage != 0}">
+						<a href="javascript:fn_movePage(${pageVO.prevBlockPage})">이전</a>
 					</c:if>	
-				</ul>
-			</div>
+					<span>
+		            <c:forEach var="i" begin="${pageVO.pageBegin}" end="${pageVO.pageEnd}" step="1">
+		                <c:choose>
+		                    <c:when test="${i eq pageVO.pageNo}">
+		                        <a href="javascript:fn_movePage(${i})">
+		                            <font style="font-weight: bold;">${i}</font>
+		                        </a>
+		                    </c:when>
+		                    <c:otherwise>
+	                        	<a href="javascript:fn_movePage(${i})">${i}</a>
+		                    </c:otherwise>
+		                </c:choose> 
+		            </c:forEach>
+		        	</span>
+		        	<c:if test="${pageVO.nextBlockPage != 0 }"> 
+						<a href="javascript:fn_movePage(${pageVO.nextBlockPage})">다음</a>
+					</c:if>	
+					<c:if test="${pageVO.pageBlock < pageVO.pageBlockCount }">	
+						<a href="javascript:fn_movePage(${pageVO.pageCount})">맨뒤</a>
+					</c:if>
+				</c:if>	 
+			</div> 
 			<p class="but" align="center" > 
 				<input class="btn" type="button" value="홈으로" onclick="goHome()">
 			</p> 
 		</form>
 	</div>        
 <script type="text/javascript">
-	console.log(${regList[0].regNo});
-	console.log("${workList}");       
-	console.log(${regList[0].calWorkTime});    
+	var regNo = ${regList[0].regNo};
+	var workList = "${workList}";
+	var calWorkTime = ${regList[0].calWorkTime};
+	var curPage = ${pageVO.pageNo};
 	
+	console.log(regNo);
+	console.log(workList);        
+	console.log(calWorkTime);      
+	console.log("curPage : " + curPage);  
 	//calWorkTime = "${regList[0].workStTime }"
-	 
+	  
 	//$('div.page-navi').empty().html($.pageUtil.paging("gotoPage", $pageNo, "10", cnt)); //paging 
-	
+	 
 	$(window).on('popstate', function(event) {
-		console.log(event.originalEvent.state);
+		console.log(event.originalEvent.state); 
 		if(event.originalEvent.state == null) {
 			location.href = CONTEXT_PATH + "/company/mypage"
 		} else { 
 			loadHistoryBack(event.originalEvent.state);	 
 		}
-	});
+	}); 
 	  
 	function loadHistoryBack(paramVo){
 		console.log("loadHistoryback : " + paramVo.pageNo); 
@@ -289,7 +298,7 @@ form {
 	
 	function gotoPage(pageNo) {
 		 
-		 history.pushState({pageNo: pageNo}, null, CONTEXT_PATH + "/edit?pageNo=" + pageNo);  
+		 history.pushState({pageNo: pageNo}, null, CONTEXT_PATH + "/company/mypage?pageNo=" + pageNo);  
 
 		 getData({pageNo:pageNo});   
 	} 
@@ -297,8 +306,17 @@ form {
 	//페이지 이동
 	function fn_movePage(val){
 		$("input[name=pageNo]").val(val);
-	    $("form[name=frm]").attr("method", "post");
-	    $("form[name=frm]").attr("action","/mypage").submit();
+	    $("form[name=frm]").attr("method", "get");
+	    $("form[name=frm]").attr("action", CONTEXT_PATH + "/company/mypage").submit(); 
+	}  
+	
+	function gotoRegDetail(regNo){
+		console.log(regNo); 
+		
+	/* 	$("input[name=pageNo]").val(curPage);*/
+		$("input[name=regNo]").val(regNo);   
+	    $("form[name=frm]").attr("method", "get");
+	    $("form[name=frm]").attr("action", CONTEXT_PATH + "/company/mypage/regDetail").submit();  
 	}
 
 	/* var salaryHour = "${vo.salaryHour }";

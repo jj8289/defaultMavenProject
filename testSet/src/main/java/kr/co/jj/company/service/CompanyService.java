@@ -30,4 +30,8 @@ public interface CompanyService{
 	public void insertRegister(RegisterVO vo) throws Exception;
 	
 	public int selectRegCnt(RegisterVO vo) throws Exception;
+	
+	public int selectRegTotCnt(CompanyVO vo) throws Exception;
+	
+	public RegisterVO selectRegByRegNo(RegisterVO vo) throws Exception;
 }

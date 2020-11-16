@@ -1,6 +1,8 @@
 package kr.co.jj.company.vo;
 
-public class CompanyVO {
+import kr.co.jj.common.vo.PageVO;
+
+public class CompanyVO extends PageVO{
 	
 	private String companyNo;
 	private String companyNm;

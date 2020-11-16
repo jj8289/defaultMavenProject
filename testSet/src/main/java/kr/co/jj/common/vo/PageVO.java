@@ -45,8 +45,10 @@ public class PageVO {
 	// 웹 페이지에서 보여줄 맨 처음 게시글 번호
 	private int rowNum;
 
-	private String url;
+	//private String url; 
 
+	
+	
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 		rowNum = pageBlockSize * pageSize + 1;
@@ -54,6 +56,122 @@ public class PageVO {
 		for (int i = 0; i <= pageBlockSize; i++) {
 			pageList.add((pageSize * i) + 1);
 		}
+	}
+
+	public int getOffset() {
+		return offset;
+	}
+
+	public void setOffset(int offset) {
+		this.offset = offset;
+	}
+
+	public int getPageCount() {
+		return pageCount;
+	}
+
+	public void setPageCount(int pageCount) {
+		this.pageCount = pageCount;
+	}
+
+	public int getPageBlock() {
+		return pageBlock;
+	}
+
+	public void setPageBlock(int pageBlock) {
+		this.pageBlock = pageBlock;
+	}
+
+	public int getPageBlockSize() {
+		return pageBlockSize;
+	}
+
+	public void setPageBlockSize(int pageBlockSize) {
+		this.pageBlockSize = pageBlockSize;
+	}
+
+	public int getPageBlockCount() {
+		return pageBlockCount;
+	}
+
+	public void setPageBlockCount(int pageBlockCount) {
+		this.pageBlockCount = pageBlockCount;
+	}
+
+	public int getPageBegin() {
+		return pageBegin;
+	}
+
+	public void setPageBegin(int pageBegin) {
+		this.pageBegin = pageBegin;
+	}
+
+	public int getPageEnd() {
+		return pageEnd;
+	}
+
+	public void setPageEnd(int pageEnd) {
+		this.pageEnd = pageEnd;
+	}
+
+	public int getNextBlockPage() {
+		return nextBlockPage;
+	}
+
+	public void setNextBlockPage(int nextBlockPage) {
+		this.nextBlockPage = nextBlockPage;
+	}
+
+	public int getPrevBlockPage() {
+		return prevBlockPage;
+	}
+
+	public void setPrevBlockPage(int prevBlockPage) {
+		this.prevBlockPage = prevBlockPage;
+	}
+
+	public List<Integer> getPageList() {
+		return pageList;
+	}
+
+	public void setPageList(List<Integer> pageList) {
+		this.pageList = pageList;
+	}
+
+	public int getRowNum() {
+		return rowNum;
+	}
+
+	public void setRowNum(int rowNum) {
+		this.rowNum = rowNum;
+	}
+
+	public static int getDefaultPageno() {
+		return DEFAULT_PAGENO;
+	}
+
+	public static int getDefaultPagesize() {
+		return DEFAULT_PAGESIZE;
+	}
+
+	public static int getDefaultPageblock() {
+		return DEFAULT_PAGEBLOCK;
+	}
+
+	public static int getDefaultPageblocksize() {
+		return DEFAULT_PAGEBLOCKSIZE;
+	}
+
+	public int getPageNo() {
+		return pageNo;
+	}
+
+	public int getPageSize() {
+		return pageSize;
+	}
+
+	public int getRowCount() {
+		return rowCount;
 	}
 
 	public void setPageNo(int pageNo) {
@@ -93,4 +211,13 @@ public class PageVO {
 		pageBlock++;
 	}
 
+	@Override
+	public String toString() {
+		return "PageVO [pageNo=" + pageNo + ", pageSize=" + pageSize + ", offset=" + offset + ", rowCount=" + rowCount
+				+ ", pageCount=" + pageCount + ", pageBlock=" + pageBlock + ", pageBlockSize=" + pageBlockSize
+				+ ", pageBlockCount=" + pageBlockCount + ", pageBegin=" + pageBegin + ", pageEnd=" + pageEnd
+				+ ", nextBlockPage=" + nextBlockPage + ", prevBlockPage=" + prevBlockPage + ", pageList=" + pageList
+				+ ", rowNum=" + rowNum + "]";
+	}
+	
 }

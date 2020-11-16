@@ -45,4 +45,9 @@ public interface CompanyDAO {
 	
 	//조건 중복 체크 
 	public int selectRegCnt(RegisterVO vo) throws Exception;
+	
+	//병원 조건 등록 총 개수
+	public int selectRegTotCnt(CompanyVO vo) throws Exception;
+	
+	public RegisterVO selectRegByRegNo(RegisterVO vo) throws Exception;
 }

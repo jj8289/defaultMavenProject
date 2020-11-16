@@ -1,9 +1,7 @@
 package kr.co.jj.company.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpSession;
 
@@ -16,20 +14,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.jj.common.service.CommonService;
 import kr.co.jj.common.vo.AddrVO;
+import kr.co.jj.common.vo.PageVO;
 import kr.co.jj.company.service.CompanyService;
 import kr.co.jj.company.vo.AddrDTO;
 import kr.co.jj.company.vo.CompanyVO;
 import kr.co.jj.company.vo.RegisterDTO;
 import kr.co.jj.company.vo.RegisterVO;
 import kr.co.jj.user.controller.UserController;
-import kr.co.jj.user.vo.RequireVO;
-import kr.co.jj.user.vo.UserVO;
 
 @Controller
 @RequestMapping("/company")
@@ -225,24 +224,93 @@ public class CompanyController {
 	 * 마이페이지
 	 */
 	@GetMapping("/mypage")
-	public String mypage(Model model, HttpSession session) throws Exception {
+	public String mypage(Model model, HttpSession session, @ModelAttribute("pageVO") PageVO param, @RequestParam(required = false, defaultValue = "1") String pageNo) throws Exception {
+		
 		String id = (String)session.getAttribute("mgloginId");
 		
-		CompanyVO company = getCompany(id);
+		CompanyVO company = getCompany(id); 
+		int rowCnt = companyService.selectRegTotCnt(company);
 		
-		List<RegisterVO> regList = companyService.selectRegister(company); 
+		param.setPageNo(Integer.parseInt(pageNo));   
+		System.out.println("pageNo : " + pageNo);
 		
-		model.addAttribute("regList", regList);
+		 
+		System.out.println(param.toString());
+		
 		
 		Map<String, Object> workList = commonService.getWorkFlagList();
-		
 		model.addAttribute("workList", workList);
 		
 		Map<String, Object> jobList = commonService.getJobList();
-		
 		model.addAttribute("jobList", jobList);
 		
+		
+		
+		
+		company.setRowCount(rowCnt);
+		company.setPageSize(5);
+		company.setPageNo(Integer.parseInt(pageNo));
+		param.setRowCount(rowCnt);
+		param.setPageSize(5);  
+		
+		List<RegisterVO> regList = companyService.selectRegister(company); 
+		model.addAttribute("regList", regList);
+		
 		return "company/mypage";
+	}
+	
+	@GetMapping("/mypage/regDetail")
+	public String regDetail(@RequestParam String regNo, Model model) throws Exception{
+		
+		RegisterVO vo = new RegisterVO();
+		vo.setRegNo(regNo);
+		
+		System.out.println(vo.toString());
+		
+		vo = companyService.selectRegByRegNo(vo);
+		
+		model.addAttribute("reg", vo);
+		
+		String workStHour = vo.getWorkStTime().substring(0,2);
+		String workStMin = vo.getWorkStTime().substring(3);
+		String workEnHour = vo.getWorkEnTime().substring(0,2);
+		String workEnMin = vo.getWorkStTime().substring(3);
+		
+		model.addAttribute("workStHour", workStHour);
+		model.addAttribute("workEnHour", workEnHour);
+		model.addAttribute("workStMin", workStMin);
+		model.addAttribute("workEnMin", workEnMin);
+		
+		if(vo.getLunchStTime().equals("")) {
+			
+		} else {
+			String lunchStHour = vo.getLunchStTime().substring(0,2);
+			String lunchStMin = vo.getLunchStTime().substring(3);
+			String lunchEnHour = vo.getLunchEnTime().substring(0,2);
+			String lunchEnMin = vo.getLunchEnTime().substring(3);
+			model.addAttribute("lunchStHour", lunchStHour);
+			model.addAttribute("lunchStMin", lunchStMin);
+			model.addAttribute("lunchEnHour", lunchEnHour);
+			model.addAttribute("lunchEnMin", lunchEnMin);
+		}
+		 
+		Map<String, Object> list = commonService.getJobList();
+		
+		model.addAttribute("jobList", list);
+//		if(workStHour.charAt(0) == '0') {
+//			model.addAttribute("workStHour", workStHour.charAt(1));
+//		} else {
+//			model.addAttribute("workStHour", workStHour);
+//		}
+//		if(workEnHour.charAt(0) == '0') {
+//			model.addAttribute("workEnHour", workEnHour.charAt(1));
+//		} else {
+//			model.addAttribute("workEnHour", workEnHour);
+//		}
+		
+		
+		
+		return "company/registerDetail";
 	}
 	
 	// 아이디 중복 체크

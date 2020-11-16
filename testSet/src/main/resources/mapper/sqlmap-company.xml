@@ -50,10 +50,18 @@
 	</select>
 	
 	<select id="selectRegister" parameterType="CompanyVO" resultType="RegisterVO">
-		SELECT *
-		  FROM TB_REGISTER
-		 WHERE COMPANY_NO = #{companyNo}
-		 ORDER BY CREATE_DATE DESC 
+		 SELECT  @RN2 := @RN2 + 1 AS ROW_NUM2
+		        , C.*
+		   FROM  (
+					 SELECT  @RN := @RN + 1 AS ROW_NUM
+					  	   , @RN2 := 0	
+					       , B.*
+					   FROM	(SELECT @RN := 0, A.*
+						  	   FROM TB_REGISTER A
+						 	  WHERE COMPANY_NO = #{companyNo}
+						 	  ORDER BY CREATE_DATE DESC) B 
+				 ) C
+		   LIMIT #{offset}, #{pageSize}		 
 	</select>
 	
 	<insert id="insertCompany" parameterType="CompanyVO">
@@ -179,6 +187,18 @@
 		 </if>
 	</select> 
 	 
+	 
+	<select id="selectRegTotCnt" parameterType="CompanyVO" resultType="int">
+		SELECT COUNT(*)
+		  FROM TB_REGISTER
+		 WHERE COMPANY_NO = #{companyNo}
+	</select> 
+	
+	<select id="selectRegByRegNo" parameterType="RegisterVO" resultType="RegisterVO">
+		SELECT *
+		  FROM TB_REGISTER
+		 WHERE REG_NO = #{regNo}
+	</select>
 	<!-- <select id="selectSgList" parameterType="AddrDTO" resultType="">
 		SELECT  A.ROWNUM
 				, A.SG_NM
