@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
+	<script src="${pageContext.request.contextPath}/resources/js/company/registerDetail.js"></script>     
 	<title>등록</title>
 <style type="text/css"> 
 /*datepicer 버튼 롤오버 시 손가락 모양 표시*/
@@ -111,7 +112,7 @@ td, select {
 	 				<tr> 
 						<td bgcolor="lightgrey" align="center">근무기간</td> 
 						<td>
-							<select id="term" name="term" onchange="setTerm()">
+							<select id="term" name="term" onchange="selectTerm()">
 								<option value="">선택</option>      
 								<c:if test="${reg.workType == 'one'}"><option value="one" selected>일일 알바</option></c:if>
 								<c:if test="${reg.workType != 'one'}"><option value="one">일일 알바</option></c:if>
@@ -150,7 +151,7 @@ td, select {
 					<tr>
 						<td bgcolor="lightgrey" align="center">시급/일급</td> 
 						<td id="selectSalary"> 
-							<select id="salType" name="salType" onchange="setSalaryType()">
+							<select id="salType" name="salType" onchange="selectSalaryType()">
 								<c:if test="${reg.salaryHour != ''}"><option value="hour" selected>시급</option><option value="day">일급</option></c:if>
 								<c:if test="${reg.salaryDay != ''}"><option value="hour">시급</option><option value="day" selected>일급</option></c:if>
 							</select>   
@@ -291,7 +292,7 @@ td, select {
 					</tr> 
 					<tr> 
 						<td bgcolor="lightgrey" align="center">업무</td>
-						<td id="workBox" onchange="selectWork()"> 
+						<td id="workBox" onchange="selectPtWork()">  
 							<div id="osWork" class="forOS ptWork">
 								<label><input type="checkbox" name="workOS" value="1"> 통증 치료</label>
 								<label><input type="checkbox" name="workOS" value="2"> 심플</label>
@@ -395,54 +396,28 @@ td, select {
 						<td bgcolor="lightgrey" align="center">기타 복지 및 소개글</td> 
 						<td><textarea name="etc" id="etc"  rows="5" cols="50" style="margin: 0px; width: 478px; height: 80px;" placeholder="유니폼 또는 가운 제공, 간식 제공 등 설명글 추가"></textarea></td>  
 					</tr>   
-					<!-- <tr><td>우선순위<td></tr>    
-					<tr>
-						<td bgcolor="lightgrey" align="center">순위</td>
-						<td id="selectOrder">
-						<label style="background-color: lightgrey; text-align: center;">1순위</label>
-						<select id="order1" onchange="selectOrder1()">    
-							<option value="">선택</option> 
-							<option value="pay">시급/일급</option> 
-							<option value="period">근무기간</option> 
-							<option value="time">근무시간</option> 
-							<option value="sex">성별</option> 
-							<option value="age">나이</option> 
-							<option value="career">경력</option> 
-							<option value="loc">인근 거주자</option> 
-						</select>     
-						<label style="background-color: lightgrey; text-align: center;">2순위</label>
-						<select id="order2">      
-							<option value="">선택</option>
-							<option value="pay">시급/일급</option> 
-							<option value="period">근무기간</option> 
-							<option value="time">근무시간</option> 
-							<option value="sex">성별</option> 
-							<option value="age">나이</option> 
-							<option value="career">경력</option> 
-							<option value="loc">인근 거주자</option> 
-						</select>     
-						</td>     
-					</tr>  -->
 				</table> 
-				<p class="but" align="center" > 
-					<button id="reg" value="뒤로가기" type="button" onclick="history.back()" class="btn">뒤로가기</button>  
-					<input type="reset" value="리셋">   
+				<p class="but" align="center" >
 					<input type="button" value="홈으로" onclick="goHome()">
-				</p>  
-			</form>    
+					<button id="back" value="뒤로가기" type="button" onclick="history.back()" class="btn">뒤로가기</button>  
+					<button id="reg" value="수정" type="button" onclick="setParam()" class="btn">수정</button> 
+				</p>    
+			</form>     
 		</div>  
 	</div>  
-<script type="text/javascript">
-	var CONTEXT_PATH = "/jj";
-	var companyNo = "${companyNo}";
-	var salaryHour = "";
-	var salaryDay = "";
+<script type="text/javascript"> 
+	var companyNo = "${reg.companyNo}";
+	var regNo = "${reg.regNo}"; 
+	var salaryHour = "${reg.salaryHour}";
+	var salaryDay = "${reg.salaryDay}";
 	var dowList = [];
 	var ptWorkList = [];
 	var time = "";
 	var lunchFlag = "";
 	var frm = "";
 	
+	var workDate = "${reg.workDate}"; 
+	var workStart = "${reg.workStart}";
 	var workType = "${reg.workType}";
 	var salType = $("#salType option:selected").val();
 	var job = $("#job option:selected").val();
@@ -453,133 +428,20 @@ td, select {
 	var worksPt = "${reg.workPt}";
 	var detailWorkPt = "${reg.detailWorkPt}";
 	var ptDetailList = [];
-	var insenFlag = "${reg.insenFlag}";
-	
+	var detailWork = "${reg.detailWork}";
+	var $insenFlag = "${reg.insenFlag}"; 
+	var $peerCnt = "${reg.peerCnt}"; 
+	var $avgCnt = "${reg.avgCnt}";  
+	var $etc = "${reg.etc}";   
 	var isPT = "";
 	
-	console.log("worksPt : " + worksPt); 
+	console.log(detailWorkPt); 
+	console.log(ptDetailList);
+	console.log(isPT); 
+// 	console.log(salType); 
+ 	console.log("${reg}"); 
 	
-	function initSet(){
-		setTerm(); 
-		setDow();
-		setSalaryType();
-		selectJob();  
-		selectKind();
-		setPtFlag(); 
-		setWorkPt();  
-		setPtDetailWork();
-		setInsenFlag();  
-		
-		if(isPT == 'Y'){
-			$("#otherWork input").val("");
-		} else {
-			$("#otherWork input").val(work);
-		}  
-		
-		 $("#detailWork").val("${reg.detailWork}");   
-		 
-		 if(lunch == ''){ 
-			 $("#lunchFlag").prop("checked", true);
-			 clickNoLunch();  
-		 }  
-		 
-		 $("#peerCnt").val("${reg.peerCnt}");
-		 $("#avgCnt").val("${reg.avgCnt}");
-		 $("#etc").val("${reg.etc}");
-	}   
-	
-	function setDow(){
-		 $("#dayofweekend").prop("checked", false);
-		 dowList = dows.split("/");
-		 console.log(dowList);
-		 
-		 for(var dow in dowList){
-			 $("#dayofweekend input[value='"+dowList[dow]+"']").prop("checked", true); 
-		 }
-	}
-	
-	function setPtFlag(){
-		if(ptFlag == 'os'){
-			$("input:radio[name='kind']:radio[value='os']").prop("chcked", true);
-		}else if(ptFlag == 'ns'){
-			$("input:radio[name='kind']:radio[value='ns']").prop("chcked", true);
-		}  
-	}
-	
-	function setWorkPt(){
-		 $("#workBox").prop("checked", false);
-		 ptWorkList = worksPt.split("/");
-		 console.log(ptWorkList);
-		 
-		 for(var work in ptWorkList){
-			 $("#workBox input[value='"+ptWorkList[work]+"']").prop("checked", true); 
-		 } 
-	}
-	
-	function setPtDetailWork(){
-		$("#selectPT").prop("checked", false); 
-		
-		ptDetailList = detailWorkPt.split("/");
-		console.log(ptDetailList); 
-		
-		$("#micro").val(ptDetailList[0]).prop("checked", true); 
-		$("#eswt").val(ptDetailList[1]).prop("checked", true); 
-		$("#knee").val(ptDetailList[2]).prop("checked", true); 
-		$("#sh").val(ptDetailList[3]).prop("checked", true); 
-		$("#ion").val(ptDetailList[4]).prop("checked", true); 
-	}  
-	
-	function setInsenFlag(){
-		//$("input:radio[name='insentive']:radio[value='"+insenFlag+"']").prop("checked", true);
-		$("#insentiveBox input").val(insenFlag).prop("checked", true);
-	}   
-	
-	console.log("${workStHour}");
-	console.log("${reg}"); 
-	
-	$(document).ready(function () {
-		$("#for_one").hide();
-		$("#for_date").hide();
-		$("#for_dow").hide(); 
-		$("#salary_hour").hide();
-		$("#salary_day").hide();
-		//$("#ptWork").hide();
-		$(".forPT").hide();
-		$(".forOS").hide();
-		$(".forNS").hide();
-		
-		initSet();
-		
-	}); 
- 
-	$(function() {
-		$.datepicker.setDefaults({ 
-			  dateFormat: 'yy-mm-dd' //Input Display Format 변경
-             ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
-             ,showMonthAfterYear:true //년도 먼저 나오고, 뒤에 월 표시
-             ,changeYear: true //콤보박스에서 년 선택 가능
-             ,changeMonth: true //콤보박스에서 월 선택 가능                
-             ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
-             ,buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
-             ,buttonImageOnly: true //기본 버튼의 회색 부분을 없애고, 이미지만 보이게 함
-             ,buttonText: "선택" //버튼에 마우스 갖다 댔을 때 표시되는 텍스트                
-             ,yearSuffix: "년" //달력의 년도 부분 뒤에 붙는 텍스트
-             ,monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'] //달력의 월 부분 텍스트
-             ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip 텍스트
-             ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 부분 텍스트
-             ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 부분 Tooltip 텍스트
-             ,minDate: "-1M" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
-             ,maxDate: "+1M" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
-		}); 
-		     
-		$('#datepicker').datepicker();  
-		$('#datepicker_start').datepicker();  
-		       
-		//초기값을 오늘 날짜로 설정 
-        //$('#datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
-	});  
-	 
-	function clickNoLunch(){
+	 function clickNoLunch(){
 		lunchFlag = $("#lunchFlag:checked").val();
 		
 		if(lunchFlag == "1"){
@@ -587,9 +449,10 @@ td, select {
 			$("#lunchTimeBox select").prop("disabled", true); 
 		} else {
 			$("#lunchTimeBox select").prop("disabled", false); 
+			lunchFlag = ""; 
 		}  
 	} 
-	
+	 /*
 	function selectStartHour(){
 		var sel = Number($("select[id=start_hour]").val());
 		
@@ -621,95 +484,7 @@ td, select {
 		} 
 	}    
 	
-	function selectKind(){
-		var sel = $("input[name=kind]:checked").val();
-		
-		$("#work").val(""); 
-		ptWorkList = []; 
-		
-		if(sel == 'os'){
-			$("input[name=workOS]").prop("checked", false); 
-			$("input[name=workOS]").prop("disabled", false);  
-			$(".forOS").show(); 
-			$(".forNS").hide();
-			
-			//$("#kindBox radio:checked").val("${reg.workFlag}"); 
-			
-		} else if(sel == 'ns'){
-			$(".forOS").hide(); 
-			$(".forNS").show();
-			$("input[name=workNS]").prop("checked", true); 
-			$("input[name=workNS]").prop("disabled", true);  
-			ptWorkList.push("0"); 
-		}   
-	}  
-	 
-	function selectJob(){
-		//var sel = $("#job option:selected").val();
-		sel = $("select[id=job]").val();  
-		
-		//$("input[name=kind]").prop("checked", false); 
-		//$("input[name=work]").prop("checked", false); 
-		if(sel == "PT"){ 
-			//$("#ptWork").show();
-			$("#kindBox").show(); 
-			$(".forPT").show(); 
-			$(".forOS").show(); 
-			$(".forNS").show();
-			$("#otherWork input").val("");
-			$("#otherWork").hide();
-			
-			isPT = "Y";
-			
-		} else {   
-			//$("#ptWork").hide();
-			$(".forPT").hide();
-			$(".forOS").hide();
-			$(".forNS").hide(); 
-			$("#otherWork").show();
-			 
-			isPT = "N";
-			
-			$("#otherWork input").val(work);
-		}    
-		 
-	/* 	if(ptFlag == "os"){
-			$("input[name=kind]").val("os").prop("checked", true); 
-		}
-		if(ptFlag == "ns"){
-			$("input[name=kind]").val("ns").prop("checked", true); 
-		}  */
-		
-		console.log(sel); 
-		
-	}
 	
-	function selectWork(){
-		var obj = document.getElementsByName("workOS");
-		var objNS = document.getElementsByName("workNS");
-		var len = obj.length;	
-		ptWorkList = [];
-		
-		if($("input[name=kind]:checked").val() == "ns"){
-			ptWorkList.push("0");
-		} else {
-			for(var i = 0; i<len; i++){
-				if(obj[i].checked == true){
-					 
-					/* if(obj[0].value == "0"){
-						for(var k = 1; k<len; k++){
-							obj[k].checked = false;
-						} 
-					}   */
-					 
-					ptWorkList.push(obj[i].value);
-				}   
-			}
-		}	
-		 
-		console.log(ptWorkList); 
-		//sconsole.log(locList);
-	}
 	
 	function calDate(mon){
 		var today = new Date();
@@ -838,7 +613,9 @@ td, select {
 		
 		if(frm.datepicker.value )
 			$('#datepicker').datepicker('setDate', 'today');
-		register(frm); 
+		
+		//register(frm); 
+		setParam();  
 	}   
 	
 	function setTime(){
@@ -981,116 +758,7 @@ td, select {
    		   		console.log(data.errmsg);  
     		}
     	});  
-	}
-	 
-	function setTerm() {
-		var term = $("select[name=term]").val(); // 선택된 값
-		console.log($("select[name=term]").val());   
-		
-		dowList = []; 
-		$("#datepicker").val("");
-		$("#datepicker_start").val("");
-		 
-		if(term == "one"){
-			$("#for_one").show();
-			$("#for_date").hide();
-			$("#for_dow").hide();
-			$("#datepicker").val("${reg.workDate}"); 
-		} else if(term == "part"){
-			$("#for_one").hide();
-			$("#for_date").show();
-			$("#for_dow").show();
-			$("#datepicker_start").val("${reg.workStart}");
-		} else if(term == "sat"){
-			$("#for_one").hide();
-			$("#for_date").show();
-			$("#for_dow").hide();
-			$("#datepicker_start").val("${reg.workStart}");
-		} else { 
-			$("#for_one").hide();
-			$("#for_date").hide();
-			$("#for_dow").hide(); 
-		}   
-	}
-	  
-	function setSalaryType() {
-		salType = $("#salType option:selected").val();
-		
-		$("#salary_hour").val(""); 
-		$("#salary_day").val(""); 
-		
-		if(salType == "hour"){
-			$("#salaryBox").text("원");
-			$("#salary_hour").val("${reg.salaryHour}"); 
-			$("#salary_hour").show(); 
-			$("#salary_day").hide(); 
-		} else if(salType == "day"){
-			$("#salaryBox").text("원");  
-			$("#salary_hour").hide();  
-			$("#salary_day").val("${reg.salaryDay}"); 
-			$("#salary_day").show();   
-		} else { 
-			$("#salaryBox").text("");  
-		}
-		
-		$("#salaryBox").show();
-	}    
-	
-	function setDatepicker() {
-		
-		console.log($("#datepicker").val()); 
-		console.log($("#datepicker_start").val()); 
-	}
-	
-	function selectDow(){
-		var obj = document.getElementsByName("dow");
-		var len = obj.length;
-		 
-		dowList = [];
-		
-		for(var i = 0; i<len; i++){
-			if(obj[i].checked == true){
-				console.log(obj[i].value); 
-				
-				if(obj[i].value == "0"){
-					for(var k = 1; k<len-1; k++){
-						obj[k].checked = false;
-					}
-				}
-				  
-				dowList.push(obj[i].value);
-			}   
-		}  
-		 
-		console.log(dowList);   
-	}
-	
-	function selectLoc(){
-		var obj = document.getElementsByName("loc");
-		var len = obj.length;	
-		locList = [];
-		
-		console.log(len);
-		
-		for(var i = 0; i<len; i++){
-			if(obj[i].checked == true){
-				console.log(obj[i].value); 
-				 
-				if(obj[i].value == "0"){
-					for(var k = 1; k<len-1; k++){
-						obj[k].checked = false;
-					}
-				}
-				
-				locList.push(obj[i].value);
-			}   
-		}
-		console.log(locList);
-	}
-	
-	function goHome(){ 
-		location.href = CONTEXT_PATH + "/";
-	}
+	} */
 	
 </script>	
 </body>
