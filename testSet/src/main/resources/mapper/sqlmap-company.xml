@@ -199,6 +199,40 @@
 		  FROM TB_REGISTER
 		 WHERE REG_NO = #{regNo}
 	</select>
+	
+	<update id="updateRegister" parameterType="RegisterVO">
+		UPDATE    TB_REGISTER 
+		   SET    SALARY_HOUR   = #{salaryHour}
+				, SALARY_DAY    = #{salaryDay}
+				, WORK_TYPE     = #{workType} 
+				, WORK_DATE     = #{workDate}
+				, WORK_START    = #{workStart}
+				, WORK_DOW      = #{workDow}
+				, TIME_FLAG     = #{timeFlag}
+				, WORK_ST_TIME  = #{workStTime}
+				, WORK_EN_TIME  = #{workEnTime}
+				, JOB           = #{job}
+				, SEX           = #{sex}
+				, AGE           = #{age}
+				, CAREER        = #{career}
+				, CREATE_DATE   = NOW()
+				, LUNCH_ST_TIME = #{lunchStTime}
+				, LUNCH_EN_TIME = #{lunchEnTime}
+				, WORK_FLAG     = #{workFlag}
+				, WORK          = #{work}
+				, DETAIL_WORK   = #{detailWork}
+				, WORK_PT       = #{workPt}
+				, DETAIL_WORK_PT= #{detailWorkPt}
+				, INSEN_FLAG    = #{insenFlag}
+				, PEER_CNT      = #{peerCnt}
+				, AVG_CNT       = #{avgCnt}
+				, ETC           = #{etc} 
+				, CAL_WORK_TIME = #{calWorkTime}
+				, CAL_SALARY_HOUR = #{calSalaryHour}
+				, CAL_SALARY_DAY = #{calSalaryDay} 
+		 WHERE    REG_NO = #{regNo}
+	</update>
+	
 	<!-- <select id="selectSgList" parameterType="AddrDTO" resultType="">
 		SELECT  A.ROWNUM
 				, A.SG_NM

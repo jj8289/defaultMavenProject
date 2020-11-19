@@ -82,5 +82,10 @@ public class CompanyServiceImpl implements CompanyService{
 		return dao.selectRegByRegNo(vo);
 	}
 
+	@Override
+	public void updateRegister(RegisterVO vo) throws Exception {
+		dao.updateRegister(vo);
+	}
+
 	
 }

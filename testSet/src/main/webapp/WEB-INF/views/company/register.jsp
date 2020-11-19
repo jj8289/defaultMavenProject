@@ -894,10 +894,10 @@ td, select {
 				console.log(obj[i].value); 
 				
 				if(obj[i].value == "0"){
-					for(var k = 1; k<len-1; k++){
+					for(var k = 1; k<len; k++){
 						obj[k].checked = false;
 					}
-				}
+				} 
 				  
 				dowList.push(obj[i].value);
 			}   

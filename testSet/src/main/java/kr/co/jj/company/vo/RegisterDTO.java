@@ -4,6 +4,7 @@ import java.util.List;
 
 public class RegisterDTO {
 	private String companyNo;
+	private String regNo;
 	private String workType;
 	private String salaryHour;
 	private String salaryDay;
@@ -34,6 +35,12 @@ public class RegisterDTO {
 	private int calSalaryDay;
 	
 	
+	public String getRegNo() {
+		return regNo;
+	}
+	public void setRegNo(String regNo) {
+		this.regNo = regNo;
+	}
 	public String getCompanyNo() {
 		return companyNo;
 	}
@@ -205,16 +212,18 @@ public class RegisterDTO {
 	public void setCalSalaryDay(int calSalaryDay) {
 		this.calSalaryDay = calSalaryDay;
 	}
+	
+	
 	@Override
 	public String toString() {
-		return "RegisterDTO [companyNo=" + companyNo + ", workType=" + workType + ", salaryHour=" + salaryHour
-				+ ", salaryDay=" + salaryDay + ", workDate=" + workDate + ", workStart=" + workStart + ", dowList="
-				+ dowList + ", timeFlag=" + timeFlag + ", workStTime=" + workStTime + ", workEnTime=" + workEnTime
-				+ ", job=" + job + ", sex=" + sex + ", age=" + age + ", career=" + career + ", lunchStTime="
-				+ lunchStTime + ", lunchEnTime=" + lunchEnTime + ", workFlag=" + workFlag + ", work=" + work
-				+ ", insenFlag=" + insenFlag + ", detailWork=" + detailWork + ", workPtList=" + workPtList
+		return "RegisterDTO [companyNo=" + companyNo + ", regNo=" + regNo + ", workType=" + workType + ", salaryHour="
+				+ salaryHour + ", salaryDay=" + salaryDay + ", workDate=" + workDate + ", workStart=" + workStart
+				+ ", dowList=" + dowList + ", timeFlag=" + timeFlag + ", workStTime=" + workStTime + ", workEnTime="
+				+ workEnTime + ", job=" + job + ", sex=" + sex + ", age=" + age + ", career=" + career
+				+ ", lunchStTime=" + lunchStTime + ", lunchEnTime=" + lunchEnTime + ", workFlag=" + workFlag + ", work="
+				+ work + ", insenFlag=" + insenFlag + ", detailWork=" + detailWork + ", workPtList=" + workPtList
 				+ ", detailWorkPtList=" + detailWorkPtList + ", peerCnt=" + peerCnt + ", avgCnt=" + avgCnt + ", etc="
-				+ etc + "]";
+				+ etc + ", calWorkTime=" + calWorkTime + ", calSalaryHour=" + calSalaryHour + ", calSalaryDay="
+				+ calSalaryDay + "]";
 	}
-	
 }

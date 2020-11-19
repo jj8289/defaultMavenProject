@@ -45,7 +45,7 @@ public class CompanyController {
 	
 	@GetMapping("/login")
 	public String login(Model model) throws Exception {
-		return "company/login";
+		return "company/login"; 
 	}
 	
 	@ResponseBody
@@ -220,6 +220,8 @@ public class CompanyController {
 		}
 	} 
 	
+	
+	
 	/**
 	 * 마이페이지
 	 */
@@ -312,6 +314,83 @@ public class CompanyController {
 		
 		return "company/registerDetail";
 	}
+	
+	@PostMapping("/mypage/regDetail/updateReg")
+	@ResponseBody
+	public String updateReg(RegisterDTO param, Model model) throws Exception {
+		logger.debug(param.toString());
+
+		int dup = 0;
+		
+		String patternNum = "[^0-9]";
+		String patternNY = "[^a-zA-Z]";
+		
+		String workDow = "";
+		String workPt = "";
+		String detailWorkPt = "";
+		
+		for(String str1 : param.getDowList()) {
+			if(workDow != "") {
+				workDow += "/";
+			}
+			str1 = str1.replaceAll(patternNum, "");
+			workDow += str1;
+		}   
+		
+		for(String str2 : param.getWorkPtList()) {
+			if(workPt != "") {
+				workPt += "/";
+			}
+			str2 = str2.replaceAll(patternNum, "");
+			workPt += str2;
+		} 
+		
+		for(String str3 : param.getDetailWorkPtList()) {
+			if(detailWorkPt != "") {
+				detailWorkPt += "/";
+			}
+			str3 = str3.replaceAll(patternNY, "");
+			detailWorkPt += str3;
+		} 
+		
+		RegisterVO vo = new RegisterVO();
+		vo.setCompanyNo(param.getCompanyNo());
+		vo.setRegNo(param.getRegNo()); 
+		vo.setSalaryHour(param.getSalaryHour());
+		vo.setSalaryDay(param.getSalaryDay());
+		vo.setWorkType(param.getWorkType());
+		vo.setWorkDate(param.getWorkDate());
+		vo.setWorkStart(param.getWorkStart());
+		vo.setWorkDow(workDow);
+		vo.setTimeFlag(param.getTimeFlag());
+		vo.setWorkStTime(param.getWorkStTime());
+		vo.setWorkEnTime(param.getWorkEnTime());
+		vo.setJob(param.getJob()); 
+		vo.setSex(param.getSex());
+		vo.setAge(param.getAge());
+		vo.setCareer(param.getCareer());
+		vo.setLunchStTime(param.getLunchStTime());
+		vo.setLunchEnTime(param.getLunchEnTime());
+		vo.setWorkFlag(param.getWorkFlag());
+		vo.setWork(param.getWork());
+		vo.setDetailWork(param.getDetailWork());
+		vo.setWorkPt(workPt);
+		vo.setDetailWorkPt(detailWorkPt);
+		vo.setInsenFlag(param.getInsenFlag());
+		vo.setPeerCnt(param.getPeerCnt());
+		vo.setAvgCnt(param.getAvgCnt());
+		vo.setEtc(param.getEtc());
+		vo.setCalWorkTime(param.getCalWorkTime());
+		vo.setCalSalaryHour(param.getCalSalaryHour());
+		vo.setCalSalaryDay(param.getCalSalaryDay());
+		
+		//병원 조건 DB insert
+		companyService.updateRegister(vo);
+		 
+		return "success"; 
+	} 
+	
+	
 	
 	// 아이디 중복 체크
 	public boolean idDupleChk(CompanyVO company) throws Exception {

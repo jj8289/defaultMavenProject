@@ -1,4 +1,5 @@
 "use strict";
+
 $(document).ready(function(){
 	$.datepicker.setDefaults({ 
 		  dateFormat: 'yy-mm-dd' //Input Display Format 변경
@@ -37,15 +38,8 @@ function initSet(){
 	setTerm(); 
 	setDow(); 
 	setSalaryType();
-	setInsenFlag();
 	setIsPT(); 
 	setLunch();
- 	/*    
-	 if(lunch == ''){ 
-		 $("#lunchFlag").prop("checked", true);
-		 clickNoLunch();  
-	 }  
-	 console.log("${reg}"); */
 } 	
 
 function setIsPT(){
@@ -54,7 +48,6 @@ function setIsPT(){
 		setPtFlag();  
 		selectKind();
 		setWorkPt();  
-		setPtDetailWork(); 
 		setJobPt();
 	} else if($("select[id=job]").val() != "PT") {
 		isPT = "N";
@@ -139,6 +132,7 @@ function selectKind(){
 		$("input[name=workOS]").prop("disabled", false);  
 		$(".forOS").show(); 
 		$(".forNS").hide();
+		ptFlag = "os";
 		
 		//$("#kindBox radio:checked").val("${reg.workFlag}"); 
 		
@@ -147,8 +141,12 @@ function selectKind(){
 		$(".forNS").show();
 		$("input[name=workNS]").prop("checked", true); 
 		$("input[name=workNS]").prop("disabled", true);  
-		ptWorkList.push("0"); 
+		ptWorkList.push("0");
+		ptDetailList = [];
+		ptFlag = "ns";
 	}   
+	setPtDetailWork(); 
+	selectPtDetailWork();  
 } 
 
 function setJobOthers(){
@@ -168,6 +166,13 @@ function setJobPt(){
 function setPtFlag(){
 	if(ptFlag == 'os'){
 		$("input:radio[name='kind']:radio[value='os']").prop("chcked", true);
+		if(ptDetailList[0] == ""){ 
+			$("#micro").val("N").prop("checked", true); 
+			$("#eswt").val("N").prop("checked", true); 
+			$("#knee").val("N").prop("checked", true); 
+			$("#sh").val("N").prop("checked", true); 
+			$("#ion").val("N").prop("checked", true); 
+		}  
 	}else if(ptFlag == 'ns'){
 		$("input:radio[name='kind']:radio[value='ns']").prop("chcked", true);
 	}  
@@ -188,17 +193,21 @@ function setWorkPt(){
 function setPtDetailWork(){ 
 	$("#selectPT").prop("checked", false); 
 	ptDetailList = detailWorkPt.split("/");
-	$("#micro").val(ptDetailList[0]).prop("checked", true); 
-	$("#eswt").val(ptDetailList[1]).prop("checked", true); 
-	$("#knee").val(ptDetailList[2]).prop("checked", true); 
-	$("#sh").val(ptDetailList[3]).prop("checked", true); 
-	$("#ion").val(ptDetailList[4]).prop("checked", true); 
-}  
-
-function setInsenFlag(){
-	//$("input:radio[name='insentive']:radio[value='"+insenFlag+"']").prop("checked", true);
-	$("#insentiveBox input").val($insenFlag).prop("checked", true);
-}
+	
+	if(ptFlag == "os" && ptDetailList[0] == ""){ 
+		$("#micro").val("N").prop("checked", true); 
+		$("#eswt").val("N").prop("checked", true); 
+		$("#knee").val("N").prop("checked", true); 
+		$("#sh").val("N").prop("checked", true); 
+		$("#ion").val("N").prop("checked", true); 
+	} else {
+		$("#micro").val(ptDetailList[0]).prop("checked", true); 
+		$("#eswt").val(ptDetailList[1]).prop("checked", true); 
+		$("#knee").val(ptDetailList[2]).prop("checked", true); 
+		$("#sh").val(ptDetailList[3]).prop("checked", true); 
+		$("#ion").val(ptDetailList[4]).prop("checked", true); 
+	}
+}    
 
 function setWork(){
 	$("#otherWork input").val(work);
@@ -210,6 +219,18 @@ function setLunch(){
 		 clickNoLunch();  
 	 }  
 }
+
+function setTime(st, en){
+	if(st < 12) {
+		if(en <= 14){
+			time = "1";
+		} else {
+			time = "3";
+		}
+	} else {
+		time = "2";
+	} 
+}  
 
 /////////////////////////////////////////////////////////////////////////////
 /* 클릭 이벤트 */
@@ -274,11 +295,10 @@ function selectDow(){
 			console.log(obj[i].value); 
 			
 			if(obj[i].value == "0"){
-				for(var k = 1; k<len-1; k++){
+				for(var k = 1; k<len; k++){
 					obj[k].checked = false;
 				}
-			}
-			  
+			}  
 			dowList.push(obj[i].value);
 		}   
 	}  
@@ -299,88 +319,230 @@ function selectSalaryType(){
 	} else {
 		salaryHour = ""; 
 	}
+} 
+
+function selectJob(){
+	 ptWorkList = [];
+	 ptDetailList = [];
+	 insenFlag = ""; 
+	 work = ""; 
+	  
+	 job = $("select[name=job]").val(); 
+	
+	 if($("select[name=job]").val() == 'PT'){
+		isPT = "Y";
+		setPtFlag();  
+		selectKind(); 
+		setWorkPt();  
+		setJobPt();
+	 } else { 
+		isPT = "N";
+		setWork(); 
+		setJobOthers(); 
+	 }
 }
+
+function selectInsen(){
+	insenFlag = $("#insentiveBox input:checked").val();
+}
+  
+function selectPtDetailWork(){
+	ptDetailList = [];
+	
+	var val = job == "PT" ? $("#kindBox input:checked").val() : "";
+	
+	if(val == "os"){
+		ptDetailList.push($("#micro").val());
+		ptDetailList.push($("#eswt").val());
+		ptDetailList.push($("#knee").val());
+		ptDetailList.push($("#sh").val());
+		ptDetailList.push($("#ion").val());
+	} else {
+		ptDetailList = [];
+	} 
+} 
+
+function clickNoLunch(){
+	lunchFlag = $("#lunchFlag:checked").val();
+	
+	if(lunchFlag == "1"){
+		$("#lunchTimeBox select").val(""); 
+		$("#lunchTimeBox select").prop("disabled", true); 
+	} else {
+		$("#lunchTimeBox select").prop("disabled", false); 
+		lunchFlag = ""; 
+	}  
+} 
 
 ///////////////////////////////////////////////////////////
 /* param 정리 */
 function setParam(){ 
-	//고정 값 : companyNo, regNo, dowList, ptWorkList, lunchFlag(점심시간 유무)
-	var salaryHour = "${reg.salaryHour}";
-	var salaryDay = "${reg.salaryDay}";
-	var dowList = [];
-	var ptWorkList = [];
-	var lunchFlag = "";		// 1: 점심시간 없음 , "": 점심시간 있음
-	frm = document.regForm; 	 
-	 
-	var workDate = "${reg.workDate}"; 
-	var workStart = "${reg.workStart}";
-	var workType = "${reg.workType}";
-	var salType = $("#salType option:selected").val();
-	var job = $("#job option:selected").val();
-	var ptFlag = "${reg.workFlag}";
-	var lunch = "${lunchStHour}"; 
-	var dows = "${reg.workDow}";
-	var work = "${reg.work}";
-	var worksPt = "${reg.workPt}";
-	var detailWorkPt = "${reg.detailWorkPt}";
-	var ptDetailList = [];
-	var detailWork = "${reg.detailWork}";
-	var $insenFlag = "${reg.insenFlag}"; 
-	var $peerCnt = "${reg.peerCnt}"; 
-	var $avgCnt = "${reg.avgCnt}";  
-	var $etc = "${reg.etc}";   
-	var isPT = "";
+	frm = document.regForm; 	
 	
-	/////////// 
-	var workStHour = frm.start_hour.value.length == "1"? "0"+frm.start_hour.value : frm.start_hour.value;
-	var workStMin = frm.start_min.value.length == "1"? "0"+frm.start_min.value : frm.start_min.value;
+	workStHour = frm.start_hour.value.length == "1"? "0"+frm.start_hour.value : frm.start_hour.value;
+	workStMin = frm.start_min.value.length == "1"? "0"+frm.start_min.value : frm.start_min.value;
 	workEnHour = frm.end_hour.value.length == "1"? "0"+frm.end_hour.value : frm.end_hour.value; 
-	 workEnMin = frm.end_min.value.length == "1"? "0"+frm.end_min.value : frm.end_min.value; 
-	 lunchStHour = frm.lunch_start_hour.value.length == "1"? "0"+frm.lunch_start_hour.value : frm.lunch_start_hour.value; 
-	 lunchStMin = frm.lunch_start_min.value.length == "1"? "0"+frm.lunch_start_min.value : frm.lunch_start_min.value; 
-	 lunchEnHour = frm.lunch_end_hour.value.length == "1"? "0"+frm.lunch_end_hour.value : frm.lunch_end_hour.value; 
-	 lunchEnMin = frm.lunch_end_min.value.length == "1"? "0"+frm.lunch_end_min.value : frm.lunch_end_min.value; 
-	 workStTime = "";
-	 workEnTIme = "";
-	 lunchStTime = "";
-	 lunchEnTime = "";
-	 calWorkTime = ((Number(frm.end_hour.value) * 60 + Number(frm.end_min.value)) - (Number(frm.start_hour.value) * 60 + Number(frm.start_min.value)))/60;
-	 calSalaryHour = 0; 
-	 calSalaryDay = 0;
-	
-	 time = setTime(Number(workStHour), Number(workEnHour));   
-	 console.log(workStHour + " / " + workStMin + "/" + workEnHour + "/" + workEnMin);
-	 alert("setParam"); 
-}  
+	workEnMin = frm.end_min.value.length == "1"? "0"+frm.end_min.value : frm.end_min.value; 
+	lunchStHour = frm.lunch_start_hour.value.length == "1"? "0"+frm.lunch_start_hour.value : frm.lunch_start_hour.value; 
+	lunchStMin = frm.lunch_start_min.value.length == "1"? "0"+frm.lunch_start_min.value : frm.lunch_start_min.value; 
+	lunchEnHour = frm.lunch_end_hour.value.length == "1"? "0"+frm.lunch_end_hour.value : frm.lunch_end_hour.value; 
+	lunchEnMin = frm.lunch_end_min.value.length == "1"? "0"+frm.lunch_end_min.value : frm.lunch_end_min.value; 
+	setTime(Number(workStHour), Number(workEnHour));    
+	calWorkTime = ((Number(frm.end_hour.value) * 60 + Number(frm.end_min.value)) - (Number(frm.start_hour.value) * 60 + Number(frm.start_min.value)))/60;
 
-
-function setTime(st, en){
-	var val = "";
-	time = "";
-	
-	if(st < 12) {
-		if(en <= 13){
-			val = "1";
-		} else {
-			val = "3";
-		}
+	if(lunchFlag == "1"){
+		calWorkTime = ((Number($("#end_hour").val()) * 60 + Number($("#end_min").val())) - (Number($("#start_hour").val()) * 60 + Number($("#start_min").val())))/60;
 	} else {
-		val = "2";
-	}
+		calWorkTime = ((Number($("#end_hour").val()) * 60 + Number($("#end_min").val())) - (Number($("#start_hour").val()) * 60 + Number($("#start_min").val())))/60 - 1;
+	}   
 	
-//	var st_hour = Number($("#start_hour").val());
-//	var en_hour =  Number($("#end_hour").val());
-//	time = ""; 	// 오전(1), 오후(2) , 하루(3) 
-//	 
-//	if(st_hour < 12) {
-//		if(en_hour <= 13){
-//			val = "1";
-//		} else {
-//			val = "3";
-//		}
-//	} else {
-//		val = "2";
-//	}
-//	
-//	return val;
+	//장단기 알바, 토요일만 체크시 자동으로 토요 고정  타입으로 변경
+	if(dowList.length == "1" && dowList[0] == "6" && frm.term.value == "part"){ 
+		workType = "sat";
+		dowList = [];
+		dowList.push("6"); 
+		$("#term").val("sat").prop("checked", true);
+		$("#for_dow").hide();  
+	}      
+	
+	param = {
+		  companyNo : companyNo	
+		, regNo : regNo  
+	    , workType : workType	
+	    , salaryHour : frm.salary_hour.value			// 시급
+		, salaryDay : frm.salary_day.value 				// 일급
+		, workDate : workDate							// 근무 날짜(일일 알바)
+		, workStart : workStart							// 근무 시작 날짜 (장단기, 토요 고정 알바)
+		, dowList : JSON.stringify(dowList)
+		, timeFlag : time		
+		, workStTime : workStHour == "" || workStMin == "" ? "" : workStHour + ":" + workStMin 
+		, workEnTime : workEnHour == "" || workEnMin == "" ? "" : workEnHour + ":" + workEnMin 
+		, job : job
+		, sex : $("#sex").val() 
+		, age : $("#age").val()
+		, career : $("#career").val()
+		, workFlag : job == "PT" ? $("#kindBox input:checked").val() : ""
+		, work : $("#work").val()
+		, workPtList : JSON.stringify(ptWorkList)	
+		, detailWorkPtList : JSON.stringify(ptDetailList)		//PT 세부 업무 YN(obj[0]: 초음파YN, obj[1]: eswtYN, obj[2]: CPM(knee)YN, obj[3]: CPM(sh)YN, obj[4]: ionYN)
+		, insenFlag : insenFlag  // 인센티브 유무 (Y , N)
+		, detailWork : $("#detailWork").val()
+		, lunchStTime : lunchFlag == "1" || lunchStHour == "" || lunchStMin == "" ? "" : lunchStHour + ":" + lunchStMin							// 점심 시작 시간
+		, lunchEnTime : lunchFlag == "1" || lunchEnHour == "" || lunchEnMin == "" ? "" : lunchEnHour + ":" + lunchEnMin	
+		, peerCnt : $("#peerCnt").val() 
+		, avgCnt : $("#avgCnt").val()
+		, etc : $("#etc").val() 
+		, calWorkTime : calWorkTime + "" 
+		, calSalaryHour : salType == "day" ? Math.floor(Number(frm.salary_day.value)/calWorkTime) : 0
+		, calSalaryDay : salType == "hour" ? Number(frm.salary_hour.value) * calWorkTime : 0
+	};
+	 
+	vaildationChk(param);
+}   
+
+function vaildationChk(param){
+	console.log("validationChk()"); 
+	console.log(param.companyNo);  
+	
+	if(param.workType == ""){
+		console.log("11111"); 
+		alert("근무기간을 선택해주세요.");
+		frm.term.focus();
+		return; 
+	} else if(param.workType == "one" && param.workDate == ""){
+		console.log("22222"); 
+		alert("근무 날짜를 선택해주세요.");
+		frm.datepicker.focus();
+		return; 
+	} else if(param.workType == "sat" && param.workStart == ""){
+		alert("근무 시작 날짜를 선택해주세요.");
+		frm.datepicker_start.focus();
+		return;  
+	} else if(param.workType == "part" && param.workStart == ""){
+		alert("근무 시작 날짜를 선택해주세요.");
+		frm.datepicker_start.focus();
+		return;  
+	} else if(param.workType == "part" && dowList == ""){
+		alert("요일를 선택해주세요."); 
+		return;    
+	}  else if(salType == "hour" && param.salaryHour == ""){
+		alert("시급을 입력해주세요."); 
+        frm.salary_hour.focus();
+        return;  
+	} else if(salType == "day" && param.salaryDay == ""){
+		alert("일급을 입력해주세요.");
+        frm.salary_day.focus();
+        return;   
+	} else if(param.workStTime == "" || param.workEnTime == ""){
+		alert("근무 시간을 선택해주세요.");
+		frm.start_hour.focus();
+		return;
+	} else if(param.job == ""){
+		alert("직종을 선택해주세요.");
+		frm.job.focus();
+		return;
+	}  
+	console.log("33333"); 
+	if(param.job == "PT"){
+		if(param.workFlag == undefined){
+			alert("구분을 선택해주세요.");
+			return;
+		} else if(workPtList == ""){
+			alert("업무를 선택해주세요.");
+			return; 
+		} else if(param.insenFlag == ""){
+			alert("인센티브 유무를 선택해주세요.");
+			return;
+		}   
+	} else { 
+		if(param.work == ""){
+			alert("업무를 입력해주세요.");
+			frm.work.focus(); 
+			return;
+		}
+	}
+	console.log("44444"); 
+	
+	if(lunchFlag != "1"){
+		if(param.lunchStTime == "" || param.lunchEnTime == ""){
+			alert("점심시간을 선택해주세요.");
+			frm.lunch_start_hour.focus(); 
+			return;
+		} 
+	} else if(param.peerCnt == ""){
+		alert("근무자 수를 입력해주세요.");
+		frm.peerCnt.focus(); 
+		return;
+	} else if(param.avgCnt == ""){
+		alert("일 평균 환자수를 입력해주세요.");
+		frm.avgCnt.focus(); 
+		return;
+	}
+	console.log("@"); 
+	var conf = confirm("수정하시겠습니까?");
+	if(conf == true){
+		updateReg(param); 
+	} else {
+		alert("취소되었습니다.");
+		return;
+	}
+} 
+
+function updateReg(param){
+	$.ajax({
+		url : CONTEXT_PATH + "/company/mypage/regDetail/updateReg", 
+		type: "POST",
+		data: param,     
+		contentType: "application/x-www-form-urlencoded; charset=UTF-8", 
+		success: function(data){
+			console.log("updateReg()");
+			if(data == "success"){
+				location.href = CONTEXT_PATH + "/";  
+			}  
+		},   
+		error: function(data){   
+		   		console.log("error");
+		   		console.log(data.errmsg);  
+		}
+	});   
 }

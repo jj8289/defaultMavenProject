@@ -50,4 +50,6 @@ public interface CompanyDAO {
 	public int selectRegTotCnt(CompanyVO vo) throws Exception;
 	
 	public RegisterVO selectRegByRegNo(RegisterVO vo) throws Exception;
+	
+	public void updateRegister(RegisterVO vo) throws Exception;
 }
