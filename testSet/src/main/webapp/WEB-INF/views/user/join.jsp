@@ -108,12 +108,12 @@
 					<tr>
 						<td bgcolor="lightgrey" align="center">직업</td>
 						<td>
-							<select>
+							<select id="job">
 								<option value="">선택</option>
 								<c:forEach var="item" items="${jobList }">
 									<option id="${item.key }" value="${item.key }">${item.value }</option>
 								</c:forEach>  
-							</select> 
+							</select>  
 						</td> 
 					</tr>
 					<tr>
@@ -232,6 +232,7 @@
 	
 		function joinChk() {  
 	        var frm = document.joinForm;
+	        console.log("!!!!");
 	        if (!frm.userId.value) { //아이디를 입력하지 않으면.
 	            alert("아이디를 입력하세요.");
 	            frm.userId.focus();
@@ -248,7 +249,7 @@
 	            alert("나이를 입력하세요.");
 	            frm.age.focus(); 
 	            return;
-	        } else if (!frm.job.value) { //패스워드를 입력하지 않으면.
+	        } else if ($("select option:checked").val() == "") { //패스워드를 입력하지 않으면.
 	            alert("직업을 입력하세요.");
 	            frm.job.focus(); 
 	            return;
@@ -273,17 +274,18 @@
 	            frm.email.focus(); 
 	            return;
 	        }
-	        
+	        console.log("1111111"); 
 	        join();  
 	    }       
 	     
 	    function join(){
+	    	console.log("join()");
 	    	var formData = {
 	                userId: $('#userId').val()
 	              , userPw: $('#userPw').val()
 	              , userNm: $('#userNm').val()
 	              , age: $('#age').val()
-	              , job: $('#job').val()
+	              , jobNm: $('#job').val()
 	              , sex: $('input[name=sex]:checked').val()
 	              , career: $('#career').val()
 	              , phone: $('#phone').val()
@@ -291,7 +293,9 @@
 	              , email: $('#email').val()
 	              , intro: $('#intro').val()
 	              , skill: $('#skill').val()
-	    	};
+	    	}; 
+	    	
+	    	console.log(formData); 
 	    	 
 	    	$.ajax({
 	    		url : CONTEXT_PATH + "/user/join/joinChk", 

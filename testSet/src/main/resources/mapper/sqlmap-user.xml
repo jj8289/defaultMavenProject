@@ -69,8 +69,8 @@
 			, #{sex}
 			, #{career}
 			, #{phone}
-			, #{email}
 			, #{addr}
+			, #{email}
 			, #{intro}
 			, #{skill}
 			, NOW()

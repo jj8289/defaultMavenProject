@@ -7,4 +7,6 @@ public interface CommonService {
 	public Map<String, Object> getJobList();
 	
 	public Map<String, Object> getWorkFlagList();
+	
+	public int selectJobNo(String jobNm) throws Exception;
 }

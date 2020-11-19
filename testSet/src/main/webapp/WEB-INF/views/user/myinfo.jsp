@@ -41,6 +41,10 @@ body {
  
 table { 
 	margin: 0 auto;   
+}
+
+td {
+	height: 30px;
 }  
 
 form {
@@ -61,6 +65,10 @@ form p {
 	color: white;
 	width: 100px;
 	height: 30px;
+}
+
+input, select {
+	height: 30px; 
 }
 
 #location {
@@ -116,41 +124,43 @@ form p {
 					</tr> 
 					<tr>  	
 						<td bgcolor="lightgrey" align="center">성별</td>    
-						<td><input type="text" id="sex" name="sex" value="${user.sex }" disabled="disabled"></td>     
+						<td><input type="text" id="sex" name="sex" value="${user.sex }" disabled="disabled" size="70"></td>     
 					</tr> 
 					<tr>  	 
 						<td bgcolor="lightgrey" align="center">연차(경력)</td>    
-						<td><input type="text" id="career" name="career" value="${user.career }" ></td>     
+						<td><input type="text" id="career" name="career" value="${user.career }" size="70"></td>     
 					</tr> 
 					<tr>  	 
 						<td bgcolor="lightgrey" align="center">핸드폰 번호</td>    
-						<td><input type="text" id="phone" name="phone" value="${user.phone }" disabled="disabled"></td>     
+						<td><input type="text" id="phone" name="phone" value="${user.phone }" disabled="disabled" size="70"></td>     
 					</tr> 
 					<tr>  	 
 						<td bgcolor="lightgrey" align="center">이메일</td>    
-						<td><input type="text" id="email" name="email" value="${user.email }" ></td>     
+						<td><input type="text" id="email" name="email" value="${user.email }" size="70"></td>      
 					</tr> 
-					<tr>  	 
+					<tr>  	  
 						<td bgcolor="lightgrey" align="center">주소</td>    
-						<td><input type="text" id="addr" name="addr" value="${user.addr }" ></td>     
+						<td><input type="text" id="addr" name="addr" value="${user.addr }" size="70"></td>     
 					</tr> 
 					<tr>  	 
 						<td bgcolor="lightgrey" align="center">간단 소개</td>    
-						<td><input type="text" id="intro" name="intro" value="${user.intro }" ></td>     
+						<td><input type="text" id="intro" name="intro" value="${user.intro }" size="70"></td>     
 					</tr> 
 					<tr>  	 
 						<td bgcolor="lightgrey" align="center">가입일</td>    
-						<td><input type="text" id="createDate" name="createDate" value="${user.createDate }" disabled="disabled"></td>     
+						<td><input type="text" id="createDate" name="createDate" value="${user.createDate }" disabled="disabled" size="70"></td>     
 					</tr> 
 					<tr>  	 
 						<td bgcolor="lightgrey" align="center">면허증/자격증</td>    
-						<td><input type="text" id="licenseNo" name="licenseNo" value="${user.licenseNo }" disabled="disabled"><input type="button" value="+"> </td>
+						<td>
+							<input type="file" name="file" id="imageFileOpenInput" accept="image/*">
+						<%-- <input type="text" id="licenseNo" name="licenseNo" value="${user.licenseNo }" disabled="disabled"><input type="button" value="+">  --%></td>
 					</tr> 
 					<tr>  	  
 						<td bgcolor="lightgrey" align="center">기술</td>    
 						<td><input type="text" id="skill" name="skill" value="${user.skill }"></td>     
 					</tr>  
-					<tr >    
+					<%-- <tr >    
 						<td bgcolor="lightgrey" align="center"></td>   
 						<td id="selectSalary">   
 							<c:if test="${not empty vo.salaryHour}">
@@ -169,8 +179,8 @@ form p {
 								</select>
 								<input type="text" name="salary_day" id="salary_day" size="10" value="${vo.salaryDay }"> 원 이상 	  
 							</c:if>
-						</td>   
-					</tr>   
+						</td>    
+					</tr>   --%> 
 				</table> 
 				<p class="but" align="center" > 
 					<input type="button" value="뒤로가기" onclick="history.back()"> 

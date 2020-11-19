@@ -3,14 +3,19 @@ package kr.co.jj.common.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.jj.common.dao.CommonDAO;
 import kr.co.jj.common.service.CommonService;
 import kr.co.jj.common.vo.Job;
 import kr.co.jj.common.vo.WorkFlag;
 
 @Service
 public class CommonServiceImpl implements CommonService{
+	
+	@Autowired
+	CommonDAO dao;
 	
 	public Map<String, Object> getJobList() {
 			
@@ -35,6 +40,11 @@ public class CommonServiceImpl implements CommonService{
 		
 		return workMap;
 	}
-	
-	
+
+
+
+	@Override
+	public int selectJobNo(String jobNm) throws Exception {
+		return dao.selectJobNo(jobNm);
+	}
 }

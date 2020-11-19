@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.co.jj.common.service.CommonService;
 import kr.co.jj.common.vo.Job;
 import kr.co.jj.user.service.UserService;
 import kr.co.jj.user.vo.RequireVO;
@@ -33,6 +34,9 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private CommonService commonService;
 	
 	/**
 	 * 회원 가입
@@ -55,9 +59,14 @@ public class UserController {
 	@PostMapping(value = "/join/joinChk")
 	public String joinChk(UserVO user, Model model) throws Exception{
 		
+		String jobNo = "";
+		
 		// 아이디 중복 체크
 		boolean chk = idDupleChk(user);
 		if(!chk) { 
+			jobNo = String.valueOf(commonService.selectJobNo(user.getJobNm()));
+			user.setJobNo(jobNo);  
+			 
 			userService.insertUser(user);
 			
 			return "success";
