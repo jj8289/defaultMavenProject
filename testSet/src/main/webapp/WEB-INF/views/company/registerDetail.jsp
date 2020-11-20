@@ -422,6 +422,43 @@ td, select {
 						<td bgcolor="lightgrey" align="center">기타 복지 및 소개글</td> 
 						<td><textarea name="etc" id="etc"  rows="5" cols="50" style="margin: 0px; width: 478px; height: 80px;" placeholder="유니폼 또는 가운 제공, 간식 제공 등 설명글 추가"></textarea></td>  
 					</tr>   
+					<tr><td>채용 정보<td></tr>
+					<tr> 
+						<td bgcolor="lightgrey" align="center">채용 연결 핸드폰</td> 
+						<td><input size="20" type="text" name="matchPhone" id="matchPhone" ></td>
+					</tr> 
+					<tr>
+						<td bgcolor="lightgrey" align="center">채용 구분</td> 
+						<td>
+							<select id="hireFlag" name="hireFlag" onchange="selectHireFlag()">
+								<option value="">선택</option>
+								<c:if test="${reg.hireFlag == '1' }">
+									<option id="uncontact" value="1" selected>매칭 자동 채용</option>
+									<option id="contact" value="2">면접 후 채용</option> 
+								</c:if>
+								<c:if test="${reg.hireFlag == '2' }">
+									<option id="uncontact" value="1" >매칭 자동 채용</option>
+									<option id="contact" value="2" selected>면접 후 채용</option> 
+								</c:if> 
+							</select> 
+						</td>
+					</tr>   
+					<tr class="forContact">
+						<td bgcolor="lightgrey" align="center">매칭완료 후 면접 날짜</td> 
+						<td onchange="setDatepickerContact()"> 
+							<input type="text" id="datepicker_contact" name="datepicker_contact">
+						</td>
+					</tr> 
+					<tr class="forContact">
+						<td bgcolor="lightgrey" align="center">매칭완료 후 안내메세지</td> 
+						<td><textarea name="matchMsg" id="matchMsg" rows="5" cols="50" style="margin: 0px; width: 478px; height: 80px;" placeholder="안녕하세요. 지원해주셔서 감사합니다. 채용되신 것을 축하드립니다. 등등 "></textarea></td> 
+					</tr> 
+					<tr class="forUncontact">
+						<td bgcolor="lightgrey" align="center">매칭완료 후 출근 날짜</td> 
+						<td onchange="setDatepickerWork()">  
+							<input type="text" id="datepicker_work" name="datepicker_work">
+						</td> 
+					</tr>
 				</table> 
 				<p class="but" align="center" >
 					<input type="button" value="홈으로" onclick="goHome()">

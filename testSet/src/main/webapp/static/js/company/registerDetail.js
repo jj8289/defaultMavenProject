@@ -40,6 +40,7 @@ function initSet(){
 	setSalaryType();
 	setIsPT(); 
 	setLunch();
+	setHireInfo(); 
 } 	
 
 function setIsPT(){
@@ -232,6 +233,10 @@ function setTime(st, en){
 	} 
 }  
 
+function setHireInfo(){
+	$(".forContact").hide();
+	$(".forUncontact").hide();
+} 
 /////////////////////////////////////////////////////////////////////////////
 /* 클릭 이벤트 */
 function selectPtWork(){

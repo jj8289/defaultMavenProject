@@ -209,6 +209,11 @@ public class CompanyController {
 		vo.setCalWorkTime(param.getCalWorkTime());
 		vo.setCalSalaryHour(param.getCalSalaryHour());
 		vo.setCalSalaryDay(param.getCalSalaryDay());
+		vo.setMatchPhone(param.getMatchPhone());
+		vo.setHireFlag(param.getHireFlag());
+		vo.setMatchWorkDate(param.getMatchWorkDate());
+		vo.setMatchInterviewDate(param.getMatchInterviewDate());
+		vo.setMatchMsg(param.getMatchMsg());
 		
 		//중복 체크
 		dup = companyService.selectRegCnt(vo);

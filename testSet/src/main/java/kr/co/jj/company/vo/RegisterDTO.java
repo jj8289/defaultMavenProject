@@ -34,6 +34,13 @@ public class RegisterDTO {
 	private int calSalaryHour;
 	private int calSalaryDay;
 	
+	private String matchPhone;
+	private String hireFlag;
+	private String matchWorkDate;
+	private String matchInterviewDate;
+	private String matchMsg;
+	
+	
 	
 	public String getRegNo() {
 		return regNo;
@@ -214,6 +221,38 @@ public class RegisterDTO {
 	}
 	
 	
+	public String getMatchPhone() {
+		return matchPhone;
+	}
+	public void setMatchPhone(String matchPhone) {
+		this.matchPhone = matchPhone;
+	}
+	public String getHireFlag() {
+		return hireFlag;
+	}
+	public void setHireFlag(String hireFlag) {
+		this.hireFlag = hireFlag;
+	}
+	public String getMatchWorkDate() {
+		return matchWorkDate;
+	}
+	public void setMatchWorkDate(String matchWorkDate) {
+		this.matchWorkDate = matchWorkDate;
+	}
+	public String getMatchInterviewDate() {
+		return matchInterviewDate;
+	}
+	public void setMatchInterviewDate(String matchInterviewDate) {
+		this.matchInterviewDate = matchInterviewDate;
+	}
+	public String getMatchMsg() {
+		return matchMsg;
+	}
+	public void setMatchMsg(String matchMsg) {
+		this.matchMsg = matchMsg;
+	}
+	
+	
 	@Override
 	public String toString() {
 		return "RegisterDTO [companyNo=" + companyNo + ", regNo=" + regNo + ", workType=" + workType + ", salaryHour="
@@ -224,6 +263,9 @@ public class RegisterDTO {
 				+ work + ", insenFlag=" + insenFlag + ", detailWork=" + detailWork + ", workPtList=" + workPtList
 				+ ", detailWorkPtList=" + detailWorkPtList + ", peerCnt=" + peerCnt + ", avgCnt=" + avgCnt + ", etc="
 				+ etc + ", calWorkTime=" + calWorkTime + ", calSalaryHour=" + calSalaryHour + ", calSalaryDay="
-				+ calSalaryDay + "]";
+				+ calSalaryDay + ", matchPhone=" + matchPhone + ", hireFlag=" + hireFlag + ", matchWorkDate="
+				+ matchWorkDate + ", matchInterviewDate=" + matchInterviewDate + ", matchMsg=" + matchMsg + "]";
 	}
+	
+	
 }
