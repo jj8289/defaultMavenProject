@@ -93,6 +93,11 @@ td, select {
 #work, #detailWork {
 	height: 22px;   
 }  
+
+input {
+	height: 22px;  
+} 
+
 </style>    
 </head>    
 <body>   
@@ -357,6 +362,39 @@ td, select {
 						<td bgcolor="lightgrey" align="center">기타 복지 및 소개글</td> 
 						<td><textarea name="etc" id="etc"  rows="5" cols="50" style="margin: 0px; width: 478px; height: 80px;" placeholder="유니폼 또는 가운 제공, 간식 제공 등 설명글 추가"></textarea></td>  
 					</tr>   
+					<tr><td>채용 정보<td></tr>
+					<tr> 
+						<td bgcolor="lightgrey" align="center">채용 연결 핸드폰</td> 
+						<td><input size="20" type="text" name="matchPhone" id="matchPhone" ></td>
+					</tr> 
+					<tr>
+						<td bgcolor="lightgrey" align="center">채용 구분</td> 
+						<td>
+							<select id="hireFlag" name="hireFlag" onchange="selectHireFlag()">
+								<option value="">선택</option>
+								<option id="uncontact" value="1">매칭 자동 채용</option>
+								<option id="contact" value="2">면접 후 채용</option> 
+							</select> 
+						</td>
+					</tr>   
+					<tr class="forContact">
+						<td bgcolor="lightgrey" align="center">매칭완료 후 면접 날짜</td> 
+						<td onchange="setDatepickerContact()"> 
+							<input type="text" id="datepicker_contact" name="datepicker_contact">
+						</td>
+					</tr>
+					<tr class="forContact">
+						<td bgcolor="lightgrey" align="center">매칭완료 후 안내메세지</td> 
+						<td><textarea name="matchMsg" id="matchMsg" rows="5" cols="50" style="margin: 0px; width: 478px; height: 80px;" placeholder="안녕하세요. 지원해주셔서 감사합니다. 채용되신 것을 축하드립니다. 등등 "></textarea></td> 
+					</tr> 
+					<tr class="forUncontact">
+						<td bgcolor="lightgrey" align="center">매칭완료 후 출근 날짜</td> 
+						<td onchange="setDatepickerWork()">  
+							<input type="text" id="datepicker_work" name="datepicker_work">
+						</td> 
+					</tr>
+					
+					 
 					<!-- <tr><td>우선순위<td></tr>    
 					<tr>
 						<td bgcolor="lightgrey" align="center">순위</td>
@@ -405,6 +443,8 @@ td, select {
 	var lunchFlag = "";
 	var frm = "";
 	
+	var hireFlag = "";
+	
 	$(document).ready(function () {
 		$("#for_one").hide();
 		$("#for_date").hide();
@@ -415,8 +455,10 @@ td, select {
 		$(".forPT").hide();
 		$(".forOS").hide();
 		$(".forNS").hide();
+		$(".forContact").hide();
+		$(".forUncontact").hide(); 
 	}); 
- 
+  
 	$(function() {
 		$.datepicker.setDefaults({ 
 			  dateFormat: 'yy-mm-dd' //Input Display Format 변경
@@ -439,6 +481,8 @@ td, select {
 		     
 		$('#datepicker').datepicker();  
 		$('#datepicker_start').datepicker();  
+		$('#datepicker_contact').datepicker(); 
+		$('#datepicker_work').datepicker(); 
 		       
 		//초기값을 오늘 날짜로 설정 
         //$('#datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
@@ -672,6 +716,28 @@ td, select {
 			} 
 		} 
 		
+		//채용 정보 validation
+		if(frm.matchPhone.value == ""){
+			alert("채용 연결 핸드폰을 입력해주세요.");
+			frm.matchPhone.focus();
+			return;
+		}else if(hireFlag == ""){
+			alert("채용 구분을 선택해주세요.");
+			frm.hireFlag.focus();
+			return;
+		}
+		
+		if(hireFlag == "1" && frm.datepicker_work.value == ""){
+			alert("매칭 완력 후 출근 날짜를 선택해주세요.");
+			frm.datepicker_work.focus();
+			return;
+		} 
+		if(hireFlag == "2" && frm.datepicker_contact.value == ""){
+			alert("매칭 완력 후 면접 날짜를 선택해주세요.");
+			frm.datepicker_work.focus();
+			return;
+		} 
+		
 		if(dowList.length == "1" && dowList[0] == "6" && frm.term.value == "part"){
 			var d1= $("#datepicker").val();
 			var d2 = $("#datepicker_start").val();
@@ -774,6 +840,9 @@ td, select {
  			calWorkTime = ((Number($("#end_hour").val()) * 60 + Number($("#end_min").val())) - (Number($("#start_hour").val()) * 60 + Number($("#start_min").val())))/60;
  		}
  		
+ 		
+ 		
+ 		
 		params = { 
 				companyNo : companyNo
 			  , workType : $("select[name=term]").val()				// 일일, 장/단기, 토요 고정
@@ -806,6 +875,11 @@ td, select {
 			  , calWorkTime : calWorkTime
 			  , calSalaryHour : calSalaryHour
 			  , calSalaryDay : calSalaryDay
+			  , matchPhone : frm.matchPhone.value
+			  , hireFlag : hireFlag
+			  , matchWorkDate : $("#datepicker_work").val()
+			  , matchInterviewDate : $("#datepicker_contact").val()
+			  , matchMsg : $("#matchMsg").val() 
 		};   
 		
 		$.ajax({
@@ -822,7 +896,7 @@ td, select {
     			} 
     		},   
     		error: function(data){   
-   		   		console.log("error");
+   		   		console.log("error"); 
    		   		console.log(data.errmsg);  
     		}
     	});  
@@ -933,6 +1007,26 @@ td, select {
 		location.href = CONTEXT_PATH + "/";
 	}
 	
+	function selectHireFlag(){
+		$("datepicker_work").val("");
+		$("datepicker_contact").val("");
+		$("#matchMsg").val("");
+		
+		if($("#hireFlag").val() == "1"){
+			hireFlag = "1";
+			$(".forUncontact").show();
+			$(".forContact").hide();
+		} else if($("#hireFlag").val() == "2"){
+			hireFlag = "2";
+			$(".forUncontact").hide();
+			$(".forContact").show(); 
+		} else { 
+			hireFlag = "";
+			$(".forContact").hide();
+			$(".forUncontact").hide();
+		}
+		
+	}
 </script>	
 </body>
 </html>

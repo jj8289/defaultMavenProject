@@ -34,6 +34,11 @@ public class RegisterVO extends PageVO{
 	private String peerCnt;
 	private String avgCnt;
 	private String etc;
+	private String matchPhone;
+	private String hireFlag;
+	private String matchWorkDate;
+	private String matchInterviewDate;
+	private String matchMsg;
 	
 	private List<String> dowList;
 	private List<String> workPtList;
@@ -248,6 +253,36 @@ public class RegisterVO extends PageVO{
 	public void setCalSalaryDay(int calSalaryDay) {
 		this.calSalaryDay = calSalaryDay;
 	}
+	public String getMatchPhone() {
+		return matchPhone;
+	}
+	public void setMatchPhone(String matchPhone) {
+		this.matchPhone = matchPhone;
+	}
+	public String getHireFlag() {
+		return hireFlag;
+	}
+	public void setHireFlag(String hireFlag) {
+		this.hireFlag = hireFlag;
+	}
+	public String getMatchWorkDate() {
+		return matchWorkDate;
+	}
+	public void setMatchWorkDate(String matchWorkDate) {
+		this.matchWorkDate = matchWorkDate;
+	}
+	public String getMatchInterviewDate() {
+		return matchInterviewDate;
+	}
+	public void setMatchInterviewDate(String matchInterviewDate) {
+		this.matchInterviewDate = matchInterviewDate;
+	}
+	public String getMatchMsg() {
+		return matchMsg;
+	}
+	public void setMatchMsg(String matchMsg) {
+		this.matchMsg = matchMsg;
+	}
 	
 	@Override
 	public String toString() {
@@ -258,8 +293,10 @@ public class RegisterVO extends PageVO{
 				+ career + ", createDate=" + createDate + ", lunchStTime=" + lunchStTime + ", lunchEnTime="
 				+ lunchEnTime + ", work=" + work + ", detailWork=" + detailWork + ", workFlag=" + workFlag + ", workPt="
 				+ workPt + ", detailWorkPt=" + detailWorkPt + ", insenFlag=" + insenFlag + ", peerCnt=" + peerCnt
-				+ ", avgCnt=" + avgCnt + ", etc=" + etc + ", dowList=" + dowList + ", workPtList=" + workPtList
-				+ ", detailWorkPtList=" + detailWorkPtList + "]";
+				+ ", avgCnt=" + avgCnt + ", etc=" + etc + ", matchPhone=" + matchPhone + ", hireFlag=" + hireFlag
+				+ ", matchWorkDate=" + matchWorkDate + ", matchInterviewDate=" + matchInterviewDate + ", matchMsg="
+				+ matchMsg + ", dowList=" + dowList + ", workPtList=" + workPtList + ", detailWorkPtList="
+				+ detailWorkPtList + ", calWorkTime=" + calWorkTime + ", calSalaryHour=" + calSalaryHour
+				+ ", calSalaryDay=" + calSalaryDay + "]";
 	}
-	
 }

@@ -306,7 +306,7 @@ form p {
 			dowList[0] = "";
 			console.log(dowList);
 		}
-		 
+		
  		 
 		params = {
 				salaryHour : salaryHour

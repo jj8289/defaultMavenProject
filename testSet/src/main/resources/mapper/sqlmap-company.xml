@@ -139,6 +139,11 @@
 			, CAL_WORK_TIME
 			, CAL_SALARY_HOUR
 			, CAL_SALARY_DAY	
+			, MATCH_PHONE
+			, HIRE_FLAG
+			, MATCH_WORK_DATE
+			, MATCH_INTERVIEW_DATE
+			, MATCH_MSG
 		) 
 		VALUES
 		(
@@ -171,6 +176,11 @@
 			, #{calWorkTime}
 			, #{calSalaryHour}
 			, #{calSalaryDay}
+			, #{matchPhone}
+			, #{hireFlag}
+			, #{matchWorkDate}
+			, #{matchInterviewDate}
+			, #{matchMsg}
 		)
 	</insert> 
 	 
@@ -230,8 +240,13 @@
 				, CAL_WORK_TIME = #{calWorkTime}
 				, CAL_SALARY_HOUR = #{calSalaryHour}
 				, CAL_SALARY_DAY = #{calSalaryDay} 
+				, MATCH_PHONE = #{matchPhone}
+				, HIRE_FLAG = #{hireFlag}
+				, MATCH_WORK_DATE = #{matchWorkDate}
+				, MATCH_INTERVIEW_DATE = #{matchInterviewDate}
+				, MATCH_MSG = #{matchMsg}
 		 WHERE    REG_NO = #{regNo}
-	</update>
+	</update> 
 	
 	<!-- <select id="selectSgList" parameterType="AddrDTO" resultType="">
 		SELECT  A.ROWNUM

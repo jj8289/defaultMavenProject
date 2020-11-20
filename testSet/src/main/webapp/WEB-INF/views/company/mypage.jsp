@@ -124,7 +124,7 @@ form {
 			<div class="temp"></div>
 			<h2 class="title">마이페이지</h2>   
 			<div class="temp"></div>   
-			<div class="infocon"><input type="button" value="내 정보 수정" onclick="location.href='${pageContext.request.contextPath}/user/myinfo'"></div>
+			<div class="infocon"><input type="button" value="내 정보 수정" onclick="location.href='${pageContext.request.contextPath}/company/myinfo'"></div>
 			<div class="temp"></div>   
 			<h3 class="subtitle">상태</h3>    
 			<div>  
