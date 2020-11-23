@@ -82,11 +82,16 @@ form p {
 	display: flex; 
 } 
 
-td, select {
+td, select{
 	padding-left: 3px;
 	height: 30px;      
-} 
+}  
 
+input {
+	height: 22px;    
+	vertical-align: middle;  
+}  
+ 
 .ptWork, #otherWork, #detailBox {
 	height: 30px;   
 } 
@@ -425,13 +430,19 @@ td, select {
 					<tr><td>채용 정보<td></tr>
 					<tr> 
 						<td bgcolor="lightgrey" align="center">채용 연결 핸드폰</td> 
-						<td><input size="20" type="text" name="matchPhone" id="matchPhone" ></td>
+						<td>
+							<input size="20" type="text" name="matchPhone" id="matchPhone" >
+						</td>
 					</tr> 
 					<tr>
 						<td bgcolor="lightgrey" align="center">채용 구분</td> 
 						<td>
 							<select id="hireFlag" name="hireFlag" onchange="selectHireFlag()">
 								<option value="">선택</option>
+								<c:if test="${reg.hireFlag == null }">
+									<option id="uncontact" value="1">매칭 자동 채용</option>
+									<option id="contact" value="2">면접 후 채용</option> 
+								</c:if> 
 								<c:if test="${reg.hireFlag == '1' }">
 									<option id="uncontact" value="1" selected>매칭 자동 채용</option>
 									<option id="contact" value="2">면접 후 채용</option> 
@@ -491,11 +502,11 @@ var work = "${reg.work}";
 var worksPt = "${reg.workPt}";
 var detailWorkPt = "${reg.detailWorkPt}";
 var ptDetailList = [];
-var detailWork = "${reg.detailWork}";
+var detailWork = "${reg.detailWork}".replace(/<br\>/g, '\n');
 var insenFlag = "${reg.insenFlag}"; 
 var $peerCnt = "${reg.peerCnt}"; 
 var $avgCnt = "${reg.avgCnt}";  
-var $etc = "${reg.etc}";   
+var $etc = "${reg.etc}".replace(/<br\>/g, '\n');   
 var isPT = "";
 
 var workStHour = "";
@@ -510,6 +521,13 @@ var calWorkTime = "";
 
 var jobList = "${jobList}"; 
 var param = {};  
+
+var matchPhone = "${reg.matchPhone}";
+var hireFlag = "${reg.hireFlag}";
+var matchWorkDate = "${reg.matchWorkDate}";
+var matchInterviewDate = "${reg.matchInterviewDate}";
+var matchMsg = "${reg.matchMsg}".replace(/<br\>/g, '\n');
+
 </script>	
 </body>
 </html>

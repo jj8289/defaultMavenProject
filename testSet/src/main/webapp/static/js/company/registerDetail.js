@@ -22,6 +22,9 @@ $(document).ready(function(){
 	     
 	$('#datepicker').datepicker();  
 	$('#datepicker_start').datepicker();  
+	$('#datepicker_contact').datepicker();  
+	$('#datepicker_work').datepicker();  
+	
 	//초기값을 오늘 날짜로 설정 
     //$('#datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
 	
@@ -30,6 +33,8 @@ $(document).ready(function(){
 	$("#peerCnt").val($peerCnt);  
 	$("#avgCnt").val($avgCnt); 
 	$("#etc").val($etc);
+	
+	console.log(matchMsg);   
 }); 
 
 
@@ -40,7 +45,8 @@ function initSet(){
 	setSalaryType();
 	setIsPT(); 
 	setLunch();
-	setHireInfo(); 
+	//setHireInfo(); 
+	setMatch(); 
 } 	
 
 function setIsPT(){
@@ -237,6 +243,41 @@ function setHireInfo(){
 	$(".forContact").hide();
 	$(".forUncontact").hide();
 } 
+ 
+function setDatepickerContact(){
+	$("#datepicker_work").val("");
+	matchWorkDate = "";
+	matchInterviewDate = $("#datepicker_contact").val();
+}
+
+function setDatepickerWork(){
+	$("#datepicker_contact").val("");  
+	matchInterviewDate = ""; 
+	matchWorkDate = $("#datepicker_work").val(); 
+} 
+
+function setMatch(){
+	console.log(matchPhone + "/" + hireFlag + "/" + matchWorkDate + "/" + matchInterviewDate + "/" + matchMsg);
+	$("#matchPhone").val(matchPhone); 
+	$("#datepicker_work").val("");
+	$("#datepicker_contact").val("");
+	$("#matchMsg").val("");
+	 
+	if(hireFlag == "1"){
+		$("#datepicker_work").val(matchWorkDate);
+		$(".forContact").hide();
+		$(".forUncontact").show();
+	} else if(hireFlag == "2"){
+		$("#datepicker_contact").val(matchInterviewDate);
+		$("#matchMsg").val(matchMsg);   
+		$(".forContact").show();
+		$(".forUncontact").hide();
+	} else {
+		$(".forContact").hide(); 
+		$(".forUncontact").hide();
+	} 
+} 
+
 /////////////////////////////////////////////////////////////////////////////
 /* 클릭 이벤트 */
 function selectPtWork(){
@@ -379,6 +420,29 @@ function clickNoLunch(){
 	}  
 } 
 
+function selectHireFlag(){
+	hireFlag = $("#hireFlag option:selected").val();
+	matchWorkDate = "";
+	matchInterviewDate = "";
+	matchMsg = "";
+	
+	$("#datepicker_work").val("");
+	$("#datepicker_contact").val("");
+	$("#matchMsg").val("");
+	
+	if(hireFlag == "1"){
+		$(".forUncontact").show();
+		$(".forContact").hide();
+	} else if(hireFlag == "2"){
+		$(".forUncontact").hide();
+		$(".forContact").show();
+	} else {
+		$(".forUncontact").hide();
+		$(".forContact").hide(); 
+		hireFlag = ""; 
+	} 
+}
+
 ///////////////////////////////////////////////////////////
 /* param 정리 */
 function setParam(){ 
@@ -431,17 +495,22 @@ function setParam(){
 		, workPtList : JSON.stringify(ptWorkList)	
 		, detailWorkPtList : JSON.stringify(ptDetailList)		//PT 세부 업무 YN(obj[0]: 초음파YN, obj[1]: eswtYN, obj[2]: CPM(knee)YN, obj[3]: CPM(sh)YN, obj[4]: ionYN)
 		, insenFlag : insenFlag  // 인센티브 유무 (Y , N)
-		, detailWork : $("#detailWork").val()
+		, detailWork : $("#detailWork").val().replace(/(?:\r\n|\r|\n)/g, '<br>')
 		, lunchStTime : lunchFlag == "1" || lunchStHour == "" || lunchStMin == "" ? "" : lunchStHour + ":" + lunchStMin							// 점심 시작 시간
 		, lunchEnTime : lunchFlag == "1" || lunchEnHour == "" || lunchEnMin == "" ? "" : lunchEnHour + ":" + lunchEnMin	
 		, peerCnt : $("#peerCnt").val() 
 		, avgCnt : $("#avgCnt").val()
-		, etc : $("#etc").val() 
+		, etc : $("#etc").val().replace(/(?:\r\n|\r|\n)/g, '<br>') 
 		, calWorkTime : calWorkTime + "" 
 		, calSalaryHour : salType == "day" ? Math.floor(Number(frm.salary_day.value)/calWorkTime) : 0
 		, calSalaryDay : salType == "hour" ? Number(frm.salary_hour.value) * calWorkTime : 0
+		, matchPhone : frm.matchPhone.value
+		, hireFlag : hireFlag
+		, matchWorkDate : frm.datepicker_work.value
+		, matchInterviewDate : frm.datepicker_contact.value
+		, matchMsg : frm.matchMsg.value.replace(/(?:\r\n|\r|\n)/g, '<br>')  
 	};
-	 
+	
 	vaildationChk(param);
 }   
 
@@ -492,12 +561,12 @@ function vaildationChk(param){
 		if(param.workFlag == undefined){
 			alert("구분을 선택해주세요.");
 			return;
-		} else if(workPtList == ""){
+		} else if(param.workPtList == ""){
 			alert("업무를 선택해주세요.");
 			return; 
 		} else if(param.insenFlag == ""){
 			alert("인센티브 유무를 선택해주세요.");
-			return;
+			return; 
 		}   
 	} else { 
 		if(param.work == ""){
@@ -523,6 +592,25 @@ function vaildationChk(param){
 		frm.avgCnt.focus(); 
 		return;
 	}
+	
+	if(param.matchPhone == ""){
+		alert("채용 시 연결한 핸드폰 번호를 입력해주세요.");
+		frm.matchPhone.focus(); 
+		return;
+	}else if(param.hireFlag == ""){
+		alert("채용 구분을 선택해주세요.");
+		frm.hireFlag.focus(); 
+		return;
+	}else if(param.hireFlag == "1" && param.matchWorkDate == ""){
+		alert("매칭 완료 후 근무 시작일을 선택해주세요.");
+		frm.datepicker_work.focus(); 
+		return;
+	}else if(param.hireFlag == "2" && param.matchInterviewDate == ""){
+		alert("매칭 완료 후 면접일을 선택해주세요.");
+		frm.datepicker_contact.focus(); 
+		return;
+	}
+	
 	console.log("@"); 
 	var conf = confirm("수정하시겠습니까?");
 	if(conf == true){
@@ -542,7 +630,8 @@ function updateReg(param){
 		success: function(data){
 			console.log("updateReg()");
 			if(data == "success"){
-				location.href = CONTEXT_PATH + "/";  
+				alert("수정되었습니다."); 
+				history.back(); 
 			}  
 		},   
 		error: function(data){   

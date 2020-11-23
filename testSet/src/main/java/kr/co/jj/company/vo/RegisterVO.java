@@ -34,11 +34,6 @@ public class RegisterVO extends PageVO{
 	private String peerCnt;
 	private String avgCnt;
 	private String etc;
-	private String matchPhone;
-	private String hireFlag;
-	private String matchWorkDate;
-	private String matchInterviewDate;
-	private String matchMsg;
 	
 	private List<String> dowList;
 	private List<String> workPtList;
@@ -48,6 +43,11 @@ public class RegisterVO extends PageVO{
 	private int calSalaryHour;
 	private int calSalaryDay;
 	
+	private String matchPhone;
+	private String hireFlag;
+	private String matchWorkDate;
+	private String matchInterviewDate;
+	private String matchMsg;
 	
 	public List<String> getDowList() {
 		return dowList;
@@ -293,10 +293,11 @@ public class RegisterVO extends PageVO{
 				+ career + ", createDate=" + createDate + ", lunchStTime=" + lunchStTime + ", lunchEnTime="
 				+ lunchEnTime + ", work=" + work + ", detailWork=" + detailWork + ", workFlag=" + workFlag + ", workPt="
 				+ workPt + ", detailWorkPt=" + detailWorkPt + ", insenFlag=" + insenFlag + ", peerCnt=" + peerCnt
-				+ ", avgCnt=" + avgCnt + ", etc=" + etc + ", matchPhone=" + matchPhone + ", hireFlag=" + hireFlag
-				+ ", matchWorkDate=" + matchWorkDate + ", matchInterviewDate=" + matchInterviewDate + ", matchMsg="
-				+ matchMsg + ", dowList=" + dowList + ", workPtList=" + workPtList + ", detailWorkPtList="
-				+ detailWorkPtList + ", calWorkTime=" + calWorkTime + ", calSalaryHour=" + calSalaryHour
-				+ ", calSalaryDay=" + calSalaryDay + "]";
+				+ ", avgCnt=" + avgCnt + ", etc=" + etc + ", dowList=" + dowList + ", workPtList=" + workPtList
+				+ ", detailWorkPtList=" + detailWorkPtList + ", calWorkTime=" + calWorkTime + ", calSalaryHour="
+				+ calSalaryHour + ", calSalaryDay=" + calSalaryDay + ", matchPhone=" + matchPhone + ", hireFlag="
+				+ hireFlag + ", matchWorkDate=" + matchWorkDate + ", matchInterviewDate=" + matchInterviewDate
+				+ ", matchMsg=" + matchMsg + "]";
 	}
+	
 }
