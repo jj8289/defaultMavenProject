@@ -77,8 +77,8 @@
 			alert("사용자님! 조건을 먼저 등록해주세요.");
 		} else {  
 			console.log(userReq);  
-			goMatch(); 
-		}
+			goMatch("user"); 
+		} 
 	}     
   
 	function mgMatch(){     
@@ -86,13 +86,13 @@
 			alert("관리자님! 조건을 먼저 등록해주세요.");
 		} else {   
 			console.log(reqList.length);  
-			goMatch();   
+			goMatch("company");   
 		}  
 	}      
   
 	
-	function goMatch(){  
-		location.href='/jj/common/match';
+	function goMatch(who){  
+		location.href='/jj/'+ who +'/match'; 
 	}
 	
 	function logout(){

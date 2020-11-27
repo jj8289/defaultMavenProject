@@ -34,6 +34,7 @@ public class RegisterVO extends PageVO{
 	private String peerCnt;
 	private String avgCnt;
 	private String etc;
+	private String matchFlag;
 	
 	private List<String> dowList;
 	private List<String> workPtList;
@@ -283,6 +284,12 @@ public class RegisterVO extends PageVO{
 	public void setMatchMsg(String matchMsg) {
 		this.matchMsg = matchMsg;
 	}
+	public String getMatchFlag() {
+		return matchFlag;
+	}
+	public void setMatchFlag(String matchFlag) {
+		this.matchFlag = matchFlag;
+	}
 	
 	@Override
 	public String toString() {
@@ -293,11 +300,10 @@ public class RegisterVO extends PageVO{
 				+ career + ", createDate=" + createDate + ", lunchStTime=" + lunchStTime + ", lunchEnTime="
 				+ lunchEnTime + ", work=" + work + ", detailWork=" + detailWork + ", workFlag=" + workFlag + ", workPt="
 				+ workPt + ", detailWorkPt=" + detailWorkPt + ", insenFlag=" + insenFlag + ", peerCnt=" + peerCnt
-				+ ", avgCnt=" + avgCnt + ", etc=" + etc + ", dowList=" + dowList + ", workPtList=" + workPtList
-				+ ", detailWorkPtList=" + detailWorkPtList + ", calWorkTime=" + calWorkTime + ", calSalaryHour="
-				+ calSalaryHour + ", calSalaryDay=" + calSalaryDay + ", matchPhone=" + matchPhone + ", hireFlag="
-				+ hireFlag + ", matchWorkDate=" + matchWorkDate + ", matchInterviewDate=" + matchInterviewDate
-				+ ", matchMsg=" + matchMsg + "]";
+				+ ", avgCnt=" + avgCnt + ", etc=" + etc + ", matchFlag=" + matchFlag + ", dowList=" + dowList
+				+ ", workPtList=" + workPtList + ", detailWorkPtList=" + detailWorkPtList + ", calWorkTime="
+				+ calWorkTime + ", calSalaryHour=" + calSalaryHour + ", calSalaryDay=" + calSalaryDay + ", matchPhone="
+				+ matchPhone + ", hireFlag=" + hireFlag + ", matchWorkDate=" + matchWorkDate + ", matchInterviewDate="
+				+ matchInterviewDate + ", matchMsg=" + matchMsg + "]";
 	}
-	
 }
