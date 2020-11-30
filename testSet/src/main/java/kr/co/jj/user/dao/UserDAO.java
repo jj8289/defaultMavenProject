@@ -26,4 +26,5 @@ public interface UserDAO {
 	
 	public void updateRequire(RequireVO vo) throws Exception;
 	
+	public void updateUser(UserVO vo) throws Exception;
 }

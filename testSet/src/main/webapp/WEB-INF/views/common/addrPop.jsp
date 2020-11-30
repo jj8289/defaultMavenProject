@@ -15,6 +15,7 @@ function init(){
 	var sggNm = "${res.sggNm}";
 	
 	var url = location.href;
+	//var url = CONTEXT_PATH + "/company/join";
 	var confmKey = "devU01TX0FVVEgyMDIwMTAyNjExMTQxMzExMDMzMDk=";
 	var resultType = "4"; // 도로명주소 검색결과 화면 출력내용, 1 : 도로명, 2 : 도로명+지번, 3 : 도로명+상세건물명, 4 : 도로명+지번+상세건물명
 	var inputYn= inputYn;
@@ -24,8 +25,8 @@ function init(){
 		document.form.confmKey.value = confmKey;
 		document.form.returnUrl.value = url;
 		document.form.resultType.value = resultType;
-		document.form.action="http://www.juso.go.kr/addrlink/addrLinkUrl.do"; //인터넷망
-		document.form.submit();
+		document.form.action="https://www.juso.go.kr/addrlink/addrLinkUrl.do"; //인터넷망
+		document.form.submit(); 
 	}else{ 
 		opener.jusoCallBack(roadFullAddr, siNm, sggNm, emdNm);
 		window.close();

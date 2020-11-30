@@ -136,4 +136,14 @@
  		 						SELECT MIN(CREATE_DATE) FROM TB_REQUIRE 
  		 					 ) 
  	</delete>
+ 	
+ 	<update id="updateUser" parameterType="UserVO">
+ 		UPDATE  TB_USER
+ 		   SET   JOB_NO = #{jobNo}
+ 		       , CAREER = #{career}
+ 		       , EMAIL = #{email}
+ 		       , INTRO = #{intro}
+ 		       , SKILL = #{skill}
+ 		 WHERE  USER_NO = #{userNo}
+ 	</update>
 </mapper>

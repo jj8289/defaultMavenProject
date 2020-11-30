@@ -17,11 +17,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.jj.common.service.CommonService;
+import kr.co.jj.common.vo.AddrVO;
 import kr.co.jj.common.vo.Job;
+import kr.co.jj.company.vo.AddrDTO;
 import kr.co.jj.user.service.UserService;
 import kr.co.jj.user.vo.RequireVO;
 import kr.co.jj.user.vo.UserVO;
@@ -40,14 +41,28 @@ public class UserController {
 	
 	/**
 	 * 회원 가입
+	 * @throws Exception 
 	 */
 	@GetMapping("/join")
-	public String join(Model model) {
+	public String join(Model model) throws Exception {
+		
+		AddrDTO addrDto = new AddrDTO();
+		addrDto.setSdNm("경기도");
+		
+		List<AddrVO> sdList = commonService.selectSdList();
+		System.out.println(sdList.toString());
+		
+		model.addAttribute("sdList", sdList);	
+		model.addAttribute("sdListSize", sdList.size());
+		model.addAttribute("addrDto", addrDto);
 		
 		Map<String, Object> jobMap = new HashMap<String, Object>();
+		String jobNo = "";
 		
 		for(Job job : Job.values()) {
-			jobMap.put(job.name(), job.getName());
+			//job.name() : PT , job.getName() : 물리치료사 , jobNo : 1
+			jobNo = String.valueOf(commonService.selectJobNo(job.name()));
+			jobMap.put(jobNo, job.getName());
 		} 
 		
 		model.addAttribute("jobList", jobMap);
@@ -250,27 +265,46 @@ public class UserController {
 		
 		logger.debug(user.toString());
 		
-		String jobNm = user.getJobNm();
+		String userJobNo = user.getJobNo();
+		String jobNo = "";
 		
 		Map<String, Object> jobMap = new HashMap<String, Object>();
 		
 		for(Job job : Job.values()) {
-			jobMap.put(job.name(), job.getName());
-			if(jobNm.equals(job.name())) {
-				System.out.println("job.name : " + job.name());
+			jobNo = String.valueOf(commonService.selectJobNo(job.name()));
+			jobMap.put(jobNo, job.getName());
+			
+			if(userJobNo.equals(jobNo)) {
+				System.out.println("job.name(jobNo) : " + job.name() + "(" + jobNo + ")");
 				System.out.println("job.getName : " + job.getName());
-				System.out.println("user.getJobNm() : " + jobNm);
+				System.out.println("user.getJobNo() : " + userJobNo);
 				 
 			}
 		} 
 		
 		model.addAttribute("user", user);
-		model.addAttribute("jobNm", jobNm);
+		model.addAttribute("userJobNo", userJobNo);
 		model.addAttribute("jobList", jobMap);
 		
 		return "user/myinfo";
 	}
 	
+	
+	@PostMapping(value = "/myInfo/update")
+	@ResponseBody 
+	public String updateMyInfo(UserVO user, Model model, HttpSession session) throws Exception{
+		logger.debug(user.toString());
+		
+		if(user.getUserNo() != null && user.getUserNo() != "") {
+			userService.updateUser(user);
+			
+			return "success";
+		}
+		
+		return "fail";
+	}
+	
+		
 	
 	// 아이디 중복 체크
 	public boolean idDupleChk(UserVO user) throws Exception {

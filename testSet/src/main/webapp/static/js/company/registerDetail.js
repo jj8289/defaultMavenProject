@@ -50,13 +50,13 @@ function initSet(){
 } 	
 
 function setIsPT(){
-	if($("select[id=job]").val() == "PT"){
+	if($("select[id=job]").val() == "1"){
 		isPT = "Y";
 		setPtFlag();  
 		selectKind();
 		setWorkPt();  
 		setJobPt();
-	} else if($("select[id=job]").val() != "PT") {
+	} else if($("select[id=job]").val() != "1") {
 		isPT = "N";
 		setWork(); 
 		setJobOthers(); 
@@ -375,7 +375,7 @@ function selectJob(){
 	  
 	 job = $("select[name=job]").val(); 
 	
-	 if($("select[name=job]").val() == 'PT'){
+	 if($("select[name=job]").val() == '1'){
 		isPT = "Y";
 		setPtFlag();  
 		selectKind(); 
@@ -395,7 +395,7 @@ function selectInsen(){
 function selectPtDetailWork(){
 	ptDetailList = [];
 	
-	var val = job == "PT" ? $("#kindBox input:checked").val() : "";
+	var val = job == "1" ? $("#kindBox input:checked").val() : "";
 	
 	if(val == "os"){
 		ptDetailList.push($("#micro").val());
@@ -490,7 +490,7 @@ function setParam(){
 		, sex : $("#sex").val() 
 		, age : $("#age").val()
 		, career : $("#career").val()
-		, workFlag : job == "PT" ? $("#kindBox input:checked").val() : ""
+		, workFlag : job == "1" ? $("#kindBox input:checked").val() : ""
 		, work : $("#work").val()
 		, workPtList : JSON.stringify(ptWorkList)	
 		, detailWorkPtList : JSON.stringify(ptDetailList)		//PT 세부 업무 YN(obj[0]: 초음파YN, obj[1]: eswtYN, obj[2]: CPM(knee)YN, obj[3]: CPM(sh)YN, obj[4]: ionYN)
@@ -556,8 +556,8 @@ function vaildationChk(param){
 		frm.job.focus();
 		return;
 	}  
-	console.log("33333"); 
-	if(param.job == "PT"){
+
+	if(param.job == "1"){
 		if(param.workFlag == undefined){
 			alert("구분을 선택해주세요.");
 			return;
@@ -575,7 +575,6 @@ function vaildationChk(param){
 			return;
 		}
 	}
-	console.log("44444"); 
 	
 	if(lunchFlag != "1"){
 		if(param.lunchStTime == "" || param.lunchEnTime == ""){
@@ -631,7 +630,7 @@ function updateReg(param){
 			console.log("updateReg()");
 			if(data == "success"){
 				alert("수정되었습니다."); 
-				history.back(); 
+				location.href = CONTEXT_PATH + "/company/mypage"; 
 			}  
 		},   
 		error: function(data){   

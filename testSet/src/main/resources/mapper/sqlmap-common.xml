@@ -2,9 +2,38 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.jj.common.dao.CommonDAO">
 	<select id="selectJobNo" parameterType="String" resultType="int">
-		SELECT JOB_NO
-		  FROM TB_JOB
-		 WHERE JOB_NM = #{jobNm}
+		SELECT  JOB_NO
+		  FROM  TB_JOB
+		 WHERE  JOB_NM = #{jobNm}
 	</select>
-
+	
+	<select id="selectSdList" resultType="AddrVO">
+		SELECT	ROW_NUMBER() OVER (ORDER BY SD_NM) AS ROWNUM
+			   ,SD_NM
+		  FROM	TB_ADDR
+	  GROUP BY  SD_NM
+	</select>
+	
+	<select id="selectSgList" parameterType="AddrDTO" resultType="AddrVO">
+		SELECT  ADDR_NO
+			   ,SG_NM
+		  FROM  TB_ADDR
+		 WHERE  SD_NM LIKE '%${sdNm}%' 
+	  GROUP BY  SG_NM, SD_NM 
+	</select>
+	
+	<select id="selectDnList" parameterType="AddrDTO" resultType="AddrVO">
+		SELECT  ADDR_NO
+			   ,DN_NM
+		  FROM  TB_ADDR
+		 WHERE  SG_NM LIKE '%${sgNm}%'
+	</select>
+	
+	<select id="selectAddrList" >
+		SELECT  *
+		  FROM  TB_ADDR
+		 WHERE  SD_NM LIKE '%${sdNm}%' 
+		   AND  SG_NM LIKE '%${sgNm}%' 
+	  ORDER BY  DN_NM
+	</select>
 </mapper>

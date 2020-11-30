@@ -178,12 +178,15 @@ form {
 						<c:forEach items="${regList }" var="reg">
 							<tr style="height: 40px;">  
 								<td><c:out value="${reg.rowNum }" /></td>
-								<td> 
+								<td>
 									<c:forEach items="${jobList }" var="job">
+										<%-- <c:out value="${job.key }" /> 
+										<c:out value="${job.value }" />
+										<c:out value="${reg.job }" /> --%> 
 										<c:if test="${job.key == reg.job }">	
-											<c:out value="${job.value }" />
-										</c:if>
-									</c:forEach>    
+											<c:out value="${job.value }" /><c:if test="${job.key == '1' }"> (${reg.workFlag }) </c:if>
+										</c:if>  
+									</c:forEach>     
 								</td> 
 								<td> 
 									<c:forEach items="${workList }" var="work">
@@ -272,6 +275,9 @@ form {
 	var workList = "${workList}";
 	var calWorkTime = ${regList[0].calWorkTime};
 	var curPage = ${pageVO.pageNo};
+	
+	var jobList = "${jobList}";  
+	var regList = "${regList}"; 
 	
 	console.log(regNo);
 	console.log(workList);        

@@ -283,8 +283,8 @@
 		setting(); 
 		
 		function openPopup(){
-			var pop = window.open(CONTEXT_PATH +"/addrPop", 'pop',"width=570,height=420, scrollbars=yes, resizable=yes");  
-		}        
+			var pop = window.open(CONTEXT_PATH +"/common/addrPop", 'pop',"width=570,height=420, scrollbars=yes, resizable=yes");  
+		}         
 		   
 		function jusoCallBack(roadFullAddr, siNm, sggNm, emdNm){		// 파라미터 : full주소, 동읍면이름
 			 // 2017년 2월 제공항목이 추가되었습니다. 원하시는 항목을 추가하여 사용하시면 됩니다.
@@ -411,7 +411,7 @@
 	            frm.email.focus(); 
 	            return; 
 	        } else if (!frm.sido.value) { //패스워드를 입력하지 않으면.
-	            alert("시도를 선택하세요.");
+	            alert("ㄹ를 선택하세요.");
 	            return; 
 	        } else if (!frm.sigun.value) { //패스워드를 입력하지 않으면.
 	            alert("시군구를 선택하세요.");

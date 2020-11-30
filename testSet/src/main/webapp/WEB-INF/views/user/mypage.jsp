@@ -202,29 +202,29 @@ form {
 						<td>
 							<select id="time" name="time"> 
 								<c:set var="time" value="${vo.searchTime }"></c:set>
-								<c:if test="${time ==  '1'}"> 
-									<option value="1" selected>상관없음</option>
-									<option value="2">오전</option>
-									<option value="3">오후</option>  
-									<option value="4">하루</option>
+								<c:if test="${time == '0'}"> 
+									<option value="0" selected>상관없음</option>
+									<option value="1">오전</option>
+									<option value="2">오후</option>  
+									<option value="3">하루</option>
 								</c:if>
-								<c:if test="${time ==  '2'}">
-									<option value="1">상관없음</option>
-									<option value="2" selected>오전</option>
-									<option value="3">오후</option>  
-									<option value="4">하루</option>
+								<c:if test="${time == '1'}">
+									<option value="0">상관없음</option>
+									<option value="1" selected>오전</option>
+									<option value="2">오후</option>  
+									<option value="3">하루</option>
 								</c:if>
-								<c:if test="${time ==  '3'}">
-									<option value="1">상관없음</option>
-									<option value="2">오전</option>
-									<option value="3" selected>오후</option>  
-									<option value="4">하루</option>
+								<c:if test="${time == '2'}">
+									<option value="0">상관없음</option>
+									<option value="1">오전</option>
+									<option value="2" selected>오후</option>  
+									<option value="3">하루</option>
 								</c:if>
-								<c:if test="${time ==  '4'}">
-									<option value="1">상관없음</option>
-									<option value="2">오전</option>
-									<option value="3">오후</option>  
-									<option value="4" selected>하루</option>
+								<c:if test="${time == '3'}">
+									<option value="0">상관없음</option>
+									<option value="1">오전</option>
+									<option value="2">오후</option>  
+									<option value="3" selected>하루</option>
 								</c:if>
 							</select> 
 						</td>   
@@ -345,6 +345,8 @@ form {
 	  
 	function setTerm(){
 		var term = $("#term").val(); 
+		
+		dowList = [];
 		
 		$("input[name=dow]").prop("disabled", false); 
 		$("input[name=dow]").prop("checked", false);
@@ -491,7 +493,7 @@ form {
 		     
 		//console.log(params);
 		   
-		$.ajax({
+		$.ajax({ 
     		url : CONTEXT_PATH + "/user/require/requireChk", 
     		type: "POST",
     		data: JSON.stringify(params),     

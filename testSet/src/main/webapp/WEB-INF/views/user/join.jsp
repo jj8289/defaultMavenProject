@@ -10,7 +10,6 @@
 	<title>회원가입</title>
 <style type="text/css">
 	body {
-		margin: 0; 
 		padding: 0;
 	}
 	 
@@ -45,7 +44,8 @@
 	
 	.but {
 		text-align: center;
-	}
+		height: 25px; 
+	} 
 	
 	.but input {
 		border: none;
@@ -53,6 +53,10 @@
 		color: white;
 		width: 100px;
 		height: 30px;
+	}
+	
+	input, select { 
+		height: 22px;
 	}
 	
 	button {
@@ -64,8 +68,13 @@
 	}  
 	 
 	table {
-		width: 800px;
-		height: 180px
+		width: 850px;  
+		height: 180px;
+		margin-left: -100px; 
+	}
+	
+	td {
+		height: 25px;
 	}
 	
 	#addCareer, #delCareer{
@@ -131,9 +140,26 @@
 						<td bgcolor="lightgrey" align="center">핸드폰</td>  
 						<td><input type="text" name="phone" id="phone"> ex) 01012345678</td>
 					</tr>
-					<tr>
-						<td bgcolor="lightgrey" align="center">주소</td>
-						<td><input size="70" type="text" name="addr" id="addr"></td>
+					<tr id="hiddenAddr"> 
+						<td bgcolor="lightgrey" align="center">주소</td>   
+						<td class="sigungu">
+							<label class="item">시도</label>  
+							<select id="sido" class="item"  style="width: 100px;" >  
+							</select>   
+							<label class="item">시군구</label>  
+							<select id="sigun" class="item"  style="width: 125px;">    
+							</select>     
+							<label class="item">동읍면</label>    
+							<select id="dong" name="dong" class="item" style="width: 95px;"></select>  
+						</td>    
+					</tr>
+					<tr> 
+						<td bgcolor="lightgrey" align="center">주소</td>   
+						<td class="sigungu" > 
+							<input size="73" type="text" name="addr" id="addr" onclick="openPopup()">   
+							<button id="findAddrBtn" value="검색" type="button" onclick="openPopup()" class="but">검색</button>
+							<!-- <div class="item"><button id="findAddrBtn" value="검색" type="button" onclick="openPopup()">검색</button></div>   -->
+						</td>     
 					</tr>
 					<tr> 
 						<td bgcolor="lightgrey" align="center">이메일</td>
@@ -162,6 +188,44 @@
 		</div>  
 	</div> 
 <script type="text/javascript">
+	var sido = $("select[id=sido]").val();
+	var sigun = $("select[id=sigun]").val();         //""
+	var dong = $("select[id=dong]").val();			 //null	
+	var kind = $("input[name=kind]:checked").val();  //undefined
+	
+	var sgList = [];
+ 	var dnList = [];
+ 	 
+ 	$("#hiddenAddr").hide(); 
+ 	
+ 	function jusoCallBack(roadFullAddr, siNm, sggNm, emdNm){		// 파라미터 : full주소, 동읍면이름
+ 		 // 2017년 2월 제공항목이 추가되었습니다. 원하시는 항목을 추가하여 사용하시면 됩니다.
+ 		 console.log(roadFullAddr); 
+ 		 console.log(typeof roadFullAddr); 
+ 		 console.log(emdNm);  
+ 		  
+ 		 document.joinForm.addr.value = roadFullAddr;
+ 		 addr = roadFullAddr;  
+ 		 sido = siNm;
+ 		 sigun = sggNm; 
+ 		 dong = emdNm; 
+ 		 
+ 		 console.log(addr); 
+ 		 
+ 		 $("#addr").val(addr);   
+ 		 console.log("addr :  " + $("#addr").val()); 
+ 		 $("#sido").append("<option value='"+ siNm +"' selected>"+ siNm +"</option>");
+ 		 $("#sigun").append("<option value='"+ sggNm +"' selected>"+ sggNm +"</option>");
+ 		 $("#dong").append("<option value='"+ emdNm +"' selected>"+ emdNm +"</option>");
+ 		 $("#sido").val(siNm).prop("disabled", true);  
+ 		 $("#sigun").val(sggNm).prop("disabled", true);  
+ 		 $("#dong").val(emdNm).prop("disabled", true);  
+ 		 //$("#dongCon").show();  
+ 		 //$("#dong").show();   
+ 		 
+ 		$("#hiddenAddr").show(); 
+ 		 // 시군구의 동list 에  emdNm이 있는지 체크해야 함!
+ 	}  
 	
 	function createAddBtn(){
 		console.log($("#career").val());  
@@ -320,4 +384,5 @@
 	    }
 </script>
 </body>
+<script src="${pageContext.request.contextPath}/resources/js/user/join.js"></script>
 </html>

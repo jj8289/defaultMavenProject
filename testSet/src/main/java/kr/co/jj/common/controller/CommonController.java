@@ -85,8 +85,8 @@ public class CommonController {
 	@GetMapping("/addrPop")
 	public String addrPop(Model model) throws Exception {
 		
-		return "company/addrPop";
-	} 
+		return "common/addrPop";
+	}  
 	
 	@PostMapping("/addrPop")
 	@ResponseBody
@@ -109,8 +109,8 @@ public class CommonController {
 		vo.setSggNm(sggNm);
 
 		mv.addObject("res", vo);
-		mv.setViewName("company/addrPop");
-		 
+		mv.setViewName("common/addrPop");
+		
 		return mv; 
 	} 
 	

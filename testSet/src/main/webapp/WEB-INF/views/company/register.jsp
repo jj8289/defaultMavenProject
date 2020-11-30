@@ -557,7 +557,7 @@ input {
 		$("input[name=kind]").prop("checked", false); 
 		$("input[name=work]").prop("checked", false); 
 		
-		if(sel == "PT"){ 
+		if(sel == "1"){   
 			//$("#ptWork").show();
 			$(".forPT").show(); 
 			$("#otherWork").hide();
@@ -696,7 +696,7 @@ input {
 						}
 					}
 				//PT 외 다른 직종
-				} else if(frm.job.value != "PT"){
+				} else if(frm.job.value != "1"){
 					if(!frm.work.value){
 						alert("업무 내용을 작성해주세요.");
 						return;
@@ -813,7 +813,7 @@ input {
 			console.log("one!!!");
 			dowList = []; 
 		} 
- 		if($("#job").val() == "PT" && $("#kindBox input:checked").val() == "os"){
+ 		if($("#job").val() == "1" && $("#kindBox input:checked").val() == "os"){
 			ptDetailList.push($("#micro").val());
 			ptDetailList.push($("#eswt").val());
 			ptDetailList.push($("#knee").val());

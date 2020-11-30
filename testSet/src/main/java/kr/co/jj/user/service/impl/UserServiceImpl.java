@@ -44,4 +44,8 @@ public class UserServiceImpl implements UserService{
 		userDAO.updateRequire(vo);
 	}
 
+	@Override
+	public void updateUser(UserVO vo) throws Exception {
+		userDAO.updateUser(vo);
+	}
 }

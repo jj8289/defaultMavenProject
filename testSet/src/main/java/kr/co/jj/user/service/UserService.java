@@ -23,4 +23,6 @@ public interface UserService {
 	public RequireVO selectRequire(UserVO user) throws Exception;
 	
 	public void updateRequire(RequireVO vo) throws Exception;
+	
+	public void updateUser(UserVO vo) throws Exception;
 }

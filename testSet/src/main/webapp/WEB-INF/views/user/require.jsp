@@ -135,10 +135,10 @@ form p {
 						<td bgcolor="lightgrey" align="center">시간</td> 
 						<td>
 							<select id="time" name="time">
-								<option value="1">상관없음</option>
-								<option value="2">오전</option>
-								<option value="3">오후</option> 
-								<option value="4">하루</option>
+								<option value="0">상관없음</option>
+								<option value="1">오전</option>
+								<option value="2">오후</option> 
+								<option value="3">하루</option>
 							</select>
 						</td>   
 					</tr> 

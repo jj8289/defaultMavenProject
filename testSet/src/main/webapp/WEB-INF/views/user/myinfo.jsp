@@ -106,11 +106,11 @@ input, select {
 					<tr>  	
 						<td bgcolor="lightgrey" align="center">직업</td>    
 						<td>
-							<select>
+							<select id="job">
 								<option value="">선택</option>
 								<c:forEach var="item" items="${jobList }">
 									<c:choose>
-										<c:when test="${item.key == jobNm }">
+										<c:when test="${item.key == userJobNo }">
 											<option id="${item.key }" value="${item.key }" selected>${item.value }</option>
 										</c:when>
 										<c:otherwise>
@@ -192,4 +192,9 @@ input, select {
 		</div>   
 	</div>     
 </body>
+<script type="text/javascript">
+	var userNo = ${user.userNo};
+	var param = {};
+</script>
+<script src="${pageContext.request.contextPath}/resources/js/user/myInfo.js"></script>
 </html>

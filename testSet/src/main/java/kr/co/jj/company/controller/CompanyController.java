@@ -424,16 +424,6 @@ public class CompanyController {
 	}
 	
 	
-	/**
-	 * 매칭페이지
-	 */
-	@GetMapping("/match")
-	public String match(Model model) throws Exception {
-		return "company/match";
-	}
-	
-	
-	
 	// 아이디 중복 체크
 	public boolean idDupleChk(CompanyVO company) throws Exception {
 		

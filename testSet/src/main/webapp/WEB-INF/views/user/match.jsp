@@ -123,22 +123,21 @@ form {
             <input type="hidden" name="regNo" />
 			<div class="temp"></div>
 			<h2 class="title">매치</h2>   
-			<div class="temp"></div>   
-			<div class="infocon"><input type="button" value="내 정보 수정" onclick="location.href='${pageContext.request.contextPath}/company/myinfo'"></div>
-			<div class="temp"></div>   
-			<h3 class="subtitle">상태</h3>    
-			<div>  
+			<div class="temp"></div>    
+			<p class="but"><input type="button" id="matchBtn" onclick="#" value="매칭" class="btn" style="height: 100px;"></p>
+			<div class="temp"></div>    
+			<h3 class="subtitle">매칭 상태</h3>    
+			<div style="margin: 0 auto;">   
 				<table> 
 					<tr style="height: 50px">      
-						<td>매칭 상태</td> 
-						<td id="switch_td" style="text-align: center; width: 150px;">    
-							<label class="switch">
+						<td id="switch_td" style="padding-left: 13px; text-align: center;">
+							<p id="off">OFF</p>       
+							<label class="switch" style="text-align: center;"> 
 							    <input type="checkbox" id="switchBtn" onclick="toggle(this)"> 
 							    <span class="slider round"></span>
-							</label>   
-							<p id="on_off_match"></p> 
+							</label> 
+							<p id="on">ON</p>  
 						</td>       
-						<!-- <td><button id="save" value="저장" type="button" onclick="saveChk()" class="btn" style="width: 50px;">저장</button></td> -->
 					</tr>      
 				</table>     
 			</div>
@@ -262,6 +261,20 @@ form {
 		</form>
 	</div>        
 <script type="text/javascript">
+$("#on").hide();
+$("#off").hide();
+
+function toggle(item) {
+	if(item.checked == true){
+		//matchStat = 'Y';
+		$("#on").show();
+		$("#off").hide();
+	} else {
+		//matchStat = 'N';
+		$("#on").hide();
+		$("#off").show(); 
+	} 
+} 
 </script>	
 </body>
 </html>
