@@ -508,6 +508,7 @@
 	     
 	    function join(){
 	    	console.log("join()"); 
+	    	addr = $("#addr").val(); 
 	    	console.log(addr);
 	    	console.log($("#addr").val());
 	    	console.log($("input[name=kind]:checked").val());
@@ -550,11 +551,14 @@
 	    			console.log("join");  
 	    			
 	    			if(data == 'success'){
-	        			//location.href = CONTEXT_PATH + "/";  
-	    			} else {  
+	        			location.href = CONTEXT_PATH + "/";  
+	    			} else if(data == 'idDup') {  
 	    				alert("ID 또는 PW를 확인해주세요.");
-	    				location.href = CONTEXT_PATH + "/company/join";
-	    			}  
+	    				//location.href = CONTEXT_PATH + "/company/join";
+	    			} else {
+	    				alert("사업자 등록번호를 확인해주세요.");
+	    				//location.href = CONTEXT_PATH + "/company/join";
+	    			} 
 	    		},
 	    		error: function(data){ 
 	    		   		location.href = CONTEXT_PATH + "/company/join";

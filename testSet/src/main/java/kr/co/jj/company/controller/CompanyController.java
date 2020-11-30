@@ -109,8 +109,12 @@ public class CompanyController {
 			 
 			return "success"; 
 		}
-		 
-		return "fail";
+		
+		if(chk) {
+			return "idDup";
+		} else {
+			return "busNumDup";
+		}
 	}
 	
 	@GetMapping("/register")
@@ -421,7 +425,7 @@ public class CompanyController {
 	
 	
 	/**
-	 * 마이페이지
+	 * 매칭페이지
 	 */
 	@GetMapping("/match")
 	public String match(Model model) throws Exception {
