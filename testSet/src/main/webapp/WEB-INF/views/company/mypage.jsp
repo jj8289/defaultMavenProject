@@ -146,6 +146,7 @@ form {
 			<!-- <h3 class="subtitle">매칭 조건</h3>   -->
 			<div class="regCon">
 				<table id="listTable">
+				<c:if test="${not empty regList }">
 					<caption style="height: 50px;">매칭 조건 리스트  [ 총 개수 : ${pageVO.rowCount } ]</caption> 
 					<colgroup>   
 						<col style="width: 60px">
@@ -174,7 +175,6 @@ form {
 						</tr>
 					</thead>
 					<tbody id="listBody"> 
-						<c:if test="${not empty regList }">
 						<c:forEach items="${regList }" var="reg">
 							<tr style="height: 40px;">  
 								<td><c:out value="${reg.rowNum }" /></td>
@@ -225,15 +225,15 @@ form {
 								<td><input type="button" value="상세" onclick="gotoRegDetail(${reg.regNo})"></td> 
 							</tr> 
 						</c:forEach> 
-						</c:if>
+						</c:if>	
 						<c:if test="${empty regList }">
-							등록된 매칭 조건이 없습니다.
+							<div style="text-align: center;"><p>등록된 매칭 조건이 없습니다.</p></div>
 						</c:if>
-					</tbody>
+					</tbody> 
 				</table>
 			</div>  
 			<div class="page-navi">
-				<c:if test="${pageVO.pageNo != 0}"> 
+				<c:if test="${not empty regList}"> 
 					<c:if test="${pageVO.pageBlock > 1}">
 						<a href="javascript:fn_movePage(1)">맨앞 </a>
 					</c:if>
@@ -260,7 +260,7 @@ form {
 					<c:if test="${pageVO.pageBlock < pageVO.pageBlockCount }">	
 						<a href="javascript:fn_movePage(${pageVO.pageCount})">맨뒤</a>
 					</c:if>
-				</c:if>	 
+				</c:if>
 			</div> 
 			<p class="but" align="center" > 
 				<input class="btn" type="button" value="홈으로" onclick="goHome()">
