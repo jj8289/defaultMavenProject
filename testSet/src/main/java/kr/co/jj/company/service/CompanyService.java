@@ -2,8 +2,8 @@ package kr.co.jj.company.service;
 
 import java.util.List;
 
+import kr.co.jj.common.vo.AddrDTO;
 import kr.co.jj.common.vo.AddrVO;
-import kr.co.jj.company.vo.AddrDTO;
 import kr.co.jj.company.vo.CompanyVO;
 import kr.co.jj.company.vo.RegisterVO;
 

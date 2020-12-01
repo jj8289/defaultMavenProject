@@ -1,23 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="kr.co.jj.match.dao.matchDAO">
-
-<select id="selectMatchListForUser" parameterType="RequireVO">
-	SELECT  *
-	  FROM  TB_REQUIRE A
-	       ,TB_USER B
-	       ,TB_REGISTER C
-	 WHERE  A.USER_NO = B.USER_NO
-	   AND  B.JOB_NO = C.JOB
-	   AND  A.SEARCH_TYPE = C.WORK_TYPE
-	   AND  A.USER_NO = #{userNo}
-</select>
+<mapper namespace="kr.co.jj.match.dao.MatchDAO">
 
 <sql id="userPerFectIf">
-	<if test="salary_hour != '' and salary_hour != null">
+	<if test="salaryHour != '' and salaryHour != null">
 	   AND  (A.SALARY_HOUR REQ_SAL_HOUR <![CDATA[<=]]> C.SALARY_HOUR REG_SAL_HOUR OR A.SALARY_HOUR REQ_SAL_HOUR<![CDATA[<=]]> C.CAL_SALARY_HOUR CAL_SALLARY_HOUR)
 	</if>
-	<if test="salary_day != '' and salary_day != null">
+	<if test="salaryDay != '' and salaryDay != null">
 	   AND  (A.SALARY_DAY REQ_SAL_DAY <![CDATA[<=]]> C.SALARY_DAY REG_SAL_DAY OR A.SALARY_DAY REQ_SAL_DAY<![CDATA[<=]]> C.CAL_SALARY_DAY CAL_SALLARY_DAY)
 	</if>
 	<if test="searchType == 'part'">
@@ -32,8 +21,37 @@
 	<if test="searchTime != '0'">
 	   AND SEARCH_TIME = TIME_FLAG
 	</if>
-	<if test="location != '0'">
-	   AND SEARCH_TIME = TIME_FLAG
-	</if>
 </sql>
+
+<sql id="locationIf">
+	<!-- 리스트로 addr_no 리스트 가져와서 IN 절에 넣기 -->
+<!-- 	<if test="">
+	SELECT DISTINCT AA.*
+ 	 FROM (
+ 	 
+ 	 
+ 	 
+ 	 
+	    ) AA
+		, TB_ADDR E
+	WHERE 1=1  
+	  AND  E.ADDR_NO IN (407, 408)	 
+	</if> -->
+</sql> 
+
+
+<select id="selectMatchListForUser" parameterType="RequireVO" resultType="UserMatchVO">
+	SELECT  A.USER_NO
+	 	   , C.* 
+	  FROM  TB_REQUIRE A
+	       ,TB_USER B
+	       ,TB_REGISTER C
+	       ,TB_COMPANY D
+	 WHERE  A.USER_NO = B.USER_NO
+	   AND  B.JOB_NO = C.JOB
+	   AND  A.SEARCH_TYPE = C.WORK_TYPE
+	   AND  D.COMPANY_NO  = C.COMPANY_NO 
+	   AND  A.USER_NO = #{userNo}
+	   <include refid="userPerFectIf" />
+</select>
 </mapper>

@@ -17,10 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.co.jj.common.service.CommonService;
 import kr.co.jj.common.vo.AddrApiVO;
+import kr.co.jj.common.vo.AddrDTO;
 import kr.co.jj.common.vo.AddrVO;
 import kr.co.jj.company.service.CompanyService;
-import kr.co.jj.company.vo.AddrDTO;
 
 
 @Controller
@@ -28,6 +29,9 @@ import kr.co.jj.company.vo.AddrDTO;
 public class CommonController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(CommonController.class);
+	
+	@Autowired
+	CommonService commonService;
 	
 	@Autowired
 	CompanyService companyService;
@@ -64,7 +68,7 @@ public class CommonController {
 		
 		List<AddrVO> sglist = new ArrayList<>();
 		
-		sglist = companyService.selectSgList(dto);
+		sglist = commonService.selectSgList(dto);
 		
 		return sglist;   
 	}
@@ -77,7 +81,7 @@ public class CommonController {
 		
 		List<AddrVO> dnlist = new ArrayList<>();
 		 
-		dnlist = companyService.selectDnList(dto); 
+		dnlist = commonService.selectDnList(dto); 
 		 
 		return dnlist;   
 	}

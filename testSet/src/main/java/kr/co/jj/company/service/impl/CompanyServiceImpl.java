@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.jj.common.vo.AddrDTO;
 import kr.co.jj.common.vo.AddrVO;
 import kr.co.jj.company.dao.CompanyDAO;
 import kr.co.jj.company.service.CompanyService;
-import kr.co.jj.company.vo.AddrDTO;
 import kr.co.jj.company.vo.CompanyVO;
 import kr.co.jj.company.vo.RegisterVO;
 

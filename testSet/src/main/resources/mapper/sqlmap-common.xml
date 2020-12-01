@@ -7,6 +7,12 @@
 		 WHERE  JOB_NM = #{jobNm}
 	</select>
 	
+	<select id="selectJobNm" parameterType="String" resultType="String">
+		SELECT  JOB_NM
+		  FROM  TB_JOB
+		 WHERE  JOB_NO = #{jobNo}
+	</select>
+	
 	<select id="selectSdList" resultType="AddrVO">
 		SELECT	ROW_NUMBER() OVER (ORDER BY SD_NM) AS ROWNUM
 			   ,SD_NM

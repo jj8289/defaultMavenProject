@@ -349,7 +349,7 @@
 	              , userPw: $('#userPw').val()
 	              , userNm: $('#userNm').val()
 	              , age: $('#age').val()
-	              , jobNm: $('#job').val()
+	              , jobNo: $('#job').val()
 	              , sex: $('input[name=sex]:checked').val()
 	              , career: $('#career').val()
 	              , phone: $('#phone').val()

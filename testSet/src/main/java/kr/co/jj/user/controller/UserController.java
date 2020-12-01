@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import kr.co.jj.common.service.CommonService;
 import kr.co.jj.common.vo.AddrVO;
 import kr.co.jj.common.vo.Job;
-import kr.co.jj.company.vo.AddrDTO;
+import kr.co.jj.common.vo.AddrDTO;
 import kr.co.jj.user.service.UserService;
 import kr.co.jj.user.vo.RequireVO;
 import kr.co.jj.user.vo.UserVO;
@@ -74,14 +74,9 @@ public class UserController {
 	@PostMapping(value = "/join/joinChk")
 	public String joinChk(UserVO user, Model model) throws Exception{
 		
-		String jobNo = "";
-		
 		// 아이디 중복 체크
 		boolean chk = idDupleChk(user);
 		if(!chk) { 
-			jobNo = String.valueOf(commonService.selectJobNo(user.getJobNm()));
-			user.setJobNo(jobNo);  
-			 
 			userService.insertUser(user);
 			
 			return "success";
@@ -116,9 +111,20 @@ public class UserController {
 	
 	/**
 	 * 조건 등록
+	 * @throws Exception 
 	 */
 	@GetMapping("/require")
-	public String require(Model model) {
+	public String require(Model model) throws Exception {
+		
+		AddrDTO dto = new AddrDTO();
+		dto.setSdNm("경기도");
+		dto.setSgNm("김포시");
+		
+		List<AddrVO> addrList = commonService.selectDnList(dto); 
+
+		addrList.toString();
+		
+		model.addAttribute("addrList", addrList);
 		
 		return "user/require";
 	}
@@ -247,6 +253,16 @@ public class UserController {
 			
 			model.addAttribute("vo", requireVO);
 		}  
+		
+		AddrDTO dto = new AddrDTO();
+		dto.setSdNm("경기도");
+		dto.setSgNm("김포시");
+		
+		List<AddrVO> addrList = commonService.selectDnList(dto); 
+
+		addrList.toString();
+		
+		model.addAttribute("addrList", addrList);
 		
 		
 		return "user/mypage";

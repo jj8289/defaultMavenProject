@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,6 +40,7 @@ body {
 
 .minicon {
  	margin: 0 auto;   
+ 	width: 800px;
 } 
 
 table { 
@@ -68,6 +70,18 @@ form p {
 #location {
 	display: flex; 
 } 
+
+label {
+	display:inline-block; width:100px; line-height:30px; 
+}   
+
+select {
+	height: 30px; 
+}
+
+input {
+	height: 22px;
+}
 </style>   
 </head>    
 <body>   
@@ -78,10 +92,10 @@ form p {
 		<div class="minicon">
 			<form id="regForm" name="regForm">   
 				<table cellspacing="3" style="height: 60px;">
-					<!-- <colgroup>  
-	   					<col width="30%"/>
-	    				<col width="30%"/> 
-	 				</colgroup> -->  
+					<colgroup>  
+	   					<col width="15%"/> 
+	    				<col width="85%"/>  
+	 				</colgroup>    
 	 				<tr> 
 						<td bgcolor="lightgrey" align="center">근무기간</td> 
 						<td>
@@ -142,7 +156,16 @@ form p {
 							</select>
 						</td>   
 					</tr> 
-					<tr onchange="selectLoc()"> 
+					<tr onchange="selectLoc()">
+						<td bgcolor="lightgrey" align="center" rowspan="2">동/읍/면</td>  
+						<td>   
+							<label><input type="checkbox" name="loc" value="0"> 전체</label>
+							<c:forEach items="${addrList }" var="dong">
+								<label><input type="checkbox" name="loc" value="${dong.addrNo }">${dong.dnNm }</label>
+							</c:forEach>
+						</td>
+					</tr>
+					<!-- <tr onchange="selectLoc()"> 
 						<td bgcolor="lightgrey" align="center" rowspan="2">동/읍/면</td>  
 						<td id="location" rowspan="2">     
 							<label><input type="checkbox" name="loc" value="0"> 전체</label>
@@ -165,7 +188,7 @@ form p {
 							<label><input type="checkbox" name="loc" value="13"> 마산동</label>
 							<label><input type="checkbox" name="loc" value="14"> 운양동</label>
 						</td> 
-					</tr>   
+					</tr> -->   
 				</table> 
 				<p class="but" align="center" > 
 					<button id="reg" value="등록" type="button" onclick="validationChk()" class="btn">등록</button>  
@@ -182,6 +205,10 @@ form p {
 	var dowList = [];
 	var locList = [];
 	var frm = "";
+	var addrList = "${addrList}";
+	
+	console.log(addrList);
+	
 	
 	$(document).ready(function () {
 		$("#for_one").hide();

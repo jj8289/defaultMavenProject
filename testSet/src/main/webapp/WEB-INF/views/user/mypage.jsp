@@ -55,7 +55,8 @@ body {
  
 .regCon {
  	margin: 0 auto;
- 	margin-top: 30px;    
+ 	margin-top: 30px;   
+ 	width: 800px;
 } 
  
 table { 
@@ -64,7 +65,7 @@ table {
 
 form {
 	margin: 20px;
-}
+} 
  
 .but {
 	display: flex;
@@ -98,7 +99,17 @@ form {
 
 #salary_hour, #salary_day{
 	height: 24px; 
-}   
+}  
+
+label {
+	display:inline-block; width:100px; line-height:30px; 
+} 
+select {
+	height: 30px; 
+}
+input {
+	height: 22px;
+}
 </style>        
 </head>    
 <body>   
@@ -110,7 +121,7 @@ form {
 		<div class="temp"></div>   
 		<h3 class="subtitle">상태</h3>    
 		<div>  
-			<table> 
+			<table>   
 				<tr style="height: 50px">      
 					<td>매칭 상태</td> 
 					<td id="switch_td" style="text-align: center; width: 150px;">    
@@ -130,7 +141,11 @@ form {
 		<div class="regCon">
 			<form id="regForm" name="regForm">   
 				<table cellspacing="3" style="height: 60px;">
-	 				<tr>  	
+					<colgroup>  
+	   					<col width="15%"/> 
+	    				<col width="85%"/>   
+ 					</colgroup>  
+	 				<tr>  	 
 						<td bgcolor="lightgrey" align="center">근무기간</td>  
 						<td>
 							<select id="term" name="term" onchange="setTerm()">
@@ -229,7 +244,16 @@ form {
 							</select> 
 						</td>   
 					</tr> 
-					<tr onchange="selectLoc()"> 
+					<tr onchange="selectLoc()">
+						<td bgcolor="lightgrey" align="center" rowspan="2">동/읍/면</td>  
+						<td>   
+							<label><input type="checkbox" name="loc" id="loc0" value="0"> 전체</label>
+							<c:forEach items="${addrList }" var="dong">
+								<label><input type="checkbox" name="loc" id="loc${dong.addrNo }"  value="${dong.addrNo }">${dong.dnNm }</label>
+							</c:forEach>
+						</td>
+					</tr>
+					<!-- <tr onchange="selectLoc()"> 
 						<td bgcolor="lightgrey" align="center" rowspan="2">동/읍/면</td>  
 						<td id="location" rowspan="2">     
 							<label><input type="checkbox" name="loc" id="loc0" value="0"> 전체</label>
@@ -253,7 +277,7 @@ form {
 							<label><input type="checkbox" name="loc" id="loc14" value="14"> 운양동</label>
 
 						</td> 
-					</tr>    
+					</tr> -->    
 				</table>  
 				<p class="but" align="center" > 
 					<button id="reg" value="변경" type="button" onclick="validationChk()" class="btn">변경</button>  
@@ -279,18 +303,42 @@ form {
 	var locLen = locList.length;  
 	var frm = document.regForm;     
 	var reg = "${vo}";    
-	var matchStat = "${user.matchStatus}"; 
+	var matchStat = "${user.matchStatus}";
+	var term = "";
 	
-	console.log(salaryHour + " | " + salaryDay); 
+	console.log(salaryHour + " | " + salaryDay);
+	console.log(locList);
+	
+	$(function() {
+		$.datepicker.setDefaults({ 
+			 dateFormat: 'yy-mm-dd' //Input Display Format 변경
+             ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+             ,showMonthAfterYear:true //년도 먼저 나오고, 뒤에 월 표시
+             ,changeYear: true //콤보박스에서 년 선택 가능
+             ,changeMonth: true //콤보박스에서 월 선택 가능                
+             ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
+             ,buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
+             ,buttonImageOnly: true //기본 버튼의 회색 부분을 없애고, 이미지만 보이게 함
+             ,buttonText: "선택" //버튼에 마우스 갖다 댔을 때 표시되는 텍스트                
+             ,yearSuffix: "년" //달력의 년도 부분 뒤에 붙는 텍스트
+             ,monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'] //달력의 월 부분 텍스트
+             ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip 텍스트
+             ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 부분 텍스트
+             ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 부분 Tooltip 텍스트
+             ,minDate: "-1M" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+             ,maxDate: "+1M" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
+		}); 
+		     
+		$('#datepicker').datepicker();  
+		$('#datepicker_start').datepicker();  
+		       
+		//초기값을 오늘 날짜로 설정 
+        //$('#datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
+	});  
+	
+	init();
 	
 	$(document).ready(function () {    
-		$("#for_one").hide();
-		$("#for_date").hide();
-		$("#for_dow").hide();
-		
-		//$("#salaryDayBox").show();
-		
-		
 		if(salaryHour != ""){
 			$("#salaryHourBox").show();
 			$("#salaryDayBox").hide();
@@ -303,7 +351,7 @@ form {
 		
 		for(var i = 0; i<locLen; i++){ 
 			document.getElementById("loc"+locList[i]).checked = true; 
-		}  
+		}   
 		   
 		if(dowList[0] != '""'){
 			for(var i = 0; i<dowList.length; i++){ 
@@ -320,17 +368,18 @@ form {
 			$("#on_off_match").append("ON");  
 		} 
 		
-		init(); 
 	});    
 	
 	function init(){
-		var term = $("#term").val(); 
+		term = $("#term").val(); 
+		$("#salaryBox").text("원 이상");
 		
 		if(term == "one"){ 
 			$("#for_one").show(); 
 			$("#for_date").hide();  
 			$("#for_dow").hide();
-			document.getElementById("datepicker").value = "${vo.searchDate}";   
+			$("#datepicker").val("${vo.searchDate}"); 	
+			//document.getElementById("datepicker").value = "${vo.searchDate}";   
 		}else if(term == "part" || term == "sat") {
 			$("#for_one").hide();
 			$("#for_date").show(); 
@@ -369,33 +418,6 @@ form {
 		}            
 	} 
       
-	$(function() {
-		$.datepicker.setDefaults({ 
-			 dateFormat: 'yy-mm-dd' //Input Display Format 변경
-             ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
-             ,showMonthAfterYear:true //년도 먼저 나오고, 뒤에 월 표시
-             ,changeYear: true //콤보박스에서 년 선택 가능
-             ,changeMonth: true //콤보박스에서 월 선택 가능                
-             ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
-             ,buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif" //버튼 이미지 경로
-             ,buttonImageOnly: true //기본 버튼의 회색 부분을 없애고, 이미지만 보이게 함
-             ,buttonText: "선택" //버튼에 마우스 갖다 댔을 때 표시되는 텍스트                
-             ,yearSuffix: "년" //달력의 년도 부분 뒤에 붙는 텍스트
-             ,monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'] //달력의 월 부분 텍스트
-             ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip 텍스트
-             ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 부분 텍스트
-             ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 부분 Tooltip 텍스트
-             ,minDate: "-1M" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
-             ,maxDate: "+1M" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
-		}); 
-		     
-		$('#datepicker').datepicker();  
-		$('#datepicker_start').datepicker();  
-		       
-		//초기값을 오늘 날짜로 설정 
-        //$('#datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)
-	});  
-	 
 	function calDate(mon){
 		var today = new Date();
 		var dd = today.getDate();
@@ -555,8 +577,12 @@ form {
 			}   
 		}  
 		 
-		//console.log(dowList); 
-		
+		if(term == "part" && dowList[0] == "6" && dowList[1] == undefined){
+			$("input[id=dow6]").prop("checked", true);  
+			$("input[name=dow]").prop("disabled", true);      
+			$("select[name=term]").val("sat").prop("checked", true);  
+			
+		}    
 	} 
 	
 	function selectLoc(){

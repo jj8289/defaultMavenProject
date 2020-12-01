@@ -137,7 +137,7 @@ input {
 						</td>  
 					</tr> 
 					<tr id="for_dow" onchange="selectDow()">
-						<td bgcolor="lightgrey" align="center">요일</td>
+						<td bgcolor="lightgrey" align="center">요일</td> 
 						<td id="dayofweekend"> 
 							<label><input type="checkbox" name="dow" value="0"> 상관없음</label> 
 							<label><input type="checkbox" name="dow" value="1"> 월요일</label>

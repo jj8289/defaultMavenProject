@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 
 import kr.co.jj.common.dao.CommonDAO;
 import kr.co.jj.common.service.CommonService;
+import kr.co.jj.common.vo.AddrDTO;
 import kr.co.jj.common.vo.AddrVO;
 import kr.co.jj.common.vo.Job;
 import kr.co.jj.common.vo.WorkFlag;
-import kr.co.jj.company.vo.AddrDTO;
 
 @Service
 public class CommonServiceImpl implements CommonService{
@@ -69,5 +69,12 @@ public class CommonServiceImpl implements CommonService{
 	@Override
 	public List<AddrVO> selectDnList(AddrDTO dto) throws Exception {
 		return dao.selectDnList(dto);
+	}
+
+
+
+	@Override
+	public String selectJobNm(String jobNo) throws Exception {
+		return dao.selectJobNm(jobNo);
 	}
 }

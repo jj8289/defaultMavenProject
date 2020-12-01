@@ -13,7 +13,7 @@ public class RequireVO {
 	private String searchStart;
 	private String searchEnd;
 	private String searchDow;
-	private String searchTime;		// 1 : 상관없음 / 2 : 오전 / 3 : 오후 / 4 : 하루	
+	private String searchTime;		// 0 : 상관없음 / 1 : 오전 / 2 : 오후 / 3 : 하루	
 	private String location;
 	private List<String> dowList;
 	private List<String> locList; 

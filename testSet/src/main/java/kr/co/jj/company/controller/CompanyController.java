@@ -1,6 +1,5 @@
 package kr.co.jj.company.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,16 +21,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.jj.common.service.CommonService;
+import kr.co.jj.common.vo.AddrDTO;
 import kr.co.jj.common.vo.AddrVO;
-import kr.co.jj.common.vo.Job;
 import kr.co.jj.common.vo.PageVO;
 import kr.co.jj.company.service.CompanyService;
-import kr.co.jj.company.vo.AddrDTO;
 import kr.co.jj.company.vo.CompanyVO;
 import kr.co.jj.company.vo.RegisterDTO;
 import kr.co.jj.company.vo.RegisterVO;
 import kr.co.jj.user.controller.UserController;
-import kr.co.jj.user.vo.UserVO;
 
 @Controller
 @RequestMapping("/company")

@@ -1,6 +1,6 @@
-package kr.co.jj.company.vo;
+package kr.co.jj.common.vo;
 
-public class AddrDTO {
+public class AddrDTO { 
 	private String sdNm;
 	private String sgNm;
 	private String dnNm;

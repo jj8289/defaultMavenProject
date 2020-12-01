@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import kr.co.jj.common.vo.AddrDTO;
 import kr.co.jj.common.vo.AddrVO;
-import kr.co.jj.company.vo.AddrDTO;
 
 @Repository
 public interface CommonDAO {
 	public int selectJobNo(String jobNm) throws Exception;
+	
+	public String selectJobNm(String jobNo) throws Exception;
 	
 	public List<AddrVO> selectSdList() throws Exception;
 	
