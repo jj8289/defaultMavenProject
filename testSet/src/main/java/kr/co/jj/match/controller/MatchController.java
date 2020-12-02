@@ -3,6 +3,7 @@ package kr.co.jj.match.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -11,9 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mysql.jdbc.log.Log;
 
+import kr.co.jj.common.service.CommonService;
+import kr.co.jj.common.vo.Job;
+import kr.co.jj.common.vo.PageVO;
 import kr.co.jj.company.controller.CompanyController;
 import kr.co.jj.company.vo.CompanyVO;
 import kr.co.jj.match.service.MatchService;
@@ -36,33 +42,80 @@ public class MatchController {
 	CompanyController companyController;
 	
 	@Autowired
+	CommonService commonService;
+	
+	@Autowired
 	UserService userService;
 	
 	@Autowired
 	MatchService matchService;
 	
+	@GetMapping("/user/test")
+	public String test() {
+		return "user/matchPop";
+	}
+	
 	/**
 	 * 유저 매칭
 	 */
 	@GetMapping("/user/match")
-	public String matchUser(Model model, HttpSession session) throws Exception {
+	public String matchUser(Model model, HttpSession session,@ModelAttribute("pageVO") PageVO param, @RequestParam(required = false, defaultValue = "1") String pageNo, @RequestParam(required = false, defaultValue = "0") String rowCount) throws Exception {
+		 
+		System.out.println("rowCount : " + rowCount);
+		 
 		String id = (String)session.getAttribute("usrloginId");
 		
 		UserVO user = userController.getUser(id);
 		
 		model.addAttribute("user", user);
 		
+		param.setPageNo(Integer.parseInt(pageNo));
+		System.out.println("pageNo : " + pageNo);
+		System.out.println(param.toString());
+		
+		
 		RequireVO reqVo = userService.selectRequire(user);
 		logger.debug(reqVo.toString());
+		
+		if(!rowCount.equals("0")) {
+			reqVo.setRowCount(Integer.parseInt(rowCount));
+			reqVo.setPageNo(Integer.parseInt(pageNo));
+		} 
+		
 		model.addAttribute("reqVo", reqVo);
 		
-		List<UserMatchVO> list = new ArrayList<UserMatchVO>();
-		list = matchService.selectMatchListForUser(reqVo);
+		List<UserMatchVO> matchList = new ArrayList<UserMatchVO>();
 		
-		logger.debug(list.toString());
+		if(user.getJobNo().equals("1")) {
+			//PT
+			matchList = matchService.selectMatchListForUserPT(reqVo);
+		} else {
+			//Others
+			matchList = matchService.selectMatchListForUserOthers(reqVo);
+		}
+		logger.debug(matchList.toString());
 		
-		return "user/match"; 
-	}
+		model.addAttribute("matchList", matchList);
+		
+		int rowCnt = matchService.selectMatchTotCnt(reqVo);
+		model.addAttribute("rowCnt", rowCnt);
+		
+		param.setRowCount(rowCnt);
+		//param.setPageSize(5);
+		reqVo.setRowCount(rowCnt);
+		//reqVo.setPageSize(5); 
+		reqVo.setPageNo(Integer.parseInt(pageNo));
+		  
+		
+		for(Job job : Job.values()) {
+			String jobNm = job.name();
+			if(jobNm.equals(matchList.get(0).getJobNm())) {
+				model.addAttribute("jobNm", job.getName());
+			}
+		}
+		
+		return "user/match";  
+	} 
 	
 	/**
 	 * 병원 매칭
@@ -77,4 +130,6 @@ public class MatchController {
 		
 		return "company/match"; 
 	}
+	
+	
 }

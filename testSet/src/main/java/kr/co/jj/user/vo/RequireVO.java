@@ -2,7 +2,9 @@ package kr.co.jj.user.vo;
 
 import java.util.List;
 
-public class RequireVO {
+import kr.co.jj.common.vo.PageVO;
+
+public class RequireVO extends PageVO{
 	
 	private String reqNo;
 	private String userNo;

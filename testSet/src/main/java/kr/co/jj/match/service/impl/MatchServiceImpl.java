@@ -17,9 +17,17 @@ public class MatchServiceImpl implements MatchService{
 	private MatchDAO matchDao;
 
 	@Override
-	public List<UserMatchVO> selectMatchListForUser(RequireVO vo) throws Exception {
-		return matchDao.selectMatchListForUser(vo);
+	public List<UserMatchVO> selectMatchListForUserPT(RequireVO vo) throws Exception {
+		return matchDao.selectMatchListForUserPT(vo);
 	}
-	
-	
+
+	@Override
+	public List<UserMatchVO> selectMatchListForUserOthers(RequireVO vo) throws Exception {
+		return matchDao.selectMatchListForUserOthers(vo);
+	}
+
+	@Override
+	public int selectMatchTotCnt(RequireVO reqVo) throws Exception {
+		return matchDao.selectMatchTotCnt(reqVo);
+	}
 }

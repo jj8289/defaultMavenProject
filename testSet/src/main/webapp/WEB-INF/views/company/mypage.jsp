@@ -276,6 +276,9 @@ form {
 	var calWorkTime = ${regList[0].calWorkTime};
 	var curPage = ${pageVO.pageNo};
 	
+	var pageVO = "${pageVO}";
+	console.log(pageVO);  
+	
 	var jobList = "${jobList}";  
 	var regList = "${regList}"; 
 	

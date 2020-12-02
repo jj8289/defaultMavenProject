@@ -13,9 +13,9 @@ public class PageVO {
 	private static final int DEFAULT_PAGENO = 1;
 	private static final int DEFAULT_PAGESIZE = 5;
 	private static final int DEFAULT_PAGEBLOCK = 1;
-	private static final int DEFAULT_PAGEBLOCKSIZE = 5;
-	
-	// 현재 페이지 번호
+	private static final int DEFAULT_PAGEBLOCKSIZE = 5; 
+	  
+	// 현재 페이지 번호  
 	private int pageNo = DEFAULT_PAGENO;
 	// 한 페이지에 보여줄 게시글 개수
 	private int pageSize = DEFAULT_PAGESIZE;

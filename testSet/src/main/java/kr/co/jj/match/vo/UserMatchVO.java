@@ -1,55 +1,71 @@
 package kr.co.jj.match.vo;
 
-public class UserMatchVO {
+import kr.co.jj.common.vo.PageVO;
+
+public class UserMatchVO extends PageVO{
 	
+	private String rno;
+	private String reqNo; 
 	private String userNo;           
-	private String regNo;             
-	private String companyNo;         
-	private String salaryHour;       
-	private String salaryDay;         
-	private String workType;          
-	private String workDate;          
-	private String workStart;         
-	private String workDow;           
-	private String timeFlag;          
-	private String workStTime;        
-	private String workEnTime;        
-	private String job;               
-	private String sex;               
-	private String age;               
-	private String career;            
-	private String createDate;        
-	private String lunchStTime;       
-	private String lunchEnTime;       
-	private String workFlag;          
-	private String work;              
-	private String detailWork;        
-	private String workPt;            
-	private String detailWorkPt;      
-	private String insenFlag;         
-	private String peerCnt;           
-	private String avgCnt;            
-	private String etc;               
-	private String calWorkTime;       
-	private String calSalaryHour;     
-	private String calSalaryDay;      
-	private String matchPhone;        
-	private String hireFlag;          
-	private String matchWorkDate;     
-	private String matchInterviewDate;
-	private String matchMsg;      
+	private String companyNo;  
+	private String companyNm;  
+	private String regNo;
+	private String searchType;
+	private String userJobNo;
+	private String compJobNo;
+	private String jobNm;
+	private String workFlag;
+	private String searchTime;
+	private String searchDate;
+	private String searchStart;
+	private String searchDow;
+	private String timeFlag;
+	private String workDate;
+	private String workStart;
+	private String workDow;
+	private String workPt;
+	private String detailWorkPt;
+	private String work;
+	private String detailWork;
+	private String workStTime;
+	private String workEnTime;
+	private String lunchStTime;
+	private String lunchEnTime;
+	private String peerCnt;
+	private String avgCnt;
+	private String sex;
+	private String age;
+	private String career;
+	private String reqSalHour;
+	private String reqSalDay;
+	private String regSalHour;
+	private String regSalDay;
+	private String calSalaryHour;
+	private String calSalaryDay;
+	private String etc;
 	private String matchFlag;
+	private String hireFlag;
+	private String matchPhone;
+	private String matchWorkDate;
+	private String matchInterviewDate;
+	private String matchMsg;
+	public String getRno() {
+		return rno;
+	}
+	public void setRno(String rno) {
+		this.rno = rno;
+	}
+	public String getReqNo() {
+		return reqNo;
+	}
+	public void setReqNo(String reqNo) {
+		this.reqNo = reqNo;
+	}
 	public String getUserNo() {
 		return userNo;
 	}
 	public void setUserNo(String userNo) {
 		this.userNo = userNo;
-	}
-	public String getRegNo() {
-		return regNo;
-	}
-	public void setRegNo(String regNo) {
-		this.regNo = regNo;
 	}
 	public String getCompanyNo() {
 		return companyNo;
@@ -57,23 +73,77 @@ public class UserMatchVO {
 	public void setCompanyNo(String companyNo) {
 		this.companyNo = companyNo;
 	}
-	public String getSalaryHour() {
-		return salaryHour;
+	public String getCompanyNm() {
+		return companyNm;
 	}
-	public void setSalaryHour(String salaryHour) {
-		this.salaryHour = salaryHour;
+	public void setCompanyNm(String companyNm) {
+		this.companyNm = companyNm;
 	}
-	public String getSalaryDay() {
-		return salaryDay;
+	public String getRegNo() {
+		return regNo;
 	}
-	public void setSalaryDay(String salaryDay) {
-		this.salaryDay = salaryDay;
+	public void setRegNo(String regNo) {
+		this.regNo = regNo;
 	}
-	public String getWorkType() {
-		return workType;
+	public String getSearchType() {
+		return searchType;
 	}
-	public void setWorkType(String workType) {
-		this.workType = workType;
+	public void setSearchType(String searchType) {
+		this.searchType = searchType;
+	}
+	public String getUserJobNo() {
+		return userJobNo;
+	}
+	public void setUserJobNo(String userJobNo) {
+		this.userJobNo = userJobNo;
+	}
+	public String getCompJobNo() {
+		return compJobNo;
+	}
+	public void setCompJobNo(String compJobNo) {
+		this.compJobNo = compJobNo;
+	}
+	public String getJobNm() {
+		return jobNm;
+	}
+	public void setJobNm(String jobNm) {
+		this.jobNm = jobNm;
+	}
+	public String getWorkFlag() {
+		return workFlag;
+	}
+	public void setWorkFlag(String workFlag) {
+		this.workFlag = workFlag;
+	}
+	public String getSearchTime() {
+		return searchTime;
+	}
+	public void setSearchTime(String searchTime) {
+		this.searchTime = searchTime;
+	}
+	public String getSearchDate() {
+		return searchDate;
+	}
+	public void setSearchDate(String searchDate) {
+		this.searchDate = searchDate;
+	}
+	public String getSearchStart() {
+		return searchStart;
+	}
+	public void setSearchStart(String searchStart) {
+		this.searchStart = searchStart;
+	}
+	public String getSearchDow() {
+		return searchDow;
+	}
+	public void setSearchDow(String searchDow) {
+		this.searchDow = searchDow;
+	}
+	public String getTimeFlag() {
+		return timeFlag;
+	}
+	public void setTimeFlag(String timeFlag) {
+		this.timeFlag = timeFlag;
 	}
 	public String getWorkDate() {
 		return workDate;
@@ -93,11 +163,29 @@ public class UserMatchVO {
 	public void setWorkDow(String workDow) {
 		this.workDow = workDow;
 	}
-	public String getTimeFlag() {
-		return timeFlag;
+	public String getWorkPt() {
+		return workPt;
 	}
-	public void setTimeFlag(String timeFlag) {
-		this.timeFlag = timeFlag;
+	public void setWorkPt(String workPt) {
+		this.workPt = workPt;
+	}
+	public String getDetailWorkPt() {
+		return detailWorkPt;
+	}
+	public void setDetailWorkPt(String detailWorkPt) {
+		this.detailWorkPt = detailWorkPt;
+	}
+	public String getWork() {
+		return work;
+	}
+	public void setWork(String work) {
+		this.work = work;
+	}
+	public String getDetailWork() {
+		return detailWork;
+	}
+	public void setDetailWork(String detailWork) {
+		this.detailWork = detailWork;
 	}
 	public String getWorkStTime() {
 		return workStTime;
@@ -111,11 +199,29 @@ public class UserMatchVO {
 	public void setWorkEnTime(String workEnTime) {
 		this.workEnTime = workEnTime;
 	}
-	public String getJob() {
-		return job;
+	public String getLunchStTime() {
+		return lunchStTime;
 	}
-	public void setJob(String job) {
-		this.job = job;
+	public void setLunchStTime(String lunchStTime) {
+		this.lunchStTime = lunchStTime;
+	}
+	public String getLunchEnTime() {
+		return lunchEnTime;
+	}
+	public void setLunchEnTime(String lunchEnTime) {
+		this.lunchEnTime = lunchEnTime;
+	}
+	public String getPeerCnt() {
+		return peerCnt;
+	}
+	public void setPeerCnt(String peerCnt) {
+		this.peerCnt = peerCnt;
+	}
+	public String getAvgCnt() {
+		return avgCnt;
+	}
+	public void setAvgCnt(String avgCnt) {
+		this.avgCnt = avgCnt;
 	}
 	public String getSex() {
 		return sex;
@@ -135,83 +241,29 @@ public class UserMatchVO {
 	public void setCareer(String career) {
 		this.career = career;
 	}
-	public String getCreateDate() {
-		return createDate;
+	public String getReqSalHour() {
+		return reqSalHour;
 	}
-	public void setCreateDate(String createDate) {
-		this.createDate = createDate;
+	public void setReqSalHour(String reqSalHour) {
+		this.reqSalHour = reqSalHour;
 	}
-	public String getLunchStTime() {
-		return lunchStTime;
+	public String getReqSalDay() {
+		return reqSalDay;
 	}
-	public void setLunchStTime(String lunchStTime) {
-		this.lunchStTime = lunchStTime;
+	public void setReqSalDay(String reqSalDay) {
+		this.reqSalDay = reqSalDay;
 	}
-	public String getLunchEnTime() {
-		return lunchEnTime;
+	public String getRegSalHour() {
+		return regSalHour;
 	}
-	public void setLunchEnTime(String lunchEnTime) {
-		this.lunchEnTime = lunchEnTime;
+	public void setRegSalHour(String regSalHour) {
+		this.regSalHour = regSalHour;
 	}
-	public String getWorkFlag() {
-		return workFlag;
+	public String getRegSalDay() {
+		return regSalDay;
 	}
-	public void setWorkFlag(String workFlag) {
-		this.workFlag = workFlag;
-	}
-	public String getWork() {
-		return work;
-	}
-	public void setWork(String work) {
-		this.work = work;
-	}
-	public String getDetailWork() {
-		return detailWork;
-	}
-	public void setDetailWork(String detailWork) {
-		this.detailWork = detailWork;
-	}
-	public String getWorkPt() {
-		return workPt;
-	}
-	public void setWorkPt(String workPt) {
-		this.workPt = workPt;
-	}
-	public String getDetailWorkPt() {
-		return detailWorkPt;
-	}
-	public void setDetailWorkPt(String detailWorkPt) {
-		this.detailWorkPt = detailWorkPt;
-	}
-	public String getInsenFlag() {
-		return insenFlag;
-	}
-	public void setInsenFlag(String insenFlag) {
-		this.insenFlag = insenFlag;
-	}
-	public String getPeerCnt() {
-		return peerCnt;
-	}
-	public void setPeerCnt(String peerCnt) {
-		this.peerCnt = peerCnt;
-	}
-	public String getAvgCnt() {
-		return avgCnt;
-	}
-	public void setAvgCnt(String avgCnt) {
-		this.avgCnt = avgCnt;
-	}
-	public String getEtc() {
-		return etc;
-	}
-	public void setEtc(String etc) {
-		this.etc = etc;
-	}
-	public String getCalWorkTime() {
-		return calWorkTime;
-	}
-	public void setCalWorkTime(String calWorkTime) {
-		this.calWorkTime = calWorkTime;
+	public void setRegSalDay(String regSalDay) {
+		this.regSalDay = regSalDay;
 	}
 	public String getCalSalaryHour() {
 		return calSalaryHour;
@@ -225,17 +277,29 @@ public class UserMatchVO {
 	public void setCalSalaryDay(String calSalaryDay) {
 		this.calSalaryDay = calSalaryDay;
 	}
-	public String getMatchPhone() {
-		return matchPhone;
+	public String getEtc() {
+		return etc;
 	}
-	public void setMatchPhone(String matchPhone) {
-		this.matchPhone = matchPhone;
+	public void setEtc(String etc) {
+		this.etc = etc;
+	}
+	public String getMatchFlag() {
+		return matchFlag;
+	}
+	public void setMatchFlag(String matchFlag) {
+		this.matchFlag = matchFlag;
 	}
 	public String getHireFlag() {
 		return hireFlag;
 	}
 	public void setHireFlag(String hireFlag) {
 		this.hireFlag = hireFlag;
+	}
+	public String getMatchPhone() {
+		return matchPhone;
+	}
+	public void setMatchPhone(String matchPhone) {
+		this.matchPhone = matchPhone;
 	}
 	public String getMatchWorkDate() {
 		return matchWorkDate;
@@ -255,25 +319,20 @@ public class UserMatchVO {
 	public void setMatchMsg(String matchMsg) {
 		this.matchMsg = matchMsg;
 	}
-	public String getMatchFlag() {
-		return matchFlag;
-	}
-	public void setMatchFlag(String matchFlag) {
-		this.matchFlag = matchFlag;
-	}
-	
 	@Override
 	public String toString() {
-		return "UserMatchVO [userNo=" + userNo + ", regNo=" + regNo + ", companyNo=" + companyNo + ", salaryHour="
-				+ salaryHour + ", salaryDay=" + salaryDay + ", workType=" + workType + ", workDate=" + workDate
-				+ ", workStart=" + workStart + ", workDow=" + workDow + ", timeFlag=" + timeFlag + ", workStTime="
-				+ workStTime + ", workEnTime=" + workEnTime + ", job=" + job + ", sex=" + sex + ", age=" + age
-				+ ", career=" + career + ", createDate=" + createDate + ", lunchStTime=" + lunchStTime
-				+ ", lunchEnTime=" + lunchEnTime + ", workFlag=" + workFlag + ", work=" + work + ", detailWork="
-				+ detailWork + ", workPt=" + workPt + ", detailWorkPt=" + detailWorkPt + ", insenFlag=" + insenFlag
-				+ ", peerCnt=" + peerCnt + ", avgCnt=" + avgCnt + ", etc=" + etc + ", calWorkTime=" + calWorkTime
-				+ ", calSalaryHour=" + calSalaryHour + ", calSalaryDay=" + calSalaryDay + ", matchPhone=" + matchPhone
-				+ ", hireFlag=" + hireFlag + ", matchWorkDate=" + matchWorkDate + ", matchInterviewDate="
-				+ matchInterviewDate + ", matchMsg=" + matchMsg + ", matchFlag=" + matchFlag + "]";
-	}         
+		return "UserMatchVO [rno=" + rno + ", reqNo=" + reqNo + ", userNo=" + userNo + ", companyNo=" + companyNo
+				+ ", companyNm=" + companyNm + ", regNo=" + regNo + ", searchType=" + searchType + ", userJobNo="
+				+ userJobNo + ", compJobNo=" + compJobNo + ", searchTime=" + searchTime + ", searchDate=" + searchDate
+				+ ", searchStart=" + searchStart + ", searchDow=" + searchDow + ", timeFlag=" + timeFlag + ", workDate="
+				+ workDate + ", workStart=" + workStart + ", workDow=" + workDow + ", workPt=" + workPt
+				+ ", detailWorkPt=" + detailWorkPt + ", work=" + work + ", detailWork=" + detailWork + ", workStTime="
+				+ workStTime + ", workEnTime=" + workEnTime + ", lunchStTime=" + lunchStTime + ", lunchEnTime="
+				+ lunchEnTime + ", peerCnt=" + peerCnt + ", avgCnt=" + avgCnt + ", sex=" + sex + ", age=" + age
+				+ ", career=" + career + ", reqSalHour=" + reqSalHour + ", reqSalDay=" + reqSalDay + ", regSalHour="
+				+ regSalHour + ", regSalDay=" + regSalDay + ", calSalaryHour=" + calSalaryHour + ", calSalaryDay="
+				+ calSalaryDay + ", etc=" + etc + ", matchFlag=" + matchFlag + ", hireFlag=" + hireFlag
+				+ ", matchPhone=" + matchPhone + ", matchWorkDate=" + matchWorkDate + ", matchInterviewDate="
+				+ matchInterviewDate + ", matchMsg=" + matchMsg + "]";
+	}
 }

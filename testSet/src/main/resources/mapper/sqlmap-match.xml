@@ -2,24 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.jj.match.dao.MatchDAO">
 
+<sql id="upper">
+	SELECT  * 
+ 	  FROM  (
+</sql>
+
+<sql id="lower">
+ 	  ) AA
+ 	 WHERE 1=1
+</sql>
+
 <sql id="userPerFectIf">
 	<if test="salaryHour != '' and salaryHour != null">
-	   AND  (A.SALARY_HOUR REQ_SAL_HOUR <![CDATA[<=]]> C.SALARY_HOUR REG_SAL_HOUR OR A.SALARY_HOUR REQ_SAL_HOUR<![CDATA[<=]]> C.CAL_SALARY_HOUR CAL_SALLARY_HOUR)
+	   AND  CAST(A.SALARY_HOUR AS SIGNED  INTEGER) <![CDATA[<=]]> CAST(CAL_SALARY_HOUR  AS SIGNED  INTEGER)
 	</if>
 	<if test="salaryDay != '' and salaryDay != null">
-	   AND  (A.SALARY_DAY REQ_SAL_DAY <![CDATA[<=]]> C.SALARY_DAY REG_SAL_DAY OR A.SALARY_DAY REQ_SAL_DAY<![CDATA[<=]]> C.CAL_SALARY_DAY CAL_SALLARY_DAY)
+	   AND  CAST(A.SALARY_DAY AS SIGNED  INTEGER) <![CDATA[<=]]> CAST(CAL_SALARY_DAY  AS SIGNED  INTEGER)
+	   <!-- AND  (A.SALARY_DAY REQ_SAL_DAY <![CDATA[<=]]> C.SALARY_DAY REG_SAL_DAY OR A.SALARY_DAY REQ_SAL_DAY<![CDATA[<=]]> C.CAL_SALARY_DAY CAL_SALLARY_DAY) -->
 	</if>
 	<if test="searchType == 'part'">
-	   AND  (SEARCH_START <![CDATA[<=]]> STR_TO_DATE(AA.WORK_START , '%Y-%m-%d'))
+	   AND  (A.SEARCH_START <![CDATA[<=]]> STR_TO_DATE(C.WORK_START , '%Y-%m-%d'))
 	</if>
 	<if test="searchType == 'one'">
-	   AND (SEARCH_DATE = STR_TO_DATE(AA.WORK_DATE , '%Y-%m-%d'))
+	   AND (A.SEARCH_DATE = STR_TO_DATE(C.WORK_DATE , '%Y-%m-%d'))
 	</if>	
 	<if test="searchType == 'sat'">
-	   AND (SEARCH_DATE <![CDATA[<=]]> STR_TO_DATE(AA.WORK_DATE , '%Y-%m-%d'))
+	   AND (A.SEARCH_DATE <![CDATA[<=]]> STR_TO_DATE(C.WORK_DATE , '%Y-%m-%d'))
 	</if>	
 	<if test="searchTime != '0'">
-	   AND SEARCH_TIME = TIME_FLAG
+	   AND A.SEARCH_TIME = C.TIME_FLAG
 	</if>
 </sql>
 
@@ -40,9 +51,163 @@
 </sql> 
 
 
-<select id="selectMatchListForUser" parameterType="RequireVO" resultType="UserMatchVO">
-	SELECT  A.USER_NO
-	 	   , C.* 
+<select id="selectMatchListForUserPT" parameterType="RequireVO" resultType="UserMatchVO">
+	SELECT  CC.* 
+	FROM
+	(
+		SELECT	@RN2 := @RN2 + 1 AS RNO
+				,BB.*
+		FROM
+		(
+			SELECT   @RN2 := 0
+					,@RN := @RN + 1 AS ROW_NUM
+					,AA.*
+			FROM
+			(
+				SELECT  @RN := 0
+					   ,A.REQ_NO
+			           ,A.USER_NO
+			           ,D.COMPANY_NO
+			           ,D.COMPANY_NM
+			           ,C.REG_NO
+			           ,A.SEARCH_TYPE
+			           ,B.JOB_NO USER_JOB_NO
+			           ,C.JOB COMP_JOB_NO
+			           ,E.JOB_NM 
+			           ,C.WORK_FLAG
+			           ,A.SEARCH_TIME
+			           ,A.SEARCH_DATE
+			           ,A.SEARCH_START
+			           ,A.SEARCH_DOW 
+			           ,C.TIME_FLAG
+			           ,C.WORK_DATE
+			           ,C.WORK_START
+			           ,C.WORK_DOW 
+			           ,C.WORK_PT 
+			           ,C.DETAIL_WORK_PT
+			           ,C.DETAIL_WORK
+			           ,C.INSEN_FLAG
+			           ,C.WORK_ST_TIME 
+			           ,C.WORK_EN_TIME 
+			           ,C.LUNCH_ST_TIME 
+			           ,C.LUNCH_EN_TIME 
+			           ,C.PEER_CNT
+			           ,C.AVG_CNT
+			           ,C.SEX
+			           ,C.AGE 
+			           ,C.CAREER 
+			           ,A.SALARY_HOUR REQ_SAL_HOUR
+			           ,A.SALARY_DAY REQ_SAL_DAY
+			           ,C.SALARY_HOUR REG_SAL_HOUR
+			           ,C.SALARY_DAY REG_SAL_DAY
+			           ,C.CAL_SALARY_HOUR
+			           ,C.CAL_SALARY_DAY
+			           ,C.ETC
+			           ,C.MATCH_FLAG
+			           ,C.HIRE_FLAG 
+			           ,C.MATCH_PHONE
+			           ,C.MATCH_WORK_DATE 
+			           ,C.MATCH_INTERVIEW_DATE 
+			           ,C.MATCH_MSG 
+			           ,SUM(1) OVER() ROW_COUNT 
+				  FROM  TB_REQUIRE A
+				       ,TB_USER B
+				       ,TB_REGISTER C
+				       ,TB_COMPANY D
+				       ,TB_JOB E
+				 WHERE  A.USER_NO = B.USER_NO
+				   AND  B.JOB_NO = C.JOB
+				   AND  A.SEARCH_TYPE = C.WORK_TYPE
+				   AND  D.COMPANY_NO  = C.COMPANY_NO 
+				   AND E.JOB_NO = C.JOB 
+				   AND E.JOB_NO = B.JOB_NO 
+				   AND  A.SEARCH_TIME = C.TIME_FLAG 
+				   <include refid="userPerFectIf" />
+				   AND  A.USER_NO = #{userNo}
+				   ORDER BY C.CREATE_DATE DESC
+			) AA
+			ORDER BY ROW_NUM DESC
+		) BB
+	) CC	 
+	LIMIT #{offset}, #{pageSize}	    
+</select>
+
+<select id="selectMatchListForUserOthers" parameterType="RequireVO" resultType="UserMatchVO">
+	SELECT  CC.* 
+	FROM
+	(
+		SELECT	@RN2 := @RN2 + 1 AS RNO
+				,BB.*
+		FROM
+		(
+			SELECT   @RN2 := 0
+					,@RN := @RN + 1 AS ROW_NUM
+					,AA.*
+			FROM
+			(
+				SELECT  @RN := 0
+					   ,A.REQ_NO
+			           ,A.USER_NO
+			           ,D.COMPANY_NO
+			           ,D.COMPANY_NM
+			           ,C.REG_NO
+			           ,A.SEARCH_TYPE
+			           ,B.JOB_NO USER_JOB_NO
+			           ,C.JOB COMP_JOB_NO 
+			           ,A.SEARCH_TIME
+			           ,A.SEARCH_DATE
+			           ,A.SEARCH_START
+			           ,A.SEARCH_DOW 
+			           ,C.TIME_FLAG
+			           ,C.WORK_DATE
+			           ,C.WORK_START
+			           ,C.WORK_DOW 
+			           ,C.WORK
+			           ,C.DETAIL_WORK
+			           ,C.WORK_ST_TIME 
+			           ,C.WORK_EN_TIME 
+			           ,C.LUNCH_ST_TIME 
+			           ,C.LUNCH_EN_TIME 
+	                   ,C.PEER_CNT
+			           ,C.AVG_CNT
+			           ,C.SEX
+			           ,C.AGE 
+			           ,C.CAREER 
+			           ,A.SALARY_HOUR REQ_SAL_HOUR
+			           ,A.SALARY_DAY REQ_SAL_DAY
+			           ,C.SALARY_HOUR REG_SAL_HOUR
+			           ,C.SALARY_DAY REG_SAL_DAY
+			           ,C.CAL_SALARY_HOUR
+			           ,C.CAL_SALARY_DAY
+			           ,C.ETC
+			           ,C.MATCH_FLAG
+			           ,C.HIRE_FLAG 
+			           ,C.MATCH_PHONE
+			           ,C.MATCH_WORK_DATE 
+			           ,C.MATCH_INTERVIEW_DATE 
+			           ,C.MATCH_MSG 
+			           ,SUM(1) OVER() ROW_COUNT 
+				  FROM  TB_REQUIRE A
+				       ,TB_USER B
+				       ,TB_REGISTER C
+				       ,TB_COMPANY D
+				 WHERE  A.USER_NO = B.USER_NO
+				   AND  B.JOB_NO = C.JOB
+				   AND  A.SEARCH_TYPE = C.WORK_TYPE
+				   AND  D.COMPANY_NO  = C.COMPANY_NO 
+				   AND  A.SEARCH_TIME = C.TIME_FLAG 
+				   <include refid="userPerFectIf" />
+				   AND  A.USER_NO = #{userNo}
+				   ORDER BY C.CREATE_DATE DESC
+			) AA
+			ORDER BY ROW_NUM DESC
+		) BB
+	) CC
+	LIMIT #{offset}, #{pageSize}	   
+</select> 
+
+<select id="selectMatchTotCnt" parameterType="RequireVO" resultType="int">
+	SELECT  COUNT(1)
 	  FROM  TB_REQUIRE A
 	       ,TB_USER B
 	       ,TB_REGISTER C
@@ -51,7 +216,9 @@
 	   AND  B.JOB_NO = C.JOB
 	   AND  A.SEARCH_TYPE = C.WORK_TYPE
 	   AND  D.COMPANY_NO  = C.COMPANY_NO 
-	   AND  A.USER_NO = #{userNo}
+	   AND  A.SEARCH_TIME = C.TIME_FLAG 
 	   <include refid="userPerFectIf" />
+	   AND  A.USER_NO = #{userNo}
 </select>
+
 </mapper>
