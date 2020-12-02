@@ -179,12 +179,14 @@ form {
 			</div>
 			<div style="height: 30px"></div>    
 			<div class="regCon">
+				<h4 style="text-align: center;">매칭 결과 리스트  [ 총 개수 : ${pageVO.rowCount } ]</h4>
+				<div class="temp"></div>
 				<table id="listTable">
 				<c:if test="${not empty matchList }">  
-					<caption style="height: 50px;">매칭 결과 리스트  [ 총 개수 : ${pageVO.rowCount } ]</caption> 
-					<colgroup>   
+					<%-- <caption style="height: 50px;">매칭 결과 리스트  [ 총 개수 : ${pageVO.rowCount } ]</caption>  --%>
+					<colgroup>           
 						<col style="width: 50px">
-						<col style="width: 160px">    
+						<col style="width: 160px">     
 						<col style="width: 130px">
 						<col style="width: 130px">
 						<col style="width: 130px">
@@ -197,7 +199,7 @@ form {
 						<col style="width: 120px">      
 					</colgroup>   
 					<thead>            
-						<tr>
+						<tr style="text-align: center;"> 
 							<th scope="col">No</th>
 							<th scope="col">병원명</th>
 							<th scope="col">직종</th>
@@ -217,6 +219,8 @@ form {
 							<tr style="height: 40px;">  
 								<td id="rno${match.rno }">
 									<c:out value="${match.rno }" />
+									<input type="hidden" id="etc${match.rno }"  value="${match.etc }">
+									<input type="hidden" id="addr${match.rno }"  value="${match.compAddr }">
 								</td>
 								<td id="companyNm${match.rno }"> 
 									<%-- <c:out value="${match.companyNm }" /> --%>
@@ -283,7 +287,7 @@ form {
 								<td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#matchModal" data-peer="${match.peerCnt }"
 										data-compNm="${match.companyNm }" data-rno="${match.rno }">정보보기</td>   
 								<td><input type="button" value="거절" onclick="goHome()"></td>    
-							</tr>    
+							</tr> 
 						</c:forEach>   
 						</c:if> 
 						<c:if test="${empty matchList }">
@@ -348,7 +352,9 @@ form {
             				<input type="text" class="form-control" id="modal-job" readonly="readonly">
 						</div>
 					</div> 
-            		<div class="row">
+					<label for="modal-addr" class="col-form-label">addr:</label>
+            		<input type="text" class="form-control" id="modal-addr" readonly="readonly"> 
+            		<div class="row"> 
             			<div class="col-8 col-sm-6">
             				<label for="modal-date" class="col-form-label">date:</label>
             				<input type="text" class="form-control" id="modal-date" readonly="readonly">
@@ -386,7 +392,9 @@ form {
 					</div> 
 					
 					<label for="modal-work" class="col-form-label">work:</label>
-            		<input type="text" class="form-control" id="modal-work" readonly="readonly"> 
+            		<input type="text" class="form-control" id="modal-work" readonly="readonly">
+            		<label for="modal-etc" class="col-form-label">복지 및 기타:</label>
+            		<input type="text" class="form-control" id="modal-etc" readonly="readonly"> 
 				</div>  
 				<div class="modal-footer"> 
 					<button data-dismiss="modal" class="remodal-close" aria-label="Close" title="닫기">close</button>
@@ -454,14 +462,15 @@ $('#matchModal').on('show.bs.modal', function (event) {
 	  modal.find('#modal-job').val($("#jobNm"+rno).text().trim());   
 	  modal.find('#modal-date').val($("#workDate"+rno).text().trim()); 
 	  modal.find('#modal-time').val($("#workTime"+rno).text().trim());   
-	  modal.find('#modal-work').val($("#detailWork"+rno).text().trim());   
 	  modal.find('#modal-sal').val($("#workSal"+rno).text().trim());   
 	  modal.find('#modal-sex').val($("#sex"+rno).text().trim());   
 	  modal.find('#modal-age').val($("#age"+rno).text().trim());   
 	  modal.find('#modal-career').val($("#career"+rno).text().trim());   
 	  modal.find('#modal-peer').val(peerCnt); 
-	  modal.find('#modal-patient').val($("#avgCnt"+rno).text().trim());    
-	    
+	  modal.find('#modal-patient').val($("#avgCnt"+rno).text().trim()); 
+	  modal.find('#modal-work').val($("#detailWork"+rno).text().trim());   
+	  modal.find('#modal-etc').val($("#etc"+rno).val());      
+	  modal.find('#modal-addr').val($("#addr"+rno).val());   
 }); 
 </script>	
 </body>

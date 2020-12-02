@@ -389,7 +389,7 @@ input {
 					</tr> 
 					<tr class="forUncontact">
 						<td bgcolor="lightgrey" align="center">매칭완료 후 출근 날짜</td> 
-						<td onchange="setDatepickerWork()">  
+						<td>  
 							<input type="text" id="datepicker_work" name="datepicker_work">
 						</td> 
 					</tr>
@@ -747,9 +747,9 @@ input {
 			$("#datepicker_start").val(d2);
 		}  
 		
-		if(frm.datepicker.value )
-			$('#datepicker').datepicker('setDate', 'today');
-		register(frm); 
+		//if(frm.datepicker.value )
+			//$('#datepicker').datepicker('setDate', 'today');
+		register(frm);  
 	}   
 	
 	function setTime(){

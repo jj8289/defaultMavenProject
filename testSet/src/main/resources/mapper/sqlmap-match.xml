@@ -14,10 +14,12 @@
 
 <sql id="userPerFectIf">
 	<if test="salaryHour != '' and salaryHour != null">
-	   AND  CAST(A.SALARY_HOUR AS SIGNED  INTEGER) <![CDATA[<=]]> CAST(CAL_SALARY_HOUR  AS SIGNED  INTEGER)
+	   AND  (CAST(A.SALARY_HOUR AS SIGNED  INTEGER) <![CDATA[<=]]> CAST(CAL_SALARY_HOUR  AS SIGNED  INTEGER)
+	   			OR CAST(A.SALARY_HOUR AS SIGNED INTEGER) <![CDATA[<=]]> CAST(C.SALARY_HOUR AS SIGNED INTEGER))
 	</if>
 	<if test="salaryDay != '' and salaryDay != null">
-	   AND  CAST(A.SALARY_DAY AS SIGNED  INTEGER) <![CDATA[<=]]> CAST(CAL_SALARY_DAY  AS SIGNED  INTEGER)
+	   AND  (CAST(A.SALARY_DAY AS SIGNED  INTEGER) <![CDATA[<=]]> CAST(CAL_SALARY_DAY  AS SIGNED  INTEGER)
+	   			OR CAST(A.SALARY_DAY AS SIGNED INTEGER) <![CDATA[<=]]> CAST(C.SALARY_DAY AS SIGNED INTEGER)) 
 	   <!-- AND  (A.SALARY_DAY REQ_SAL_DAY <![CDATA[<=]]> C.SALARY_DAY REG_SAL_DAY OR A.SALARY_DAY REQ_SAL_DAY<![CDATA[<=]]> C.CAL_SALARY_DAY CAL_SALLARY_DAY) -->
 	</if>
 	<if test="searchType == 'part'">
@@ -69,6 +71,7 @@
 			           ,A.USER_NO
 			           ,D.COMPANY_NO
 			           ,D.COMPANY_NM
+			           ,D.ADDR AS COMP_ADDR
 			           ,C.REG_NO
 			           ,A.SEARCH_TYPE
 			           ,B.JOB_NO USER_JOB_NO

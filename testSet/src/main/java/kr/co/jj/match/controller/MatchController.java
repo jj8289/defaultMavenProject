@@ -106,11 +106,12 @@ public class MatchController {
 		//reqVo.setPageSize(5); 
 		reqVo.setPageNo(Integer.parseInt(pageNo));
 		  
-		
-		for(Job job : Job.values()) {
-			String jobNm = job.name();
-			if(jobNm.equals(matchList.get(0).getJobNm())) {
-				model.addAttribute("jobNm", job.getName());
+		if(rowCnt != 0) {
+			for(Job job : Job.values()) {
+				String jobNm = job.name();
+				if(jobNm.equals(matchList.get(0).getJobNm())) {
+					model.addAttribute("jobNm", job.getName());
+				}
 			}
 		}
 		

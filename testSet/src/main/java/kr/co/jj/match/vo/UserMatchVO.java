@@ -8,7 +8,8 @@ public class UserMatchVO extends PageVO{
 	private String reqNo; 
 	private String userNo;           
 	private String companyNo;  
-	private String companyNm;  
+	private String companyNm; 
+	private String compAddr;
 	private String regNo;
 	private String searchType;
 	private String userJobNo;
@@ -49,6 +50,7 @@ public class UserMatchVO extends PageVO{
 	private String matchWorkDate;
 	private String matchInterviewDate;
 	private String matchMsg;
+	
 	public String getRno() {
 		return rno;
 	}
@@ -78,6 +80,12 @@ public class UserMatchVO extends PageVO{
 	}
 	public void setCompanyNm(String companyNm) {
 		this.companyNm = companyNm;
+	}
+	public String getCompAddr() {
+		return compAddr;
+	}
+	public void setCompAddr(String compAddr) {
+		this.compAddr = compAddr;
 	}
 	public String getRegNo() {
 		return regNo;
