@@ -23,6 +23,7 @@ import com.mysql.jdbc.log.Log;
 import kr.co.jj.common.service.CommonService;
 import kr.co.jj.common.vo.Job;
 import kr.co.jj.common.vo.PageVO;
+import kr.co.jj.common.vo.WorkPT;
 import kr.co.jj.company.controller.CompanyController;
 import kr.co.jj.company.service.CompanyService;
 import kr.co.jj.company.vo.CompanyVO;
@@ -62,6 +63,83 @@ public class MatchController {
 	/**
 	 * 유저 매칭
 	 */
+	@GetMapping("/user/match")
+	public String matchUser(Model model, HttpSession session, @ModelAttribute("pageVO") PageVO param, @RequestParam(required = false, defaultValue = "1") String pageNo, @RequestParam(required = false, defaultValue = "0") String rowCount) throws Exception {
+		
+		//get User
+		String id = (String)session.getAttribute("usrloginId");
+		UserVO user = userController.getUser(id);
+		model.addAttribute("user", user);
+		
+		//리스트 매칭 중
+		if(user.getMatchStatus().equals("L")) {
+			
+			RequireVO reqVo = userService.selectRequire(user);
+			logger.debug(reqVo.toString());
+			
+			if(!rowCount.equals("0")) {
+				reqVo.setRowCount(Integer.parseInt(rowCount));
+				reqVo.setPageNo(Integer.parseInt(pageNo));
+			} 
+			
+			model.addAttribute("reqVo", reqVo);
+			
+			List<UserMatchVO> matchList = new ArrayList<UserMatchVO>();
+			
+			if(user.getJobNo().equals("1")) {
+				//PT
+				matchList = matchService.selectMatchListForUserPT(reqVo);
+				
+				//PT 업무 한글 세팅
+				List<String> workList = new ArrayList<String>();
+				List<String> detailWorkList = new ArrayList<String>();
+				String[] workPt = null;  
+				String[] detailWorkPt = null;  
+				for(UserMatchVO match : matchList) {
+					workPt = match.getWorkPt().split("/"); 
+					for(int i = 0; i < workPt.length; i++) {
+						for(WorkPT work : WorkPT.values()) {
+							//work.name() : A , work.getName() : 신경계치료 
+							if(workPt[i].equals(work.name())) {
+								workList.add(work.getName());
+							}
+						}
+					}
+					match.setWorkPtList(workList);
+				}
+				
+			} else {
+				//Others
+				matchList = matchService.selectMatchListForUserOthers(reqVo);
+			}
+			logger.debug(matchList.toString());
+			
+			model.addAttribute("matchList", matchList);
+			
+			int rowCnt = matchService.selectMatchTotCnt(reqVo);
+			model.addAttribute("rowCnt", rowCnt);
+			
+			param.setRowCount(rowCnt);
+			reqVo.setRowCount(rowCnt);
+			reqVo.setPageNo(Integer.parseInt(pageNo));
+			  
+			if(rowCnt != 0) {
+				for(Job job : Job.values()) {
+					String jobNm = job.name();
+					if(jobNm.equals(matchList.get(0).getJobNm())) {
+						model.addAttribute("jobNm", job.getName());
+					}
+				}
+			}
+		
+		// 1대1 매칭 중
+		} else if(user.getMatchStatus().equals("O")){
+			
+		}
+		
+		return "user/match";
+	}	
+	/*
 	@GetMapping("/user/match")
 	public String matchUser(Model model, HttpSession session,@ModelAttribute("pageVO") PageVO param, @RequestParam(required = false, defaultValue = "1") String pageNo, @RequestParam(required = false, defaultValue = "0") String rowCount) throws Exception {
 		 
@@ -119,6 +197,7 @@ public class MatchController {
 		
 		return "user/match";  
 	} 
+	*/
 	
 	/**
 	 * 병원 매칭
@@ -154,9 +233,9 @@ public class MatchController {
 		return "company/match"; 
 	}
 	
-	@PostMapping("/company/match/updateMatchStat")
+	@PostMapping("/company/match/updateMatchFlag")
 	@ResponseBody
-	public String updateMatchStat(RegisterVO param, Model model) throws Exception {
+	public String updateMatchFlagComp(RegisterVO param, Model model) throws Exception {
 		System.out.println("get regNo : " + param.getRegNo());
 		System.out.println("get MatchFlag : " + param.getMatchFlag());
 		
@@ -170,6 +249,25 @@ public class MatchController {
 			return "error";	
 		}
 	}
+	
+	@PostMapping("/user/match/updateMatchStat")
+	@ResponseBody
+	public String updateMatchStatUser(UserVO param, Model model) throws Exception {
+		System.out.println("get userNo : " + param.getUserNo());
+		System.out.println("get MatchStatus : " + param.getMatchStatus());
+		
+		try {
+			matchService.updateMatchStatus(param);
+			
+			return "success";
+			
+		} catch (Exception e) {
+			
+			return "error";	
+		}
+	}
+	
+	
 	
 	@GetMapping("/company/match/callList")
 	public String getCallList(Model model) throws Exception{

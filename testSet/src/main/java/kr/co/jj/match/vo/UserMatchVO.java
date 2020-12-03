@@ -1,5 +1,8 @@
 package kr.co.jj.match.vo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import kr.co.jj.common.vo.PageVO;
 
 public class UserMatchVO extends PageVO{
@@ -50,6 +53,9 @@ public class UserMatchVO extends PageVO{
 	private String matchWorkDate;
 	private String matchInterviewDate;
 	private String matchMsg;
+	
+	List<String> workPtList;
+	List<String> detailWorkPtList;
 	
 	public String getRno() {
 		return rno;
@@ -327,11 +333,25 @@ public class UserMatchVO extends PageVO{
 	public void setMatchMsg(String matchMsg) {
 		this.matchMsg = matchMsg;
 	}
+	public List<String> getWorkPtList() {
+		return workPtList;
+	}
+	public void setWorkPtList(List<String> workPtList) {
+		this.workPtList = workPtList;
+	}
+	public List<String> getDetailWorkPtList() {
+		return detailWorkPtList;
+	}
+	public void setDetailWorkPtList(List<String> detailWorkPtList) {
+		this.detailWorkPtList = detailWorkPtList;
+	}
+	
 	@Override
 	public String toString() {
 		return "UserMatchVO [rno=" + rno + ", reqNo=" + reqNo + ", userNo=" + userNo + ", companyNo=" + companyNo
-				+ ", companyNm=" + companyNm + ", regNo=" + regNo + ", searchType=" + searchType + ", userJobNo="
-				+ userJobNo + ", compJobNo=" + compJobNo + ", searchTime=" + searchTime + ", searchDate=" + searchDate
+				+ ", companyNm=" + companyNm + ", compAddr=" + compAddr + ", regNo=" + regNo + ", searchType="
+				+ searchType + ", userJobNo=" + userJobNo + ", compJobNo=" + compJobNo + ", jobNm=" + jobNm
+				+ ", workFlag=" + workFlag + ", searchTime=" + searchTime + ", searchDate=" + searchDate
 				+ ", searchStart=" + searchStart + ", searchDow=" + searchDow + ", timeFlag=" + timeFlag + ", workDate="
 				+ workDate + ", workStart=" + workStart + ", workDow=" + workDow + ", workPt=" + workPt
 				+ ", detailWorkPt=" + detailWorkPt + ", work=" + work + ", detailWork=" + detailWork + ", workStTime="
@@ -341,6 +361,7 @@ public class UserMatchVO extends PageVO{
 				+ regSalHour + ", regSalDay=" + regSalDay + ", calSalaryHour=" + calSalaryHour + ", calSalaryDay="
 				+ calSalaryDay + ", etc=" + etc + ", matchFlag=" + matchFlag + ", hireFlag=" + hireFlag
 				+ ", matchPhone=" + matchPhone + ", matchWorkDate=" + matchWorkDate + ", matchInterviewDate="
-				+ matchInterviewDate + ", matchMsg=" + matchMsg + "]";
+				+ matchInterviewDate + ", matchMsg=" + matchMsg + ", workPtList=" + workPtList + ", detailWorkPtList="
+				+ detailWorkPtList + "]";
 	}
 }

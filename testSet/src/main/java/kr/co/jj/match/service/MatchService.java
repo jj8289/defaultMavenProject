@@ -5,6 +5,7 @@ import java.util.List;
 import kr.co.jj.company.vo.RegisterVO;
 import kr.co.jj.match.vo.UserMatchVO;
 import kr.co.jj.user.vo.RequireVO;
+import kr.co.jj.user.vo.UserVO;
 
 public interface MatchService {
 
@@ -15,5 +16,7 @@ public interface MatchService {
 	public int selectMatchTotCnt(RequireVO reqVo) throws Exception;
 	
 	public void updateMatchFlag(RegisterVO regVo) throws Exception;
+
+	public void updateMatchStatus(UserVO param) throws Exception;
 	
 }

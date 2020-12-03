@@ -10,6 +10,7 @@ import kr.co.jj.match.dao.MatchDAO;
 import kr.co.jj.match.service.MatchService;
 import kr.co.jj.match.vo.UserMatchVO;
 import kr.co.jj.user.vo.RequireVO;
+import kr.co.jj.user.vo.UserVO;
 
 @Service
 public class MatchServiceImpl implements MatchService{
@@ -35,5 +36,10 @@ public class MatchServiceImpl implements MatchService{
 	@Override
 	public void updateMatchFlag(RegisterVO regVo) throws Exception {
 		matchDao.updateMatchFlag(regVo);
+	}
+
+	@Override
+	public void updateMatchStatus(UserVO param) throws Exception {
+		matchDao.updateMatchStatus(param);
 	}
 }

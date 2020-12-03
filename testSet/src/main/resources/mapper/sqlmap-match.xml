@@ -125,10 +125,11 @@
 				   AND  E.JOB_NO = C.JOB 
 				   AND  E.JOB_NO = B.JOB_NO 
 				   AND  A.SEARCH_TIME = C.TIME_FLAG 
-				   AND  C.MATCH_FLAG = 'N'
+				   AND  C.MATCH_FLAG = 'Y'
+				   AND B.MATCH_STATUS = 'L'
 				   <include refid="userPerFectIf" />
 				   AND  A.USER_NO = #{userNo}
-				   ORDER BY C.CREATE_DATE DESC
+				   ORDER BY C.CREATE_DATE DESC 
 			) AA
 			ORDER BY ROW_NUM DESC
 		) BB
@@ -150,14 +151,17 @@
 			FROM
 			(
 				SELECT  @RN := 0
-					   ,A.REQ_NO
+					    ,A.REQ_NO
 			           ,A.USER_NO
 			           ,D.COMPANY_NO
 			           ,D.COMPANY_NM
+			           ,D.ADDR AS COMP_ADDR
 			           ,C.REG_NO
 			           ,A.SEARCH_TYPE
 			           ,B.JOB_NO USER_JOB_NO
-			           ,C.JOB COMP_JOB_NO 
+			           ,C.JOB COMP_JOB_NO
+			           ,E.JOB_NM 
+			           ,C.WORK_FLAG
 			           ,A.SEARCH_TIME
 			           ,A.SEARCH_DATE
 			           ,A.SEARCH_START
@@ -166,13 +170,15 @@
 			           ,C.WORK_DATE
 			           ,C.WORK_START
 			           ,C.WORK_DOW 
-			           ,C.WORK
+			           ,C.WORK_PT 
+			           ,C.DETAIL_WORK_PT
 			           ,C.DETAIL_WORK
+			           ,C.INSEN_FLAG
 			           ,C.WORK_ST_TIME 
 			           ,C.WORK_EN_TIME 
 			           ,C.LUNCH_ST_TIME 
 			           ,C.LUNCH_EN_TIME 
-	                   ,C.PEER_CNT
+			           ,C.PEER_CNT
 			           ,C.AVG_CNT
 			           ,C.SEX
 			           ,C.AGE 
@@ -195,11 +201,16 @@
 				       ,TB_USER B
 				       ,TB_REGISTER C
 				       ,TB_COMPANY D
+				       ,TB_JOB E
 				 WHERE  A.USER_NO = B.USER_NO
 				   AND  B.JOB_NO = C.JOB
 				   AND  A.SEARCH_TYPE = C.WORK_TYPE
 				   AND  D.COMPANY_NO  = C.COMPANY_NO 
+				   AND  E.JOB_NO = C.JOB 
+				   AND  E.JOB_NO = B.JOB_NO 
 				   AND  A.SEARCH_TIME = C.TIME_FLAG 
+				   AND  C.MATCH_FLAG = 'Y'
+				   AND B.MATCH_STATUS = 'L'
 				   <include refid="userPerFectIf" />
 				   AND  A.USER_NO = #{userNo}
 				   ORDER BY C.CREATE_DATE DESC
@@ -221,14 +232,23 @@
 	   AND  A.SEARCH_TYPE = C.WORK_TYPE
 	   AND  D.COMPANY_NO  = C.COMPANY_NO 
 	   AND  A.SEARCH_TIME = C.TIME_FLAG 
+	   AND  C.MATCH_FLAG = 'Y'
+	   AND B.MATCH_STATUS = 'L'
 	   <include refid="userPerFectIf" />
 	   AND  A.USER_NO = #{userNo}
-</select>
+</select> 
 
 <select id="updateMatchFlag" parameterType="RegisterVO">
 	UPDATE  TB_REGISTER 
 	   SET  MATCH_FLAG = #{matchFlag}
 	 WHERE  REG_NO = #{regNo}
 </select>
+
+<select id="updateMatchStatus" parameterType="UserVO">
+	UPDATE  TB_USER
+	   SET  MATCH_STATUS = #{matchStatus}
+	 WHERE  USER_NO = #{userNo}
+</select>
+
 
 </mapper>

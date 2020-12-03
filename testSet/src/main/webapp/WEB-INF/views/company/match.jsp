@@ -337,7 +337,7 @@ function updateMatchStatus(no, flag){
 	};
 	
 	$.ajax({
-		url : CONTEXT_PATH + "/company/match/updateMatchStat", 
+		url : CONTEXT_PATH + "/company/match/updateMatchFlag", 
 		type: "POST",
 		data: param,     
 		contentType: "application/x-www-form-urlencoded; charset=UTF-8", 

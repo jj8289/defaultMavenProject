@@ -148,7 +148,7 @@ function selectKind(){
 		$(".forNS").show();
 		$("input[name=workNS]").prop("checked", true); 
 		$("input[name=workNS]").prop("disabled", true);  
-		ptWorkList.push("0");
+		ptWorkList.push("A");
 		ptDetailList = [];
 		ptFlag = "ns";
 	}   
@@ -287,7 +287,7 @@ function selectPtWork(){
 	ptWorkList = [];
 	 
 	if($("input[name=kind]:checked").val() == "ns"){
-		ptWorkList.push("0");
+		ptWorkList.push("A");
 	} else { 
 		for(var i = 0; i<len; i++){
 			if(obj[i].checked == true){

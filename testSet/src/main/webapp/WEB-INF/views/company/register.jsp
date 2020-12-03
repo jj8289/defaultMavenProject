@@ -264,14 +264,14 @@ input {
 						<td bgcolor="lightgrey" align="center">업무</td>
 						<td id="workBox" onchange="selectWork()"> 
 							<div id="osWork" class="forOS ptWork">
-								<label><input type="checkbox" name="workOS" value="1"> 통증 치료</label>
-								<label><input type="checkbox" name="workOS" value="2"> 심플</label>
-								<label><input type="checkbox" name="workOS" value="3"> 10분 메뉴얼</label>
-								<label><input type="checkbox" name="workOS" value="4"> 도수 치료(30분 이상)</label>
-								<label><input type="checkbox" name="workOS" value="5"> 운동 치료</label>
+								<label><input type="checkbox" name="workOS" value="B"> 통증 치료</label>
+								<label><input type="checkbox" name="workOS" value="C"> 심플</label>
+								<label><input type="checkbox" name="workOS" value="D"> 10분 메뉴얼</label>
+								<label><input type="checkbox" name="workOS" value="E"> 도수 치료(30분 이상)</label>
+								<label><input type="checkbox" name="workOS" value="F"> 운동 치료</label>
 							</div>
 							<div id="nsWork" class="forNS ptWork">
-								<label><input type="checkbox" name="workNS" value="0"> 신경계 치료</label>
+								<label><input type="checkbox" name="workNS" value="A"> 신경계 치료</label>
 							</div>       
 							<div id="otherWork" class="forOther"><input size="70" type="text" name="work" id="work"></div>
 						</td> 
@@ -546,7 +546,7 @@ input {
 			$(".forNS").show();
 			$("input[name=workNS]").prop("checked", true); 
 			$("input[name=workNS]").prop("disabled", true);  
-			ptWorkList.push("0"); 
+			ptWorkList.push("A"); 
 		}  
 	}  
 	 
@@ -580,7 +580,7 @@ input {
 		ptWorkList = [];
 		
 		if($("input[name=kind]:checked").val() == "ns"){
-			ptWorkList.push("0");
+			ptWorkList.push("A");
 		} else {
 			for(var i = 0; i<len; i++){
 				if(obj[i].checked == true){
