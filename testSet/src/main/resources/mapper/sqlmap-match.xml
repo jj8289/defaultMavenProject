@@ -225,4 +225,10 @@
 	   AND  A.USER_NO = #{userNo}
 </select>
 
+<select id="updateMatchFlag" parameterType="RegisterVO">
+	UPDATE  TB_REGISTER 
+	   SET  MATCH_FLAG = #{matchFlag}
+	 WHERE  REG_NO = #{regNo}
+</select>
+
 </mapper>

@@ -220,9 +220,9 @@ tr{
 								<td id="switch_td" style="padding-left: 13px; text-align: center; display: flex; align-content:space-between; align-items: center; margin-top: 7px;">   
 									<div style="width: 40px;"><p id="off${reg.regNo}" style="padding: 5px;">OFF</p></div>
 										<label class="switch" style="text-align: center;">      
-										    <c:if test="${reg.matchFlag == 'Y' }"><input type="checkbox" id="switchBtn${reg.regNo}" onclick="toggle(this, ${reg.regNo})" onload="toggle(this, ${reg.regNo})" checked></c:if>
-										    <c:if test="${reg.matchFlag == 'N' }"><input type="checkbox" id="switchBtn${reg.regNo}" onclick="toggle(this, ${reg.regNo})" onload="toggle(this, ${reg.regNo})"> </c:if>
-										    <span class="slider round"></span> 
+										    <c:if test="${reg.matchFlag == 'Y' }"><input type="checkbox" id="switchBtn${reg.regNo}" onclick="toggle(this, ${reg.regNo}, '${reg.matchFlag}')" onload="toggle(this, ${reg.regNo}, '${reg.matchFlag}')" checked></c:if>
+										    <c:if test="${reg.matchFlag == 'N' }"><input type="checkbox" id="switchBtn${reg.regNo}" onclick="toggle(this, ${reg.regNo}, '${reg.matchFlag}')" onload="toggle(this, ${reg.regNo}, '${reg.matchFlag}')"> </c:if>
+										    <span class="slider round"></span>  
 										</label>  
 									<div style="width: 40px;"><p id="on${reg.regNo}" style="padding: 5px;">ON</p></div>
 								</td>     
@@ -274,7 +274,7 @@ tr{
 
 var dataList = $("#listBody").find("tr");
 var len = dataList.length;
-
+var stat = "";
 
 $(dataList).each(function(i, obj){
 	var check = $(obj).find("input[id^=switchBtn]").is(":checked");	//체크여부 (true/false)
@@ -289,16 +289,17 @@ $(dataList).each(function(i, obj){
 	}
 }); 
 
-function toggle(item, regNo) {
+function toggle(item, regNo, flag) {
 	console.log(regNo); 
+	console.log(flag);
 	
 	var rslt = ""; 
 	
 	if(item.checked == true){
-		//matchStat = 'Y';
 		rslt = confirm("매칭하시겠습니까?");
 		if(rslt){
-			alert("매칭 등록되었습니다.");
+			stat = item
+			updateMatchStatus(regNo, 'Y');
  			$("#on" + regNo).show(); 
  			$("#off" + regNo).hide();
 			return;
@@ -310,10 +311,9 @@ function toggle(item, regNo) {
  			return;
 		}
 	} else {  
-		//matchStat = 'N';
 		rslt = confirm("매칭 취소하시겠습니까?");
 		if(rslt){
-			alert("매칭 취소!");
+			updateMatchStatus(regNo, 'N');
 			$("#on" + regNo).hide();
 			$("#off" + regNo).show();
 			return;
@@ -329,6 +329,33 @@ function fn_movePage(val){
     $("form[name=frm]").attr("method", "get");
     $("form[name=frm]").attr("action", CONTEXT_PATH + "/company/match").submit(); 
 }  
+
+function updateMatchStatus(no, flag){
+	var param = {
+		  regNo: no
+		, matchFlag: flag
+	};
+	
+	$.ajax({
+		url : CONTEXT_PATH + "/company/match/updateMatchStat", 
+		type: "POST",
+		data: param,     
+		contentType: "application/x-www-form-urlencoded; charset=UTF-8", 
+		success: function(data){
+			console.log("update MatchFlag!");  
+			if(data == "success"){
+				alert("상태 업데이트 완료!");
+				//location.href = CONTEXT_PATH + "/company/mypage"; 
+			}  else {
+				alert("업데이트 실패"); 
+			}
+		},   
+		error: function(data){   
+		   		console.log("error");
+		   		console.log(data.errmsg);  
+		}
+	});   
+}
 </script>	
 </body>
 </html>

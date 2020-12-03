@@ -14,7 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mysql.jdbc.log.Log;
 
@@ -24,6 +26,7 @@ import kr.co.jj.common.vo.PageVO;
 import kr.co.jj.company.controller.CompanyController;
 import kr.co.jj.company.service.CompanyService;
 import kr.co.jj.company.vo.CompanyVO;
+import kr.co.jj.company.vo.RegisterDTO;
 import kr.co.jj.company.vo.RegisterVO;
 import kr.co.jj.match.service.MatchService;
 import kr.co.jj.match.vo.UserMatchVO;
@@ -149,6 +152,23 @@ public class MatchController {
 		model.addAttribute("comp", comp); 
 		
 		return "company/match"; 
+	}
+	
+	@PostMapping("/company/match/updateMatchStat")
+	@ResponseBody
+	public String updateMatchStat(RegisterVO param, Model model) throws Exception {
+		System.out.println("get regNo : " + param.getRegNo());
+		System.out.println("get MatchFlag : " + param.getMatchFlag());
+		
+		try {
+			matchService.updateMatchFlag(param);
+			
+			return "success";
+			
+		} catch (Exception e) {
+			
+			return "error";	
+		}
 	}
 	
 	@GetMapping("/company/match/callList")

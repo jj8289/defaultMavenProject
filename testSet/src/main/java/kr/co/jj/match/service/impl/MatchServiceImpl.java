@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.co.jj.company.vo.RegisterVO;
 import kr.co.jj.match.dao.MatchDAO;
 import kr.co.jj.match.service.MatchService;
 import kr.co.jj.match.vo.UserMatchVO;
@@ -29,5 +30,10 @@ public class MatchServiceImpl implements MatchService{
 	@Override
 	public int selectMatchTotCnt(RequireVO reqVo) throws Exception {
 		return matchDao.selectMatchTotCnt(reqVo);
+	}
+
+	@Override
+	public void updateMatchFlag(RegisterVO regVo) throws Exception {
+		matchDao.updateMatchFlag(regVo);
 	}
 }
