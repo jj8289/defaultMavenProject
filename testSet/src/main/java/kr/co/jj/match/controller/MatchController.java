@@ -91,12 +91,12 @@ public class MatchController {
 				matchList = matchService.selectMatchListForUserPT(reqVo);
 				
 				//PT 업무 한글 세팅
-				List<String> workList = new ArrayList<String>();
 				List<String> detailWorkList = new ArrayList<String>();
 				String[] workPt = null;  
 				String[] detailWorkPt = null;  
-				for(UserMatchVO match : matchList) {
-					workPt = match.getWorkPt().split("/"); 
+				for(UserMatchVO match : matchList) { 
+					List<String> workList = new ArrayList<String>(); 
+					workPt = match.getWorkPt().split("/");  
 					for(int i = 0; i < workPt.length; i++) {
 						for(WorkPT work : WorkPT.values()) {
 							//work.name() : A , work.getName() : 신경계치료 
@@ -106,6 +106,7 @@ public class MatchController {
 						}
 					}
 					match.setWorkPtList(workList);
+					System.out.println("");
 				}
 				
 			} else {

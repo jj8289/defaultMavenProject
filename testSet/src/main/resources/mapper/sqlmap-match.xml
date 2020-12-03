@@ -31,7 +31,7 @@
 	<if test="searchType == 'sat'">
 	   AND (A.SEARCH_DATE <![CDATA[<=]]> STR_TO_DATE(C.WORK_DATE , '%Y-%m-%d'))
 	</if>	
-	<if test="searchTime != '0'">
+	<if test="searchTime != 0">
 	   AND A.SEARCH_TIME = C.TIME_FLAG
 	</if>
 </sql>
@@ -87,6 +87,7 @@
 			           ,C.WORK_START
 			           ,C.WORK_DOW 
 			           ,C.WORK_PT 
+			           ,C.WORK
 			           ,C.DETAIL_WORK_PT
 			           ,C.DETAIL_WORK
 			           ,C.INSEN_FLAG
@@ -124,7 +125,6 @@
 				   AND  D.COMPANY_NO  = C.COMPANY_NO 
 				   AND  E.JOB_NO = C.JOB 
 				   AND  E.JOB_NO = B.JOB_NO 
-				   AND  A.SEARCH_TIME = C.TIME_FLAG 
 				   AND  C.MATCH_FLAG = 'Y'
 				   AND B.MATCH_STATUS = 'L'
 				   <include refid="userPerFectIf" />
@@ -171,6 +171,7 @@
 			           ,C.WORK_START
 			           ,C.WORK_DOW 
 			           ,C.WORK_PT 
+			           ,C.WORK
 			           ,C.DETAIL_WORK_PT
 			           ,C.DETAIL_WORK
 			           ,C.INSEN_FLAG
@@ -208,9 +209,8 @@
 				   AND  D.COMPANY_NO  = C.COMPANY_NO 
 				   AND  E.JOB_NO = C.JOB 
 				   AND  E.JOB_NO = B.JOB_NO 
-				   AND  A.SEARCH_TIME = C.TIME_FLAG 
 				   AND  C.MATCH_FLAG = 'Y'
-				   AND B.MATCH_STATUS = 'L'
+				   AND  B.MATCH_STATUS = 'L'
 				   <include refid="userPerFectIf" />
 				   AND  A.USER_NO = #{userNo}
 				   ORDER BY C.CREATE_DATE DESC
@@ -231,13 +231,12 @@
 	   AND  B.JOB_NO = C.JOB
 	   AND  A.SEARCH_TYPE = C.WORK_TYPE
 	   AND  D.COMPANY_NO  = C.COMPANY_NO 
-	   AND  A.SEARCH_TIME = C.TIME_FLAG 
 	   AND  C.MATCH_FLAG = 'Y'
 	   AND B.MATCH_STATUS = 'L'
 	   <include refid="userPerFectIf" />
 	   AND  A.USER_NO = #{userNo}
 </select> 
-
+ 
 <select id="updateMatchFlag" parameterType="RegisterVO">
 	UPDATE  TB_REGISTER 
 	   SET  MATCH_FLAG = #{matchFlag}

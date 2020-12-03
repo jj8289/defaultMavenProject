@@ -285,7 +285,9 @@ p{
 									<input type="hidden" id="dow${match.rno }"  value="${match.workDow }">
 									<input type="hidden" id="workPt${match.rno }"  value="${match.workPtList }">
 									<input type="hidden" id="detailWorkPt${match.rno }"  value="${match.detailWorkPt }">
-									<input type="hidden" id="detailWork${match.rno }"  value="${match.detailWork }">  
+									<input type="hidden" id="detailWork${match.rno }"  value="${match.detailWork }"> 
+									<input type="hidden" id="lunchStTime${match.rno }"  value="${match.lunchStTime }"> 
+									<input type="hidden" id="lunchEnTime${match.rno }"  value="${match.lunchEnTime }">
 								</td>
 								<td id="companyNm${match.rno }"> 
 									<%-- <c:out value="${match.companyNm }" /> --%>
@@ -409,13 +411,13 @@ p{
 
 	<!-- modal(PT) -->
 	<div class="modal modal-center fade" id="matchModalPT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered">    
+		<div class="modal-dialog modal-dialog-centered modal-lg">     
 			<div class="modal-content">   
 				<div class="modal-header"> 
 					<h5 class="modal-title" id="myModalLabel">Modal title</h5> 
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">x</button>
 				</div>  
-				<div class="modal-body"> 
+				<div class="modal-body">  
 					<div class="row">
 						<div class="col-8 col-sm-6">
 							<label for="modal-company" class="col-form-label">Company:</label>
@@ -492,15 +494,18 @@ p{
             				<input type="text" class="form-control" id="modal-ion" readonly="readonly"> 
 						</div>
 					</div>  
-					
-            		<label for="modal-detailWork" class="col-form-label">업무 상세:</label>
-            		<!-- <input type="text" class="form-control" id="modal-etc" readonly="readonly">  -->
-            		<textarea class="form-control" id="modal-detailWork" rows="5" cols="50" style="margin: 0px; width: 478px; height: 80px;" readonly="readonly"></textarea>
-            		
-            		<label for="modal-etc" class="col-form-label">복지 및 기타:</label>
-            		<!-- <input type="text" class="form-control" id="modal-etc" readonly="readonly">  -->
-            		<textarea class="form-control" id="modal-etc" rows="5" cols="50" style="margin: 0px; width: 478px; height: 80px;" readonly="readonly"></textarea>
-            		
+					<div class="row">
+						<div class="col-8 col-sm-6">
+							<label for="modal-detailWork" class="col-form-label">업무 상세:</label>
+		            		<!-- <input type="text" class="form-control" id="modal-etc" readonly="readonly">  -->
+		            		<textarea class="form-control" id="modal-detailWork" rows="5" cols="50" style="margin: 0px; width: 370px; height: 80px;" readonly="readonly"></textarea>
+						</div>
+						<div class="col-8 col-sm-6">
+							<label for="modal-etc" class="col-form-label">복지 및 기타:</label>
+		            		<!-- <input type="text" class="form-control" id="modal-etc" readonly="readonly">  -->
+		            		<textarea class="form-control" id="modal-etc" rows="5" cols="50" style="margin: 0px; width: 370px; height: 80px;" readonly="readonly"></textarea>
+						</div> 
+					</div> 
 				</div>  
 				<div class="modal-footer"> 
 					<button data-dismiss="modal" class="remodal-close" aria-label="Close" title="닫기">close</button>
@@ -510,7 +515,7 @@ p{
 		</div>
 	</div>
 	
-	<!-- modal 
+	<!-- modal -->
 	<div class="modal modal-center fade" id="matchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">    
 			<div class="modal-content">   
@@ -521,59 +526,73 @@ p{
 				<div class="modal-body"> 
 					<div class="row">
 						<div class="col-8 col-sm-6">
-							<label for="modal-company" class="col-form-label">Company:</label>
-            				<input type="text" class="form-control" id="modal-company" readonly="readonly">
+							<label for="modal-company2" class="col-form-label">Company:</label>
+            				<input type="text" class="form-control" id="modal-company2" readonly="readonly">
 						</div>
 						<div class="col-8 col-sm-6">
-							<label for="modal-job" class="col-form-label">job:</label>
-            				<input type="text" class="form-control" id="modal-job" readonly="readonly">
+							<label for="modal-job2" class="col-form-label">job:</label>
+            				<input type="text" class="form-control" id="modal-job2" readonly="readonly">
 						</div>
 					</div> 
-					<label for="modal-addr" class="col-form-label">addr:</label>
-            		<input type="text" class="form-control" id="modal-addr" readonly="readonly"> 
+					<label for="modal-addr2" class="col-form-label">addr:</label>
+            		<input type="text" class="form-control" id="modal-addr2" readonly="readonly"> 
             		<div class="row"> 
             			<div class="col-8 col-sm-4">
-            				<label for="modal-date" class="col-form-label">date:</label>
-            				<input type="text" class="form-control" id="modal-date" readonly="readonly">
+            				<label for="modal-date2" class="col-form-label">date:</label>
+            				<input type="text" class="form-control" id="modal-date2" readonly="readonly">
             			</div>
             			<div class="col-8 col-sm-4">
-            				<label for="modal-time" class="col-form-label">time:</label>
-            				<input type="text" class="form-control" id="modal-time" readonly="readonly">
+            				<label for="modal-time2" class="col-form-label">time:</label>
+            				<input type="text" class="form-control" id="modal-time2" readonly="readonly">
             			</div> 
             			<div class="col-8 col-sm-4">
-            				<label for="modal-sal" class="col-form-label">sal:</label> 
-            				<input type="text" class="form-control" id="modal-sal" readonly="readonly"> 
-            			</div>
+            				<label for="modal-lunchTime2" class="col-form-label">lunch:</label>
+            				<input type="text" class="form-control" id="modal-lunchTime2" readonly="readonly">
+            			</div> 
             		</div>
             		<div class="row">
             			<div class="col-8 col-sm-4">
-            				<label for="modal-sex" class="col-form-label">sex:</label>
-            				<input type="text" class="form-control" id="modal-sex" readonly="readonly"> 
+            				<label for="modal-sex2" class="col-form-label">sex:</label>
+            				<input type="text" class="form-control" id="modal-sex2" readonly="readonly"> 
             			</div>
             			<div class="col-8 col-sm-4">
-            				<label for="modal-age" class="col-form-label">age:</label>
-            				<input type="text" class="form-control" id="modal-age" readonly="readonly"> 
+            				<label for="modal-age2" class="col-form-label">age:</label>
+            				<input type="text" class="form-control" id="modal-age2" readonly="readonly"> 
             			</div> 
             			<div class="col-8 col-sm-4">
-            				<label for="modal-career" class="col-form-label">career:</label>
-            				<input type="text" class="form-control" id="modal-career" readonly="readonly"> 
+            				<label for="modal-career2" class="col-form-label">career:</label>
+            				<input type="text" class="form-control" id="modal-career2" readonly="readonly"> 
             			</div>  
             		</div>  
             		<div class="row">
 						<div class="col-8 col-sm-4">
-							<label for="modal-peer" class="col-form-label">PeerCnt:</label>
-            				<input type="text" class="form-control" id="modal-peer" readonly="readonly"> 
+							<label for="modal-peer2" class="col-form-label">PeerCnt:</label>
+            				<input type="text" class="form-control" id="modal-peer2" readonly="readonly"> 
 						</div>
 						<div class="col-8 col-sm-4">
-							<label for="modal-patient" class="col-form-label">patientCnt:</label>
-            				<input type="text" class="form-control" id="modal-patient" readonly="readonly"> 
+							<label for="modal-patient2" class="col-form-label">patientCnt:</label>
+            				<input type="text" class="form-control" id="modal-patient2" readonly="readonly"> 
 						</div> 
+						<div class="col-8 col-sm-4">
+            				<label for="modal-sal2" class="col-form-label">sal:</label> 
+            				<input type="text" class="form-control" id="modal-sal2" readonly="readonly"> 
+            			</div>
 					</div> 
 					
 					<label for="modal-work" class="col-form-label">work:</label>
             		<input type="text" class="form-control" id="modal-work" readonly="readonly">
-            		<label for="modal-etc" class="col-form-label">복지 및 기타:</label>
-            		<input type="text" class="form-control" id="modal-etc" readonly="readonly"> 
+            		<div class="row">
+						<div class="col-8 col-sm-6">
+							<label for="modal-detailWork2" class="col-form-label">업무 상세:</label>
+		            		<!-- <input type="text" class="form-control" id="modal-etc" readonly="readonly">  -->
+		            		<textarea class="form-control" id="modal-detailWork2" rows="5" cols="50" style="margin: 0px; width: 220px; height: 80px;" readonly="readonly"></textarea>
+						</div>
+						<div class="col-8 col-sm-6">
+							<label for="modal-etc2" class="col-form-label">복지 및 기타:</label>
+		            		<!-- <input type="text" class="form-control" id="modal-etc" readonly="readonly">  -->
+		            		<textarea class="form-control" id="modal-etc2" rows="5" cols="50" style="margin: 0px; width: 220px; height: 80px;" readonly="readonly"></textarea>
+						</div>   
+					</div> 
 				</div>  
 				<div class="modal-footer"> 
 					<button data-dismiss="modal" class="remodal-close" aria-label="Close" title="닫기">close</button>
@@ -582,7 +601,7 @@ p{
 			</div>	 
 		</div>
 	</div> 
-	-->
+	
 <script type="text/javascript">
 var pageVO = "${pageVO}";
 var curPage = ${pageVO.pageNo};
@@ -661,6 +680,9 @@ $('#matchModalPT').on('show.bs.modal', function (event) {
 	  var detailWorkList = [];
 	  detailWorkList = $("#detailWorkPt"+rno).val().split("/");
 	  
+	  var workPt = $("#workPt"+rno).val()
+	  console.log(workPt);
+		  
 	  var modal = $(this); 
 	  
 	  modal.find('.modal-title').text("상세 채용 정보 [" + $("#companyNm"+rno).text().trim() + "]"); 
@@ -682,7 +704,8 @@ $('#matchModalPT').on('show.bs.modal', function (event) {
 	  modal.find('#modal-ion').val(detailWorkList[4] == 'N' ? "X" : "O"); 
 	  modal.find('#modal-detailWork').val($("#detailWork"+rno).val().replace(/<br\>/g, '\n'));        
 	  modal.find('#modal-etc').val($("#etc"+rno).val().replace(/<br\>/g, '\n'));       
-	  modal.find('#modal-addr').val($("#addr"+rno).val());   
+	  modal.find('#modal-addr').val($("#addr"+rno).val());
+	  modal.find('#modal-lunchTime').val($("#lunchStTime"+rno).val() + "~" + $("#lunchEnTime"+rno).val());  
 }); 
 
 $('#matchModal').on('show.bs.modal', function (event) {  
@@ -690,25 +713,26 @@ $('#matchModal').on('show.bs.modal', function (event) {
 	  var rno = button.data('rno'); 
 	  
 	  var etc = $("#etc"+rno).val().replace(/<br\>/g, '\n');
-	  alert(etc);
 	 // var avgCnt = $("#avgCnt").	
 	  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
 	  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
 	  var modal = $(this); 
 	  modal.find('.modal-title').text("상세 채용 정보 [" + $("#companyNm"+rno).text().trim() + "]"); 
-	  modal.find('#modal-company').val($("#companyNm"+rno).text().trim());    
-	  modal.find('#modal-job').val($("#jobNm"+rno).text().trim());   
-	  modal.find('#modal-date').val($("#workDate"+rno).text().trim()); 
-	  modal.find('#modal-time').val($("#workTime"+rno).text().trim());   
-	  modal.find('#modal-sal').val($("#workSal"+rno).text().trim());   
-	  modal.find('#modal-sex').val($("#sex"+rno).text().trim());   
-	  modal.find('#modal-age').val($("#age"+rno).text().trim());   
-	  modal.find('#modal-career').val($("#career"+rno).text().trim());      
-	  modal.find('#modal-peer').val($("#peer"+rno).val() + "명"); 
-	  modal.find('#modal-patient').val($("#avgCnt"+rno).val() + "명"); 
-	  modal.find('#modal-work').val($("#detailWork"+rno).text().trim());   
-	  modal.find('#modal-etc').val(etc);        
-	  modal.find('#modal-addr').val($("#addr"+rno).val());     
+	  modal.find('#modal-company2').val($("#companyNm"+rno).text().trim());    
+	  modal.find('#modal-job2').val($("#jobNm"+rno).text().trim());   
+	  modal.find('#modal-date2').val($("#workDate"+rno).text().trim()); 
+	  modal.find('#modal-time2').val($("#workTime"+rno).text().trim());   
+	  modal.find('#modal-sal2').val($("#workSal"+rno).text().trim());   
+	  modal.find('#modal-sex2').val($("#sex"+rno).text().trim());   
+	  modal.find('#modal-age2').val($("#age"+rno).text().trim());   
+	  modal.find('#modal-career2').val($("#career"+rno).text().trim());      
+	  modal.find('#modal-peer2').val($("#peer"+rno).val() + "명"); 
+	  modal.find('#modal-patient2').val($("#avgCnt"+rno).val() + "명");  
+	  modal.find('#modal-work').val($("#work"+rno).text().trim());  
+	  modal.find('#modal-detailWork2').val($("#detailWork"+rno).val().replace(/<br\>/g, '\n')); 
+	  modal.find('#modal-etc2').val(etc);        
+	  modal.find('#modal-addr2').val($("#addr"+rno).val());     
+	  modal.find('#modal-lunchTime2').val($("#lunchStTime"+rno).val() + " ~ " + $("#lunchEnTime"+rno).val()); 
 }); 
 
 function listMatching(){
