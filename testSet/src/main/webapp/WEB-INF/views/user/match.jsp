@@ -160,7 +160,7 @@ form {
 			<div class="temp"></div>
 			<h2 class="title">매치</h2>      
 			<div class="temp"></div>    
-			<p class="but"><input type="button" id="matchBtn" onclick="" value="매칭" class="btn" style="height: 100px;"></p>
+			<p class="but"><input type="button" id="matchBtn" onclick="" value="매칭" class="btn"></p>
 			<div class="temp"></div>    
 			<h3 class="subtitle">매칭 상태</h3>    
 			<div style="margin: 0 auto;">   

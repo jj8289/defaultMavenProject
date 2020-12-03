@@ -122,9 +122,10 @@
 				   AND  B.JOB_NO = C.JOB
 				   AND  A.SEARCH_TYPE = C.WORK_TYPE
 				   AND  D.COMPANY_NO  = C.COMPANY_NO 
-				   AND E.JOB_NO = C.JOB 
-				   AND E.JOB_NO = B.JOB_NO 
+				   AND  E.JOB_NO = C.JOB 
+				   AND  E.JOB_NO = B.JOB_NO 
 				   AND  A.SEARCH_TIME = C.TIME_FLAG 
+				   AND  C.MATCH_FLAG = 'N'
 				   <include refid="userPerFectIf" />
 				   AND  A.USER_NO = #{userNo}
 				   ORDER BY C.CREATE_DATE DESC

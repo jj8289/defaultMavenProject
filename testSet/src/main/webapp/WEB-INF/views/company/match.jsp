@@ -14,7 +14,7 @@
 <title>마이페이지</title> 
 <style type="text/css">
 /*datepicer 버튼 롤오버 시 손가락 모양 표시*/
-.ui-datepicker-trigger{cursor: pointer;}
+.ui-datepicker-trigger{cursor: pointer;} 
 /*datepicer input 롤오버 시 손가락 모양 표시*/
 .hasDatepicker{cursor: pointer;}
 
@@ -28,8 +28,8 @@
 }
 
 .temp {
-	height: 50px; 
-}
+	height: 40px; 
+} 
 
 body {
 	margin: 0; 
@@ -60,12 +60,13 @@ body {
  
 .regCon {
  	margin: 0 auto;
- 	margin-top: 30px;    
-} 
+ 	margin-top: 30px; 
+ 	width: 1100px;      
+}    
  
 table { 
-	margin: 0 auto;   
-}  
+	margin: 0 auto;
+}    
 
 form {
 	margin: 20px;
@@ -83,7 +84,7 @@ form {
 	border: none;
 	background-color: #424242;
 	color: white;
-	width: 100px;
+	width: 80px; 
 	height: 30px;
 	margin: 0 5px; 
 } 
@@ -111,8 +112,11 @@ form {
  	display: flex;
  	align-items: center; 
  	justify-content: center; 
-}      
- 
+}
+
+tr{
+	height: 50px; 
+}
 </style>         
 </head>    
 <body>   
@@ -123,65 +127,55 @@ form {
             <input type="hidden" name="regNo" />
 			<div class="temp"></div>
 			<h2 class="title">매치</h2>   
-			<div class="temp"></div>    
-			<p class="but"><input type="button" id="matchBtn" onclick="#" value="매칭" class="btn" style="height: 100px;"></p>
-			<div class="temp"></div>    
-			<h3 class="subtitle">매칭 상태</h3>    
-			<div style="margin: 0 auto;">   
-				<table> 
-					<tr style="height: 50px">      
-						<td id="switch_td" style="padding-left: 13px; text-align: center;">
-							<p id="off">OFF</p>       
-							<label class="switch" style="text-align: center;"> 
-							    <input type="checkbox" id="switchBtn" onclick="toggle(this)"> 
-							    <span class="slider round"></span>
-							</label> 
-							<p id="on">ON</p>  
-						</td>       
-					</tr>      
-				</table>     
-			</div>
-			<div style="height: 30px"></div>    
-			<div class="regCon">
+			<div class="temp"></div> 
+			<div class="regCon">   
 				<table id="listTable">
-					<caption style="height: 50px;">매칭 결과 리스트  [ 총 개수 : ${pageVO.rowCount } ]</caption> 
-					<colgroup>   
-						<col style="width: 60px">
-						<col style="width: 130px">    
-						<col style="width: 130px">
-						<col style="width: 130px">
-						<col style="width: 160px">
+				<c:if test="${not empty regList }">
+					<caption style="height: 50px;">조건 등록 리스트  [ 총 개수 : ${pageVO.rowCount } ]</caption> 
+					<colgroup>     
+						<col style="width: 40px">
+						<col style="width: 190px">    
+						<col style="width: 150px"> 
+						<col style="width: 130px"> 
+						<col style="width: 170px"> 
 						<col style="width: 200px">
 						<col style="width: 130px"> 
-						<col style="width: 130px"> 
+						<col style="width: 130px">  
 						<col style="width: 130px">    
-						<col style="width: 120px">   
-					</colgroup>  
-					<thead>            
+						<%-- <col style="width: 60px">   --%>
+						<col style="width: 120px">  
+					</colgroup>   
+					<thead>             
 						<tr>
 							<th scope="col">No</th>
 							<th scope="col">직종</th>
 							<th scope="col">근무 기간</th>
 							<th scope="col">시급/일급</th>
-							<th scope="col">근무 날짜(시작일)</th>
+							<th scope="col">근무(시작)일</th> 
 							<th scope="col">근무 시간</th>
 							<th scope="col">성별</th>
 							<th scope="col">나이</th>
 							<th scope="col">경력</th>
-							<th scope="col">상세 및 수정</th>
+							<!-- <th scope="col">매칭</th> -->
+							<th scope="col">매칭 상태</th>
 						</tr>
 					</thead>
 					<tbody id="listBody"> 
-						<c:if test="${not empty regList }">
 						<c:forEach items="${regList }" var="reg">
-							<tr style="height: 40px;">  
-								<td><c:out value="${reg.rowNum }" /></td>
-								<td> 
+							<tr>      
+								<td>
+									<c:out value="${reg.rowNum }" />
+									<input type="hidden" id="regNo${reg.regNo }"  value="${reg.regNo }">
+								</td>
+								<td>
 									<c:forEach items="${jobList }" var="job">
+										<%-- <c:out value="${job.key }" /> 
+										<c:out value="${job.value }" />
+										<c:out value="${reg.job }" /> --%> 
 										<c:if test="${job.key == reg.job }">	
-											<c:out value="${job.value }" />
-										</c:if>
-									</c:forEach>    
+											<c:out value="${job.value }" /><c:if test="${job.key == '1' }">(${reg.workFlag })</c:if>
+										</c:if>  
+									</c:forEach>      
 								</td> 
 								<td> 
 									<c:forEach items="${workList }" var="work">
@@ -190,6 +184,11 @@ form {
 										</c:if>
 									</c:forEach>    
 								</td> 
+								<%-- 일급 입력 ==> 시급 계산해서 보여줌 / 시급 등록 ==> 일급 계산해서 보여줌 
+								<td>
+									<c:if test="${reg.calSalaryHour != '0' }"><c:out value="${reg.calSalaryHour }" />/hour</c:if>
+									<c:if test="${reg.calSalaryDay != '0' }"><c:out value="${reg.calSalaryDay }" />/day</c:if>
+								</td> --%>  
 								<td> 
 									<c:if test="${reg.salaryHour != '' }"><c:out value="${reg.salaryHour }" />/hour</c:if>
 									<c:if test="${reg.salaryDay != '' }"><c:out value="${reg.salaryDay }" />/day</c:if>
@@ -199,12 +198,12 @@ form {
 									<c:if test="${reg.workStart != '' }"><c:out value="${reg.workStart }" /></c:if>
 								</td> 
 								<td>
-									<c:out value="${reg.workStTime }" /> ~ <c:out value="${reg.workEnTime }" />
+									<c:out value="${reg.workStTime }" />~<c:out value="${reg.workEnTime }" />
 									(<c:out value="${reg.calWorkTime }" />h) 
-								</td>  
+								</td>   
 								<td>
-									<c:if test="${reg.sex == 'F' }">여자만</c:if>
-									<c:if test="${reg.sex == 'M' }">남자만</c:if> 
+									<c:if test="${reg.sex == 'F' }">여자</c:if>
+									<c:if test="${reg.sex == 'M' }">남자</c:if> 
 									<c:if test="${reg.sex == '' }">성별 무관</c:if>
 								</td> 
 								<td>
@@ -215,14 +214,25 @@ form {
 									<c:if test="${reg.career != '' }"><c:out value="${reg.career }" />년 이상</c:if>
 									<c:if test="${reg.career == '' }">경력 무관</c:if>
 								</td>  
-								<td><input type="button" value="상세" onclick="gotoRegDetail(${reg.regNo})"></td> 
+								<!-- <td>
+									<p class="but"><input type="button" id="matchBtn" onclick="#" value="매칭" class="btn"></p>  
+								</td> --> 
+								<td id="switch_td" style="padding-left: 13px; text-align: center; display: flex; align-content:space-between; align-items: center; margin-top: 7px;">   
+									<div style="width: 40px;"><p id="off${reg.regNo}" style="padding: 5px;">OFF</p></div>
+										<label class="switch" style="text-align: center;">      
+										    <c:if test="${reg.matchFlag == 'Y' }"><input type="checkbox" id="switchBtn${reg.regNo}" onclick="toggle(this, ${reg.regNo})" onload="toggle(this, ${reg.regNo})" checked></c:if>
+										    <c:if test="${reg.matchFlag == 'N' }"><input type="checkbox" id="switchBtn${reg.regNo}" onclick="toggle(this, ${reg.regNo})" onload="toggle(this, ${reg.regNo})"> </c:if>
+										    <span class="slider round"></span> 
+										</label>  
+									<div style="width: 40px;"><p id="on${reg.regNo}" style="padding: 5px;">ON</p></div>
+								</td>     
 							</tr> 
-						</c:forEach> 
-						</c:if>
+						</c:forEach>  
+						</c:if>	
 						<c:if test="${empty regList }">
-							등록된 매칭 조건이 없습니다.
+							<div style="text-align: center;"><p>등록된 매칭 조건이 없습니다.</p></div>
 						</c:if>
-					</tbody>
+					</tbody> 
 				</table>
 			</div>  
 			<div class="page-navi">
@@ -261,20 +271,64 @@ form {
 		</form>
 	</div>        
 <script type="text/javascript">
-$("#on").hide();
-$("#off").hide();
 
-function toggle(item) {
+var dataList = $("#listBody").find("tr");
+var len = dataList.length;
+
+
+$(dataList).each(function(i, obj){
+	var check = $(obj).find("input[id^=switchBtn]").is(":checked");	//체크여부 (true/false)
+	var regNo = $(obj).find("input[id^=regNo]").val();
+	
+	console.log(regNo); 
+	
+	if(check){
+		$("#off" + regNo).hide();
+	} else {
+		$("#on" + regNo).hide(); 
+	}
+}); 
+
+function toggle(item, regNo) {
+	console.log(regNo); 
+	
+	var rslt = ""; 
+	
 	if(item.checked == true){
 		//matchStat = 'Y';
-		$("#on").show();
-		$("#off").hide();
-	} else {
+		rslt = confirm("매칭하시겠습니까?");
+		if(rslt){
+			alert("매칭 등록되었습니다.");
+ 			$("#on" + regNo).show(); 
+ 			$("#off" + regNo).hide();
+			return;
+		} else{
+			alert("매칭이 취소되었습니다.");
+			$("#"+item.id).prop("checked", false); 
+ 			$("#on" + regNo).hide();
+ 			$("#off" + regNo).show();
+ 			return;
+		}
+	} else {  
 		//matchStat = 'N';
-		$("#on").hide();
-		$("#off").show(); 
+		rslt = confirm("매칭 취소하시겠습니까?");
+		if(rslt){
+			alert("매칭 취소!");
+			$("#on" + regNo).hide();
+			$("#off" + regNo).show();
+			return;
+		} else {
+			$("#"+item.id).prop("checked", true);  
+		}
 	} 
 } 
+
+//페이지 이동
+function fn_movePage(val){
+	$("input[name=pageNo]").val(val);
+    $("form[name=frm]").attr("method", "get");
+    $("form[name=frm]").attr("action", CONTEXT_PATH + "/company/match").submit(); 
+}  
 </script>	
 </body>
 </html>

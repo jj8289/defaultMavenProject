@@ -2,6 +2,7 @@ package kr.co.jj.match.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -21,7 +22,9 @@ import kr.co.jj.common.service.CommonService;
 import kr.co.jj.common.vo.Job;
 import kr.co.jj.common.vo.PageVO;
 import kr.co.jj.company.controller.CompanyController;
+import kr.co.jj.company.service.CompanyService;
 import kr.co.jj.company.vo.CompanyVO;
+import kr.co.jj.company.vo.RegisterVO;
 import kr.co.jj.match.service.MatchService;
 import kr.co.jj.match.vo.UserMatchVO;
 import kr.co.jj.user.controller.UserController;
@@ -42,6 +45,9 @@ public class MatchController {
 	CompanyController companyController;
 	
 	@Autowired
+	CompanyService companyService;
+	
+	@Autowired
 	CommonService commonService;
 	
 	@Autowired
@@ -49,11 +55,6 @@ public class MatchController {
 	
 	@Autowired
 	MatchService matchService;
-	
-	@GetMapping("/user/test")
-	public String test() {
-		return "user/matchPop";
-	}
 	
 	/**
 	 * 유저 매칭
@@ -101,9 +102,7 @@ public class MatchController {
 		model.addAttribute("rowCnt", rowCnt);
 		
 		param.setRowCount(rowCnt);
-		//param.setPageSize(5);
 		reqVo.setRowCount(rowCnt);
-		//reqVo.setPageSize(5); 
 		reqVo.setPageNo(Integer.parseInt(pageNo));
 		  
 		if(rowCnt != 0) {
@@ -122,14 +121,39 @@ public class MatchController {
 	 * 병원 매칭
 	 */
 	@GetMapping("/company/match")
-	public String matchComp(Model model, HttpSession session) throws Exception {
+	public String matchComp(Model model, HttpSession session, @ModelAttribute("pageVO") PageVO param, @RequestParam(required = false, defaultValue = "1") String pageNo) throws Exception {
 		String id = (String)session.getAttribute("mgloginId");
 		
-		CompanyVO comp = companyController.getCompany(id);
+		CompanyVO comp = companyController.getCompany(id); 
+		int rowCnt = companyService.selectRegTotCnt(comp);
 		
-		model.addAttribute("comp", comp);
+		param.setPageNo(Integer.parseInt(pageNo));   
+		System.out.println("pageNo : " + pageNo);
+		System.out.println(param.toString());
+		
+		Map<String, Object> workList = commonService.getWorkFlagList();
+		model.addAttribute("workList", workList);
+		
+		Map<String, Object> jobList = commonService.getJobList();
+		model.addAttribute("jobList", jobList);
+		
+		comp.setRowCount(rowCnt);
+		comp.setPageSize(5);
+		comp.setPageNo(Integer.parseInt(pageNo));
+		param.setRowCount(rowCnt);
+		param.setPageSize(5);  
+		
+		List<RegisterVO> regList = companyService.selectRegister(comp); 
+		model.addAttribute("regList", regList);
+		
+		model.addAttribute("comp", comp); 
 		
 		return "company/match"; 
+	}
+	
+	@GetMapping("/company/match/callList")
+	public String getCallList(Model model) throws Exception{
+		return "company/callList";
 	}
 	
 	

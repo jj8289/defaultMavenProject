@@ -57,6 +57,7 @@
 				<c:if test="${mgReg == null}"><div class="menu register" onclick="location.href='${pageContext.request.contextPath}/company/register'">register</div></c:if>
 				<div class="menu mypage" onclick="location.href='/jj/company/mypage'">mypage</div>  
 				<div class="menu match" onclick="mgMatch()">match</div>    
+				<div class="menu match" onclick="gotoList()">callList</div>    
 				<div class="hi" >반갑습니다~ 관리자 ${mglogin } 님</div>  
 			</c:if>   
 		</div>	    
@@ -90,14 +91,18 @@
 		}  
 	}      
   
-	
 	function goMatch(who){  
-		location.href='/jj/'+ who +'/match'; 
+		location.href= CONTEXT_PATH + '/'+ who +'/match'; 
+	}
+	 
+	function logout(){
+		location.href = CONTEXT_PATH + "/common/logout";
+	} 
+	
+	function gotoList(){
+		location.href = CONTEXT_PATH + "/company/match/callList";
 	}
 	
-	function logout(){
-		location.href = "/jj/common/logout";
-	} 
 	
 
 </script>
