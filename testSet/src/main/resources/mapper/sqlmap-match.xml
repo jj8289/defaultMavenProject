@@ -34,7 +34,23 @@
 	<if test="searchTime != 0">
 	   AND A.SEARCH_TIME = C.TIME_FLAG
 	</if>
-</sql>
+	<if test="searchDow != '' and searchDow != null">
+	   AND C.WORK_DOW IN (
+	   <foreach collection="dowList" item="dow" separator=",">
+            #{dow}
+       </foreach>
+	   )
+	</if>
+	<if test="locList != null">
+		<foreach collection="locList" item="loc" separator=","> 
+	   AND F.ADDR_NO IN (
+	   		<if test="loc != 0">
+            #{loc} 
+            </if>
+       </foreach>
+	   ) 
+	</if> 
+</sql> 
 
 <sql id="locationIf">
 	<!-- 리스트로 addr_no 리스트 가져와서 IN 절에 넣기 -->
@@ -72,6 +88,8 @@
 			           ,D.COMPANY_NO
 			           ,D.COMPANY_NM
 			           ,D.ADDR AS COMP_ADDR
+			           ,D.DONG AS COMP_DONG
+			           ,F.ADDR_NO AS COMP_ADDR_NO
 			           ,C.REG_NO
 			           ,A.SEARCH_TYPE
 			           ,B.JOB_NO USER_JOB_NO
@@ -119,6 +137,7 @@
 				       ,TB_REGISTER C
 				       ,TB_COMPANY D
 				       ,TB_JOB E
+				       ,TB_ADDR F
 				 WHERE  A.USER_NO = B.USER_NO
 				   AND  B.JOB_NO = C.JOB
 				   AND  A.SEARCH_TYPE = C.WORK_TYPE
@@ -126,7 +145,8 @@
 				   AND  E.JOB_NO = C.JOB 
 				   AND  E.JOB_NO = B.JOB_NO 
 				   AND  C.MATCH_FLAG = 'Y'
-				   AND B.MATCH_STATUS = 'L'
+				   AND  B.MATCH_STATUS = 'L'
+				   AND  D.DONG = F.DN_NM 
 				   <include refid="userPerFectIf" />
 				   AND  A.USER_NO = #{userNo}
 				   ORDER BY C.CREATE_DATE DESC 
@@ -156,6 +176,8 @@
 			           ,D.COMPANY_NO
 			           ,D.COMPANY_NM
 			           ,D.ADDR AS COMP_ADDR
+			           ,D.DONG AS COMP_DONG
+			           ,F.ADDR_NO AS COMP_ADDR_NO
 			           ,C.REG_NO
 			           ,A.SEARCH_TYPE
 			           ,B.JOB_NO USER_JOB_NO
@@ -203,6 +225,7 @@
 				       ,TB_REGISTER C
 				       ,TB_COMPANY D
 				       ,TB_JOB E
+				       ,TB_ADDR F
 				 WHERE  A.USER_NO = B.USER_NO
 				   AND  B.JOB_NO = C.JOB
 				   AND  A.SEARCH_TYPE = C.WORK_TYPE
@@ -211,6 +234,7 @@
 				   AND  E.JOB_NO = B.JOB_NO 
 				   AND  C.MATCH_FLAG = 'Y'
 				   AND  B.MATCH_STATUS = 'L'
+				   AND  D.DONG = F.DN_NM 
 				   <include refid="userPerFectIf" />
 				   AND  A.USER_NO = #{userNo}
 				   ORDER BY C.CREATE_DATE DESC
@@ -227,12 +251,14 @@
 	       ,TB_USER B
 	       ,TB_REGISTER C
 	       ,TB_COMPANY D
+	       ,TB_ADDR F
 	 WHERE  A.USER_NO = B.USER_NO
 	   AND  B.JOB_NO = C.JOB
 	   AND  A.SEARCH_TYPE = C.WORK_TYPE
 	   AND  D.COMPANY_NO  = C.COMPANY_NO 
 	   AND  C.MATCH_FLAG = 'Y'
 	   AND B.MATCH_STATUS = 'L'
+	   AND  D.DONG = F.DN_NM 
 	   <include refid="userPerFectIf" />
 	   AND  A.USER_NO = #{userNo}
 </select> 

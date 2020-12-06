@@ -29,6 +29,7 @@ import kr.co.jj.company.vo.CompanyVO;
 import kr.co.jj.company.vo.RegisterDTO;
 import kr.co.jj.company.vo.RegisterVO;
 import kr.co.jj.user.controller.UserController;
+import kr.co.jj.user.vo.UserVO;
 
 @Controller
 @RequestMapping("/company")
@@ -420,6 +421,19 @@ public class CompanyController {
 		return "company/myinfo";
 	}
 	
+	@PostMapping(value = "/myInfo/update")
+	@ResponseBody 
+	public String updateMyInfo(CompanyVO comp, Model model, HttpSession session) throws Exception{
+		logger.debug(comp.toString());
+		
+		if(comp.getCompanyNo() != null && comp.getCompanyNo() != "") {
+			companyService.updateCompany(comp);
+			
+			return "success";
+		}
+		
+		return "fail";
+	}
 	
 	// 아이디 중복 체크
 	public boolean idDupleChk(CompanyVO company) throws Exception {

@@ -87,5 +87,10 @@ public class CompanyServiceImpl implements CompanyService{
 		dao.updateRegister(vo);
 	}
 
+	@Override
+	public void updateCompany(CompanyVO vo) throws Exception {
+		dao.updateCompany(vo);
+	}
+
 	
 }

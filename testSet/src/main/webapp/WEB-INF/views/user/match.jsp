@@ -70,7 +70,7 @@ body {
 .reqCon {
  	margin: 0 auto;
  	margin-top: 30px;  
- 	width: 1200px;    
+ 	width: 1400px;    
 }  
   
 table { 
@@ -252,6 +252,7 @@ p{
 						<col style="width: 160px">     
 						<col style="width: 130px">
 						<col style="width: 200px">
+						<col style="width: 130px">
 						<col style="width: 130px"> 
 						<col style="width: 130px">
 						<col style="width: 130px">
@@ -265,6 +266,7 @@ p{
 							<th scope="col">병원명</th>
 							<th scope="col">직종</th>
 							<th scope="col">업무</th>
+							<th scope="col">병원 위치</th>
 							<th scope="col">근무(시작)일</th> 
 							<th scope="col">근무 시간</th>
 							<th scope="col">시급/일급</th>
@@ -307,11 +309,14 @@ p{
 										</c:forEach> 
 									</td>   
 								</c:if> 
-								<c:if test="${match.compJobNo != '1'}">
+								<c:if test="${match.compJobNo != '1'}"><!-- PT아닌 직업일 때 -->
 									<td id="work${match.rno }">   
 										<c:out value="${match.work }" />
 									</td> 
 								</c:if>  
+								<td id="compDong${match.rno }">   
+										<c:out value="${match.compDong }" />
+									</td> 
 								<td id="workDate${match.rno }"> 
 									<c:if test="${match.workDate != '' }"><c:out value="${match.workDate }" /></c:if>
 									<c:if test="${match.workStart != '' }"><c:out value="${match.workStart }" /></c:if>
@@ -418,7 +423,7 @@ p{
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">x</button>
 				</div>  
 				<div class="modal-body">  
-					<div class="row">
+					<!-- <div class="row">
 						<div class="col-8 col-sm-6">
 							<label for="modal-company" class="col-form-label">Company:</label>
             				<input type="text" class="form-control" id="modal-company" readonly="readonly">
@@ -427,7 +432,21 @@ p{
 							<label for="modal-job" class="col-form-label">job:</label>
             				<input type="text" class="form-control" id="modal-job" readonly="readonly">
 						</div>
-					</div> 
+					</div> --> 
+					<div class="row">
+						<div class="col-8 col-sm-4">
+							<label for="modal-company" class="col-form-label">Company:</label>
+            				<input type="text" class="form-control" id="modal-company" readonly="readonly">
+						</div>
+						<div class="col-8 col-sm-4">
+							<label for="modal-job" class="col-form-label">job:</label>
+            				<input type="text" class="form-control" id="modal-job" readonly="readonly">
+						</div>
+						<div class="col-8 col-sm-4">
+							<label for="modal-loc" class="col-form-label">loc:</label>
+            				<input type="text" class="form-control" id="modal-loc" readonly="readonly">
+						</div>
+					</div>
 					<label for="modal-addr" class="col-form-label">addr:</label>
             		<input type="text" class="form-control" id="modal-addr" readonly="readonly"> 
             		<div class="row"> 
@@ -525,15 +544,19 @@ p{
 				</div>  
 				<div class="modal-body"> 
 					<div class="row">
-						<div class="col-8 col-sm-6">
+						<div class="col-8 col-sm-4">
 							<label for="modal-company2" class="col-form-label">Company:</label>
             				<input type="text" class="form-control" id="modal-company2" readonly="readonly">
 						</div>
-						<div class="col-8 col-sm-6">
+						<div class="col-8 col-sm-4">
 							<label for="modal-job2" class="col-form-label">job:</label>
             				<input type="text" class="form-control" id="modal-job2" readonly="readonly">
 						</div>
-					</div> 
+						<div class="col-8 col-sm-4">
+							<label for="modal-loc2" class="col-form-label">loc:</label>
+            				<input type="text" class="form-control" id="modal-loc2" readonly="readonly">
+						</div>
+					</div>
 					<label for="modal-addr2" class="col-form-label">addr:</label>
             		<input type="text" class="form-control" id="modal-addr2" readonly="readonly"> 
             		<div class="row"> 
@@ -608,7 +631,7 @@ var curPage = ${pageVO.pageNo};
 var rowCnt = ${pageVO.rowCount}; 
 var matchList = "${matchList}";
 var user = "${user}";
-var userNo = ${user.userNo};
+var userNo = ${user.userNo};  
 var stat = "${user.matchStatus}"; 
 var param = {};  
 //var workPtList = "${matchList[0].workPtList}";
@@ -687,11 +710,12 @@ $('#matchModalPT').on('show.bs.modal', function (event) {
 	  
 	  modal.find('.modal-title').text("상세 채용 정보 [" + $("#companyNm"+rno).text().trim() + "]"); 
 	  modal.find('#modal-company').val($("#companyNm"+rno).text().trim());    
-	  modal.find('#modal-job').val($("#jobNm"+rno).text().trim());   
+	  modal.find('#modal-job').val($("#jobNm"+rno).text().trim());  
+	  modal.find('#modal-loc').val($("#compDong"+rno).text().trim());
 	  modal.find('#modal-date').val($("#workDate"+rno).text().trim()); 
 	  modal.find('#modal-time').val($("#workTime"+rno).text().trim());   
 	  modal.find('#modal-sal').val($("#workSal"+rno).text().trim());   
-	  modal.find('#modal-sex').val($("#sex"+rno).text().trim());   
+	  modal.find('#modal-sex').val($("#sex"+rno).text().trim());    
 	  modal.find('#modal-age').val($("#age"+rno).text().trim());   
 	  modal.find('#modal-career').val($("#career"+rno).text().trim());      
 	  modal.find('#modal-peer').val($("#peer"+rno).val() + "명"); 
@@ -720,6 +744,7 @@ $('#matchModal').on('show.bs.modal', function (event) {
 	  modal.find('.modal-title').text("상세 채용 정보 [" + $("#companyNm"+rno).text().trim() + "]"); 
 	  modal.find('#modal-company2').val($("#companyNm"+rno).text().trim());    
 	  modal.find('#modal-job2').val($("#jobNm"+rno).text().trim());   
+	  modal.find('#modal-loc2').val($("#compDong"+rno).text().trim()); 
 	  modal.find('#modal-date2').val($("#workDate"+rno).text().trim()); 
 	  modal.find('#modal-time2').val($("#workTime"+rno).text().trim());   
 	  modal.find('#modal-sal2').val($("#workSal"+rno).text().trim());   

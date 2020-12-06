@@ -18,7 +18,7 @@ public class RequireVO extends PageVO{
 	private String searchTime;		// 0 : 상관없음 / 1 : 오전 / 2 : 오후 / 3 : 하루	
 	private String location;
 	private List<String> dowList;
-	private List<String> locList; 
+	private List<Integer> locList; 
 	private String createDate;
 	
 	
@@ -100,10 +100,10 @@ public class RequireVO extends PageVO{
 	public void setDowList(List<String> dowList) {
 		this.dowList = dowList;
 	}
-	public List<String> getLocList() {
+	public List<Integer> getLocList() {
 		return locList;
 	}
-	public void setLocList(List<String> locList) {
+	public void setLocList(List<Integer> locList) {
 		this.locList = locList;
 	}
 	@Override

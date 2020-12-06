@@ -248,6 +248,15 @@
 		 WHERE    REG_NO = #{regNo}
 	</update> 
 	
+	<update id="updateCompany" parameterType="CompanyVO">
+ 		UPDATE  TB_COMPANY
+ 		   SET   ADDR = #{addr}
+ 		       , EMAIL = #{email}
+ 		       , INTRO = #{intro}
+ 		       , BUSINESS_NUM = #{businessNum}
+ 		 WHERE  COMPANY_NO = #{companyNo}
+ 	</update>
+	
 	<!-- <select id="selectSgList" parameterType="AddrDTO" resultType="">
 		SELECT  A.ROWNUM
 				, A.SG_NM

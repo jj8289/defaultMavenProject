@@ -496,7 +496,7 @@ input {
 					}
 				}
 				
-				locList.push(obj[i].value);
+				locList.push((int)obj[i].value);
 			}   
 		}
 		console.log(locList);

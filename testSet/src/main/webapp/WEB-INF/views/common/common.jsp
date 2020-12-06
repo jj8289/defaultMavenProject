@@ -7,7 +7,7 @@
 
 <script>
 var CONTEXT_PATH = "${pageContext.request.contextPath}";
-
+ 
 function goHome(){ 
 	location.href = CONTEXT_PATH + "/";
 }

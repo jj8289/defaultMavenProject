@@ -36,4 +36,6 @@ public interface CompanyService{
 	public RegisterVO selectRegByRegNo(RegisterVO vo) throws Exception;
 
 	public void updateRegister(RegisterVO vo) throws Exception;
+	
+	public void updateCompany(CompanyVO vo) throws Exception;
 }

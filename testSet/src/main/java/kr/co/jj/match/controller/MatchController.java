@@ -82,6 +82,29 @@ public class MatchController {
 				reqVo.setPageNo(Integer.parseInt(pageNo));
 			} 
 			
+			// dow, loc list 세팅
+			String[] temp = null;
+			List<String> dowList = new ArrayList<String>();
+			List<Integer> locList = new ArrayList<Integer>();
+			
+			if(reqVo.getSearchDow() != null && reqVo.getSearchDow() != "") {
+				temp = reqVo.getSearchDow().split("/");
+				for(String dow : temp) {
+					dowList.add(dow);
+				}
+				logger.debug(dowList.toString());
+			}
+			if(reqVo.getLocation() != "0") {
+				temp = reqVo.getLocation().split("/");
+				for(String loc : temp) {
+					locList.add(Integer.parseInt(loc));
+				} 
+				logger.debug(locList.toString());
+			}
+			reqVo.setDowList(dowList);
+			reqVo.setLocList(locList);
+			
+			logger.debug(reqVo.toString()); 
 			model.addAttribute("reqVo", reqVo);
 			
 			List<UserMatchVO> matchList = new ArrayList<UserMatchVO>();

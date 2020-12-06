@@ -89,7 +89,10 @@ input, select {
 				<table cellspacing="3" style="height: 60px;">
 					<tr>  	
 						<td bgcolor="lightgrey" align="center">병원명</td>    
-						<td><input type="text" id="companyNm" name="companyNm" value="${company.companyNm }" disabled="disabled"></td>      
+						<td>
+							<input type="text" id="companyNm" name="companyNm" value="${company.companyNm }" disabled="disabled">
+							<input type="hidden" id="companyNo" value="${company.companyNo }">
+						</td>   
 					</tr>
 	 				<tr>  	
 						<td bgcolor="lightgrey" align="center">관리자 ID</td>    
@@ -123,7 +126,7 @@ input, select {
 					</tr> 
 					<tr>  	 
 						<td bgcolor="lightgrey" align="center">병원/의원 구분</td>    
-						<td><input type="text" id="kind" name="kind" value="${company.kind }" size="70"></td>      
+						<td><input type="text" id="kind" name="kind" value="${company.kind }" size="70" disabled="disabled"></td>      
 					</tr> 
 					<tr>  	 
 						<td bgcolor="lightgrey" align="center">소개글</td>    
@@ -131,7 +134,7 @@ input, select {
 					</tr>
 					<tr>  	 
 						<td bgcolor="lightgrey" align="center">사업자 등록번호</td>    
-						<td><input type="text" id="intro" name="intro" value="${company.businessNum }" size="70"></td>      
+						<td><input type="text" id="busNum" name="busNum" value="${company.businessNum }" size="70"></td>      
 					</tr> 
 				</table> 
 				<p class="but" align="center" > 
@@ -143,5 +146,6 @@ input, select {
 			</form>    
 		</div>   
 	</div>      
+<script src="${pageContext.request.contextPath}/resources/js/company/myInfo.js"></script>
 </body>
 </html>

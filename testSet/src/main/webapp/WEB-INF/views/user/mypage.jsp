@@ -409,15 +409,16 @@ input {
 		}else {
 			$("#for_one").hide();
 			$("#for_date").show(); 
-			$("#for_dow").show();
+			$("#for_dow").show(); 
 			
 			if(term == "sat"){
 				$("input[id=dow6]").prop("checked", true);  
-				$("input[name=dow]").prop("disabled", true);     
-			}       
+				$("input[name=dow]").prop("disabled", true);
+				dowList = ['6'];
+			}        
 		}            
 	} 
-      
+       
 	function calDate(mon){
 		var today = new Date();
 		var dd = today.getDate();

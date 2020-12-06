@@ -137,7 +137,8 @@ public class UserController {
 		Map<String, Object> res = new HashMap<String, Object>(); 
 		
 		try {
-			List<String> locList = json.getLocList();
+			//List<String> locList = json.getLocList();
+			List<Integer> locList = json.getLocList();
 			List<String> dowList = json.getDowList();
 			
 			String userId = (String) session.getAttribute("usrloginId");
@@ -204,7 +205,7 @@ public class UserController {
 		
 		model.addAttribute("user", user);
 		
-		List<String> locList = new ArrayList<String>(); 
+		List<Integer> locList = new ArrayList<Integer>(); 
 		List<String> dowList = new ArrayList<String>();
 		
 		if(requireVO == null) {
@@ -223,10 +224,10 @@ public class UserController {
 				strLocList = requireVO.getLocation().split("/");
 				
 				for(int i = 0; i < strLocList.length; i++) {
-					locList.add(strLocList[i]);
+					locList.add(Integer.parseInt(strLocList[i]));
 				} 
 			} else {
-				locList.add("0"); 
+				locList.add(0);  
 			}
 			
 			System.out.println("locList : " + locList);
